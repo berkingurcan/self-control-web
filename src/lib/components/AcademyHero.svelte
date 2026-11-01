@@ -1,107 +1,223 @@
 <script lang="ts">
-  import { siteHref, sites, type Lang } from '#lib/site.ts';
+  import { siteName, copy, siteHref, type Lang } from '#lib/site.ts';
   import Photo from './Photo.svelte';
   import Icon from './Icon.svelte';
 
   let { lang, preview }: { lang: Lang; preview: boolean } = $props();
   const disciplines = ['muaythai', 'kickbox', 'mma'] as const;
+  const images = ['training', 'kickbox', 'grappling'];
+  const positions = ['57% 48%', '56% 42%', '52% 48%'];
+  let selected = $state(0);
+  const active = $derived(disciplines[selected]);
   const text = $derived(lang === 'tr' ? {
-    first: 'KENDİNE', second: 'HAKİM OL.',
-    body: 'Sadece gücünü değil, kendini geliştir. Muay Thai, Kick Box ve MMA ile kendi yolunu bul.',
-    cta: 'Antrenmanını keşfet', schedule: 'Ders programı',
-    caption: 'Her şey, ilk adımla başlar.', path: 'KENDİ YOLUNU SEÇ',
-    photo: 'Ringde antrenör eşliğinde pad antrenmanı', stock: 'TEMSİLİ ANTRENMAN GÖRSELİ'
+    first: 'SELF', second: 'CONTROL',
+    body: 'Denizli’de Muay Thai, kick boks ve MMA. Ders saatlerini ve ücretleri inceleyin.',
+    cta: 'Branşları inceleyin', schedule: 'Ders programı',
+    statement: 'Üç branş.', statementEnd: 'Tek akademi.',
+    path: 'BRANŞ HAKKINDA', explore: 'Branşı inceleyin',
+    preview: 'Branş görselini göster', stock: 'TEMSİLİ FOTOĞRAF',
+    philosophy: 'Grup dersleri', philosophyEnd: 'Özel ders seçenekleri',
+    scroll: 'Akademi hakkında', membership: 'Üyelik ve ücretler',
+    masthead: 'FIGHT ACADEMY · DENİZLİ', mastheadNote: 'ANTRENMAN', visualMarker: 'SC / ANTRENMAN', seal: 'TEKNİK · DİSİPLİN · SAYGI · '
   } : {
-    first: 'MASTER', second: 'YOURSELF.',
-    body: 'Build more than strength. Find your own way through Muay Thai, Kick Box and MMA.',
-    cta: 'Find your discipline', schedule: 'Class timetable',
-    caption: 'It starts with showing up.', path: 'CHOOSE YOUR PATH',
-    photo: 'Athlete working pads with a coach in the ring', stock: 'ILLUSTRATIVE TRAINING PHOTO'
+    first: 'SELF', second: 'CONTROL',
+    body: 'Muay Thai, kickboxing and MMA in Denizli. View class times and membership prices.',
+    cta: 'Explore training', schedule: 'Class timetable',
+    statement: 'Three disciplines.', statementEnd: 'One academy.',
+    path: 'ABOUT THE DISCIPLINE', explore: 'View discipline',
+    preview: 'Show discipline photo', stock: 'ILLUSTRATIVE PHOTO',
+    philosophy: 'Group classes', philosophyEnd: 'Private lesson options',
+    scroll: 'About the academy', membership: 'Memberships and prices',
+    masthead: 'FIGHT ACADEMY · DENİZLİ', mastheadNote: 'TRAINING', visualMarker: 'SC / TRAINING', seal: 'TECHNIQUE · DISCIPLINE · RESPECT · '
   });
+
+  /** Decorative depth is pointer-only, frame-throttled, and never needed to use the hero. */
+  function depth(node: HTMLElement) {
+    const preference = window.matchMedia('(prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine)');
+    let frame = 0;
+    const reset = () => {
+      cancelAnimationFrame(frame);
+      node.style.setProperty('--drift-x', '0px');
+      node.style.setProperty('--drift-y', '0px');
+      node.style.setProperty('--light-x', '65%');
+      node.style.setProperty('--light-y', '40%');
+    };
+    const move = (event: PointerEvent) => {
+      if (!preference.matches || event.pointerType === 'touch') return;
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const bounds = node.getBoundingClientRect();
+        const x = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width));
+        const y = Math.max(0, Math.min(1, (event.clientY - bounds.top) / bounds.height));
+        node.style.setProperty('--drift-x', `${(x - .5) * 12}px`);
+        node.style.setProperty('--drift-y', `${(y - .5) * 10}px`);
+        node.style.setProperty('--light-x', `${x * 100}%`);
+        node.style.setProperty('--light-y', `${y * 100}%`);
+      });
+    };
+    node.addEventListener('pointermove', move);
+    node.addEventListener('pointerleave', reset);
+    preference.addEventListener('change', reset);
+    return { destroy() {
+      reset();
+      node.removeEventListener('pointermove', move);
+      node.removeEventListener('pointerleave', reset);
+      preference.removeEventListener('change', reset);
+    } };
+  }
 </script>
 
-<div class="academy-intro">
-  <div class="intro-copy">
-    <div class="intro-eyebrow"><span class="intro-rule"></span> SELF CONTROL FIGHT ACADEMY</div>
-    <h1 aria-label={`${text.first} ${text.second}`}><span>{text.first}</span><span>{text.second}</span></h1>
-    <p>{text.body}</p>
-    <div class="intro-actions">
-      <a class="intro-primary" href="#training">{text.cta}<Icon name="diagonal" size={20}/></a>
-      <a class="intro-secondary" href="#schedule">{text.schedule}<Icon name="arrow" size={18}/></a>
-    </div>
-    <div class="intro-footnote"><span>01 — 03</span><span>{lang === 'tr' ? 'Üç disiplin. Ortak bir duruş.' : 'Three disciplines. One shared attitude.'}</span></div>
-  </div>
-  <figure class="intro-visual">
-    <div class="intro-photo"><Photo name="training" alt={text.photo} eager position="52% 48%"/></div>
-    <div class="photo-topline" aria-hidden="true"><span>THE ART OF SELF CONTROL</span><img src="/brand/mark.svg" width="42" height="31" alt=""/></div>
-    <span class="photo-edge" aria-hidden="true">DISCIPLINE / RESPECT / CONTROL</span>
-    <figcaption><span class="photo-caption">{text.caption}</span><span class="photo-credit">{text.stock}</span></figcaption>
-  </figure>
+<div class="academy-masthead">
+  <div class="masthead-label"><span class="label-square" aria-hidden="true"></span> {text.masthead}</div>
+  <span class="masthead-note">{text.mastheadNote} <span aria-hidden="true">/</span> {text.statement}</span>
 </div>
-<nav class="intro-paths" aria-label={text.path}>
-  <div class="path-label"><span>{text.path}</span><Icon name="arrow" size={20}/></div>
-  {#each disciplines as id, index}
-    <a href={siteHref(id, lang, preview)} aria-label={`${sites[id].name} — ${lang === 'tr' ? 'Disiplini keşfet' : 'Explore discipline'}`}><span class="path-index" aria-hidden="true">0{index + 1}</span><span class="path-name" lang="en">{sites[id].name}</span><Icon name="diagonal" size={19}/></a>
-  {/each}
-</nav>
+
+<div class="academy-stage" use:depth>
+  <figure class="campaign-visual">
+    <div class="campaign-frames">
+      {#each disciplines as id, index}
+        <div class="campaign-frame" class:is-active={selected === index} aria-hidden={selected !== index}>
+          <Photo name={images[index]} alt={copy[lang].home[id].image} eager={index === 0} position={positions[index]}/>
+        </div>
+      {/each}
+    </div>
+    <div class="campaign-shade" aria-hidden="true"></div>
+    <div class="visual-topline" aria-hidden="true"><span>{text.visualMarker}</span><span>0{selected + 1} — 03</span></div>
+    <div class="control-seal" aria-hidden="true">
+      <svg class="seal-orbit" viewBox="0 0 100 100"><defs><path id="academy-seal-orbit" d="M50,50m-40,0a40,40 0 1,1 80,0a40,40 0 1,1 -80,0"/></defs><text><textPath href="#academy-seal-orbit" textLength="251">{text.seal}</textPath></text></svg>
+      <img src="/brand/mark.svg" width="40" height="30" alt=""/>
+    </div>
+    <figcaption class="visual-caption">
+      <div class="caption-copy"><span>{text.path}</span><a href={siteHref(active, lang, preview)} aria-label={`${siteName(active, lang)} — ${text.explore}`}><span lang={active === 'muaythai' ? 'en' : lang}>{siteName(active, lang)}</span><Icon name="diagonal" size={23}/></a></div>
+      <span class="visual-stock">{text.stock}</span>
+    </figcaption>
+  </figure>
+
+  <h1 class="campaign-title" aria-label={`${text.first} ${text.second}`}><span class="title-line"><span>{text.first}</span></span><span class="title-line"><span>{text.second}</span></span></h1>
+
+  <div class="campaign-copy">
+    <div class="copy-rule" aria-hidden="true"><span></span><span>SC / 00</span></div>
+    <p>{text.body}</p>
+    <div class="campaign-actions">
+      <a class="campaign-primary" href="#training"><span>{text.cta}</span><span class="primary-arrow"><Icon name="diagonal" size={20}/></span></a>
+      <a class="campaign-secondary" href="#schedule">{text.schedule}<Icon name="arrow" size={18}/></a>
+    </div>
+  </div>
+
+  <div class="campaign-philosophy" aria-hidden="true"><span>{text.philosophy}</span><span>{text.philosophyEnd}</span></div>
+
+  <div class="discipline-selector" role="group" aria-label={text.preview}>
+    {#each disciplines as id, index}
+      <button type="button" class:selected={selected === index} aria-pressed={selected === index} aria-label={`${siteName(id, lang)} — ${text.preview}`} onclick={() => selected = index}><span class="selector-index" aria-hidden="true">0{index + 1}</span><span lang={lang}>{siteName(id, lang)}</span><span class="selector-dot" aria-hidden="true"></span></button>
+    {/each}
+  </div>
+</div>
+
+<div class="campaign-baseline">
+  <div class="baseline-statement"><span class="baseline-mark" aria-hidden="true">↗</span><p>{text.statement} <span>{text.statementEnd}</span></p></div>
+  <a class="baseline-membership" href="#membership">{text.membership}<Icon name="diagonal" size={16}/></a>
+  <a class="baseline-scroll" href="#academy"><span>{text.scroll}</span><span class="scroll-track" aria-hidden="true">↓</span></a>
+</div>
 
 <style>
-  :global(.landing-hero.academy-hero){display:block;padding:40px max(5.5vw,24px) 0;max-width:1800px;margin:auto}
-  .academy-intro{display:grid;grid-template-columns:1.08fr 1fr;gap:5vw;min-height:540px}
-  .intro-copy{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;padding:30px 0}
-  .intro-eyebrow{display:flex;align-items:center;gap:12px;font-size:10px;letter-spacing:.12em;line-height:1.6}
-  .intro-rule{height:1px;width:30px;background:currentColor}
-  h1{font:800 clamp(80px,8.5vw,150px)/.9 Barlow,Impact,sans-serif;letter-spacing:-.025em;margin:30px 0 26px}
-  h1 span{display:block;white-space:nowrap}
-  h1 span:last-child{color:#777773}
-  .intro-copy>p{font-size:14px;line-height:1.9;max-width:370px;color:var(--muted)}
-  .intro-actions{display:flex;align-items:center;gap:26px;margin-top:30px;flex-wrap:wrap}
-  .intro-primary,.intro-secondary{display:inline-flex;align-items:center;justify-content:space-between;gap:20px;font-size:13px;min-height:54px}
-  .intro-primary{background:#101010;color:#fff;padding:16px 20px;transition:background .2s}
-  .intro-primary:hover{background:#353535}
-  .intro-secondary{border-bottom:1px solid #aaa;min-height:48px}
-  .intro-actions :global(svg),.intro-paths :global(svg){transition:transform .25s}
-  .intro-actions a:hover :global(svg),.intro-paths a:hover :global(svg){transform:translate(3px,-3px)}
-  .intro-footnote{display:flex;gap:14px;align-items:center;margin-top:42px;font-size:10px;color:var(--muted)}
-  .intro-footnote>span:first-child{font-variant-numeric:tabular-nums;letter-spacing:.08em;border-right:1px solid var(--line);padding-right:14px}
-  .intro-visual{position:relative;margin:0;overflow:hidden;min-width:0;background:#161616;color:#fff}
-  .intro-photo{position:absolute;inset:0}
-  .intro-photo :global(img){width:100%;height:100%;object-fit:cover;filter:grayscale(1) brightness(.77);transition:transform 1s cubic-bezier(.2,.6,.3,1)}
-  .intro-visual:hover .intro-photo :global(img){transform:scale(1.035)}
-  .intro-visual:after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.32),transparent 35%,transparent 55%,rgba(0,0,0,.85));pointer-events:none}
-  .photo-topline{position:absolute;z-index:1;top:26px;left:26px;right:26px;display:flex;align-items:center;justify-content:space-between;gap:20px;font-size:9px;letter-spacing:.12em}
-  figcaption{position:absolute;z-index:1;bottom:30px;left:28px;right:28px;display:flex;flex-direction:column;gap:14px}
-  .photo-caption{font:800 clamp(28px,3vw,44px)/1 Barlow,Impact,sans-serif;max-width:260px;text-transform:uppercase}
-  .photo-credit{font-size:8px;letter-spacing:.09em;color:#c6c6c1}
-  .photo-edge{position:absolute;right:17px;top:50%;z-index:1;writing-mode:vertical-rl;font-size:8px;letter-spacing:.2em}
-  .intro-paths{display:grid;grid-template-columns:1.08fr repeat(3,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:40px}
-  .path-label{display:flex;align-items:center;gap:24px;font-size:10px;letter-spacing:.08em;padding:26px 24px 26px 0}
-  .intro-paths a{display:flex;align-items:center;gap:14px;padding:25px 24px;border-left:1px solid var(--line);min-width:0;transition:background .2s}
-  .intro-paths a:hover{background:var(--surface)}
-  .path-index{color:var(--muted);font-size:10px}
-  .path-name{font-size:16px;flex:1}
-  @media(min-width:1400px){.academy-intro{min-height:620px}}
-  @media(max-width:1050px) and (min-width:701px){.academy-intro{gap:30px;grid-template-columns:1.1fr 1fr;min-height:480px}h1{font-size:8.8vw}.intro-actions{gap:14px}.intro-footnote{margin-top:28px}.intro-paths a{padding:22px 16px;gap:10px}.path-name{font-size:14px}.path-label{font-size:9px;gap:12px}}
-  @media(max-width:700px){
-    :global(.landing-hero.academy-hero){padding:30px 24px 0}
-    .academy-intro{grid-template-columns:1fr;gap:28px;min-height:0}
-    .intro-copy{padding:0}
-    .intro-eyebrow{font-size:9px;letter-spacing:.09em;gap:10px}.intro-rule{width:20px}
-    h1{font-size:clamp(64px,18.2vw,112px);margin:24px 0 20px;line-height:.9}
-    .intro-copy>p{font-size:13px;line-height:1.8;max-width:350px}
-    .intro-actions{width:100%;gap:20px;margin-top:24px;flex-wrap:nowrap}
-    .intro-primary{font-size:12px;min-height:52px;gap:14px;padding:14px 16px;flex:1}
-    .intro-secondary{font-size:11px;gap:8px;min-height:46px;white-space:nowrap}
-    .intro-footnote{display:none}
-    .intro-visual{height:230px}
-    .intro-photo :global(img){object-position:50% 43%!important}
-    .photo-topline{top:16px;left:18px;right:18px;font-size:8px}.photo-topline img{width:30px;height:auto}
-    figcaption{bottom:20px;left:18px;right:30px;gap:9px}.photo-caption{font-size:30px;max-width:210px}.photo-credit{font-size:7px}.photo-edge{right:12px;font-size:7px}
-    .intro-paths{grid-template-columns:repeat(3,1fr);margin-top:24px}.path-label{display:none}
-    .intro-paths a{padding:20px 12px;gap:7px;flex-wrap:wrap;justify-content:space-between}.intro-paths a:first-of-type{border-left:0;padding-left:0}.intro-paths a:last-child{padding-right:0}
-    .path-name{font-size:13px;flex-basis:100%;order:1}.path-index{font-size:9px}.intro-paths a :global(svg){width:16px;height:16px}
+  :global(.landing-hero.academy-hero){display:block;padding:0 max(5.5vw,24px);max-width:1800px;margin:auto;--hero-paper:#fff}
+  .academy-masthead{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:73px;font-size:9px;letter-spacing:.1em}
+  .masthead-label{display:flex;align-items:center;gap:11px}
+  .label-square{width:6px;height:6px;background:currentColor}
+  .masthead-note{color:#6b6b65;display:flex;gap:16px;font-size:9px;letter-spacing:.04em}
+  .masthead-note>span{color:#b2b2ac}
+  .academy-stage{position:relative;isolation:isolate;min-height:clamp(550px,43vw,710px);height:min(710px,calc(100svh - 220px));background:var(--hero-paper);--drift-x:0px;--drift-y:0px}
+  .campaign-visual{position:absolute;inset:0 0 64px 40%;margin:0;background:#20201e;color:#fff;overflow:hidden}
+  .campaign-frames,.campaign-frame,.campaign-shade{position:absolute;inset:0}
+  .campaign-frame{opacity:0;visibility:hidden;transition:opacity .65s ease,visibility .65s;overflow:hidden}
+  .campaign-frame.is-active{opacity:1;visibility:visible}
+  .campaign-frame :global(img){width:100%;height:100%;object-fit:cover;filter:grayscale(1) brightness(.72) contrast(1.12);transform:translate(var(--drift-x),var(--drift-y)) scale(1.045);transition:transform .9s cubic-bezier(.2,.7,.3,1)}
+  .campaign-shade{background:linear-gradient(0deg,#080808c9,transparent 39%),linear-gradient(90deg,#08080820,transparent 55%);pointer-events:none}
+  .campaign-shade:after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at var(--light-x,65%) var(--light-y,40%),#ffffff18,transparent 65%);mix-blend-mode:soft-light}
+  .visual-topline{position:absolute;inset:23px 25px auto;display:flex;align-items:center;justify-content:space-between;font-size:8px;letter-spacing:.12em;color:#e2e2dd}
+  .control-seal{position:absolute;top:56px;right:24px;width:100px;height:100px;display:grid;place-items:center}
+  .seal-orbit{position:absolute;inset:0;width:100%;height:100%;fill:#f3f3eb;font:500 7.8px Poppins,Arial,sans-serif;letter-spacing:1.2px}
+  .control-seal>img{width:37px;height:auto;transform:translateY(1px)}
+  .visual-caption{position:absolute;bottom:25px;left:28px;right:28px;display:flex;align-items:flex-end;justify-content:space-between;gap:20px}
+  .caption-copy{display:flex;flex-direction:column;gap:8px;min-width:0}
+  .caption-copy>span{font-size:8px;letter-spacing:.13em;color:#d8d8d0}
+  .caption-copy>a{display:flex;gap:35px;align-items:center;min-height:44px;font:800 38px/1 Barlow,Impact,sans-serif;text-transform:uppercase}
+  .caption-copy>a :global(svg){transition:transform .25s}
+  .caption-copy>a:hover :global(svg){transform:translate(3px,-3px)}
+  .visual-stock{font-size:7px;letter-spacing:.06em;line-height:1.6;color:#dadad2;max-width:115px;text-align:right;padding-bottom:7px}
+  .campaign-title{position:absolute;z-index:2;top:20px;left:-.006em;color:#fff;mix-blend-mode:difference;font:800 clamp(100px,12.2vw,184px)/.92 Barlow,Impact,sans-serif;letter-spacing:-.022em;margin:0;pointer-events:none}
+  .title-line{display:block;padding-bottom:.055em;margin-bottom:-.02em;white-space:nowrap}
+  .title-line>span{display:block}
+  .title-line:last-child{margin-left:7.5vw}
+  .campaign-copy{position:absolute;left:0;bottom:75px;width:34%;max-width:380px}
+  .copy-rule{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;font-size:8px;letter-spacing:.1em;color:#73736d}
+  .copy-rule>span:first-child{width:45px;height:1px;background:#999993}
+  .campaign-copy>p{font-size:13px;line-height:1.85;color:#64645f;max-width:330px;text-wrap:pretty}
+  .campaign-actions{display:flex;flex-direction:column;align-items:flex-start;gap:13px;margin-top:25px}
+  .campaign-primary{display:flex;align-items:center;justify-content:space-between;gap:28px;min-height:56px;background:#101010;color:#fff;padding:7px 7px 7px 20px;font-size:12px;overflow:hidden;transition:background .25s}
+  .primary-arrow{display:grid;place-items:center;width:40px;height:40px;border:1px solid #ffffff40;transition:background .25s,color .25s}
+  .campaign-primary:hover{background:#30302b}
+  .campaign-primary:hover .primary-arrow{background:#fff;color:#101010}
+  .campaign-secondary{display:flex;align-items:center;justify-content:space-between;gap:26px;min-height:44px;font-size:11px;border-bottom:1px solid #bbbcb4}
+  .campaign-secondary :global(svg){transition:transform .25s}
+  .campaign-secondary:hover :global(svg){transform:translateX(4px)}
+  .campaign-philosophy{position:absolute;left:calc(40% + 28px);bottom:190px;display:flex;flex-direction:column;font-size:11px;line-height:1.7;color:#eeeee7;letter-spacing:-.02em;pointer-events:none}
+  .campaign-philosophy>span:last-child{color:#b8b8b0}
+  .discipline-selector{position:absolute;bottom:0;left:40%;right:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));height:64px;border-bottom:1px solid #d7d7d0}
+  .discipline-selector>button{position:relative;display:flex;align-items:center;gap:12px;background:transparent;text-align:left;padding:0 17px;color:#74746d;font-size:11px;transition:color .25s,background .25s}
+  .discipline-selector>button:after{content:'';position:absolute;left:0;right:0;bottom:-1px;height:2px;background:#111;transform:scaleX(0);transform-origin:left;transition:transform .3s}
+  .discipline-selector>button+button{border-left:1px solid #e5e5df}
+  .discipline-selector>button:hover{background:#f5f5f1;color:#111}
+  .discipline-selector>button.selected{color:#111}
+  .discipline-selector>button.selected:after{transform:scaleX(1)}
+  .selector-index{font-size:9px;color:#77776e;font-variant-numeric:tabular-nums}
+  .selector-dot{width:5px;height:5px;border-radius:50%;background:currentColor;margin-left:auto;opacity:0;transition:opacity .25s}
+  .selected .selector-dot{opacity:1}
+  .campaign-baseline{display:flex;align-items:center;justify-content:space-between;gap:25px;min-height:96px;margin-top:17px;border-bottom:1px solid var(--line)}
+  .baseline-statement{display:flex;align-items:center;gap:15px}
+  .baseline-mark{font:500 35px/1 Arial,sans-serif}
+  .baseline-statement>p{font-size:10px;line-height:1.6}
+  .baseline-statement>p>span{color:#74746d}
+  .baseline-membership,.baseline-scroll{display:flex;align-items:center;gap:15px;min-height:44px;font-size:10px}
+  .baseline-membership{margin-left:auto;margin-right:5vw;color:#64645f}
+  .baseline-scroll{gap:26px}
+  .scroll-track{width:27px;height:36px;border:1px solid #d6d6ce;border-radius:20px;display:grid;place-items:center;font-size:17px;transition:transform .25s}
+  .baseline-scroll:hover .scroll-track{transform:translateY(3px)}
+  @media(min-width:1200px){.campaign-actions{flex-direction:row;align-items:center;gap:22px}.campaign-primary{gap:18px}}
+  @media(min-width:1500px){.campaign-title{top:45px}.campaign-copy{bottom:96px}.campaign-actions{flex-direction:row;align-items:center;gap:23px}.campaign-primary{gap:18px}.campaign-secondary{gap:17px}.campaign-philosophy{bottom:185px}}
+  @media(min-width:701px) and (max-width:1050px){
+    .academy-stage{min-height:570px;height:570px}.campaign-visual{left:36%}.campaign-title{top:30px;font-size:12.8vw}.title-line:last-child{margin-left:4vw}.campaign-copy{width:31%;bottom:84px}.campaign-copy>p{font-size:12px}.campaign-primary{font-size:11px;gap:10px;padding-left:14px}.primary-arrow{width:34px;height:38px}.control-seal{width:82px;height:82px;right:16px}.control-seal>img{width:31px}.campaign-philosophy{left:calc(36% + 23px);bottom:200px}.discipline-selector{left:36%}.discipline-selector>button{padding:0 12px;gap:9px;font-size:10px}.visual-caption{left:23px;right:20px}.visual-stock{max-width:95px;font-size:6px}.baseline-membership{margin-right:0}.baseline-statement>p{max-width:170px}
   }
-  @media(max-width:360px){:global(.landing-hero.academy-hero){padding-inline:20px}.intro-actions{gap:12px}.intro-primary{font-size:11px;padding-inline:12px;gap:8px}.intro-secondary{font-size:10px}.intro-visual{height:210px}}
-  @media(prefers-reduced-motion:no-preference){.intro-copy{animation:intro-enter .7s ease-out both}.intro-visual{animation:intro-enter .9s .1s ease-out both}@keyframes intro-enter{from{opacity:0;transform:translateY(15px)}to{opacity:1;transform:translateY(0)}}}
-  @media(prefers-reduced-motion:reduce){.intro-photo :global(img),.intro-actions :global(svg),.intro-paths :global(svg){transition:none}}
+  @media(max-width:700px){
+    :global(.landing-hero.academy-hero){padding:0 22px}
+    .academy-masthead{min-height:57px;font-size:8px;letter-spacing:.08em}.masthead-note{font-size:0;gap:0}.masthead-note>span{font-size:0}.masthead-note:before{content:'SC / 00';font-size:8px;letter-spacing:.08em}
+    .academy-stage{display:flex;flex-direction:column;height:auto;min-height:0;padding-top:292px}
+    .campaign-visual{inset:0 0 auto 23%;height:292px}
+    .campaign-title{position:absolute;top:52px;left:-1px;font-size:clamp(64px,18.7vw,128px);line-height:.92;margin:0}
+    .title-line{padding-bottom:.06em;margin-bottom:-.02em}.title-line:last-child{margin-left:0}
+    .visual-topline{inset:14px 14px auto;font-size:6px;letter-spacing:.08em}.visual-topline>span:first-child{font-size:6px}
+    .control-seal,.campaign-philosophy{display:none}
+    .visual-caption{bottom:17px;left:17px;right:15px;gap:8px}.caption-copy{gap:2px}.caption-copy>span{font-size:8px;letter-spacing:.05em}.caption-copy>a{font-size:26px;gap:14px;min-height:44px}.caption-copy>a :global(svg){width:18px;height:18px}.visual-stock{max-width:82px;font-size:7px;line-height:1.6;padding-bottom:6px}
+    .discipline-selector{position:relative;left:auto;right:auto;bottom:auto;order:1;height:58px;margin-left:23%;margin-top:0}
+    .discipline-selector>button{padding:0 7px;gap:5px;font-size:11px;white-space:nowrap}.selector-index{display:none}.selector-dot{display:none}
+    .campaign-copy{position:relative;left:auto;bottom:auto;order:2;width:auto;max-width:none;margin-top:26px}
+    .copy-rule{display:none}.campaign-copy>p{font-size:13px;max-width:440px;line-height:1.8}
+    .campaign-actions{flex-direction:row;align-items:center;gap:20px;margin-top:20px}.campaign-primary{min-height:54px;flex:1;font-size:12px;gap:10px;padding-left:15px}.primary-arrow{width:34px;height:38px}.campaign-secondary{font-size:11px;gap:9px;white-space:nowrap}
+    .campaign-baseline{min-height:79px;margin-top:24px;gap:12px}.baseline-statement{gap:10px}.baseline-mark{font-size:27px}.baseline-statement>p{font-size:9px}.baseline-statement>p>span{display:block}.baseline-membership{font-size:10px;margin-right:0;gap:8px}.baseline-scroll{display:none}
+  }
+  @media(min-width:501px) and (max-width:700px){.campaign-visual{height:360px}.academy-stage{padding-top:360px}.discipline-selector>button{font-size:12px;padding-inline:12px}.selector-index{display:inline;font-size:9px}.visual-caption{bottom:20px}.caption-copy>a{font-size:34px}.visual-stock{font-size:8px;max-width:105px}.campaign-copy{margin-top:26px}}
+  @media(max-width:360px){
+    :global(.landing-hero.academy-hero){padding-inline:18px}.academy-masthead{font-size:7px;min-height:52px}.campaign-visual{height:266px}.academy-stage{padding-top:266px}.campaign-title{font-size:18.7vw;top:44px}.discipline-selector{height:54px}.discipline-selector>button{font-size:10px;padding-inline:5px;gap:4px}.campaign-copy{margin-top:21px}.campaign-copy>p{font-size:12px}.campaign-actions{gap:12px}.campaign-primary{font-size:11px;padding-left:12px}.campaign-secondary{font-size:10px;gap:7px}.primary-arrow{width:30px}.caption-copy>a{font-size:23px}.visual-stock{font-size:6px;max-width:67px}.baseline-membership{font-size:9px;gap:5px}
+  }
+  @media(max-width:700px) and (max-height:740px){.campaign-visual{height:242px}.academy-stage{padding-top:242px}.campaign-title{top:36px;font-size:17.5vw}.campaign-copy{margin-top:20px}.campaign-actions{margin-top:14px}.campaign-baseline{margin-top:20px}}
+  @media(prefers-reduced-motion:no-preference){
+    .title-line>span{animation:type-arrive 1s cubic-bezier(.16,1,.3,1) both}.title-line:last-child>span{animation-delay:.13s}
+    .campaign-visual{animation:frame-arrive 1.2s cubic-bezier(.16,1,.3,1) both}.campaign-copy{animation:copy-arrive .9s .18s both}
+    .seal-orbit{animation:seal-turn 2s cubic-bezier(.16,1,.3,1) both}
+    @keyframes type-arrive{from{transform:translateY(18%);clip-path:inset(100% 0 -20%)}to{transform:translateY(0);clip-path:inset(-20% 0 -20%)}}
+    @keyframes frame-arrive{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0)}}
+    @keyframes copy-arrive{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes seal-turn{from{transform:rotate(-40deg)}to{transform:rotate(0)}}
+  }
+  @media(prefers-reduced-motion:reduce){.campaign-frame,.campaign-frame :global(img),.discipline-selector>button,.discipline-selector>button:after{transition:none}.campaign-frame :global(img){transform:none}}
 </style>

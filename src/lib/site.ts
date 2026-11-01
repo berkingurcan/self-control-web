@@ -11,9 +11,15 @@ export const routes: Record<Lang, Record<PageId, string>> = {
 export const sites = {
   academy: { name: 'Fight Academy', label: 'SELF CONTROL', accent: '#ffffff', dark: '#222222', image: 'training', domain: 'selfcontrolfightacademy.com', number: '00', position: '50% 45%', disciplines: ['muaythai', 'kickbox', 'mma'] },
   muaythai: { name: 'Muay Thai', label: 'MUAY THAI', accent: '#B7D19C', dark: '#263D2D', image: 'muay-thai', domain: 'muaythai.selfcontrolfightacademy.com', number: '01', position: '50% 36%', disciplines: ['muaythai'] },
-  kickbox: { name: 'Kick Box', label: 'KICK BOX', accent: '#AAC6E6', dark: '#253B55', image: 'kickbox', domain: 'kickbox.selfcontrolfightacademy.com', number: '02', position: '50% 42%', disciplines: ['kickbox'] },
+  kickbox: { name: 'Kick Boks', label: 'KİCK BOKS', accent: '#AAC6E6', dark: '#253B55', image: 'kickbox', domain: 'kickbox.selfcontrolfightacademy.com', number: '02', position: '50% 42%', disciplines: ['kickbox'] },
   mma: { name: 'MMA', label: 'MMA', accent: '#E0A097', dark: '#4B2729', image: 'grappling', domain: 'mma.selfcontrolfightacademy.com', number: '03', position: '55% 42%', disciplines: ['mma'] }
 } as const;
+
+export function siteName(id: SiteId, lang: Lang) {
+  if (id === 'academy') return lang === 'tr' ? 'Akademi' : 'Academy';
+  if (id === 'kickbox') return lang === 'tr' ? 'Kick Boks' : 'Kickboxing';
+  return sites[id].name;
+}
 
 export const selectedSite: SiteId = ids.includes(env.PUBLIC_SITE_ID as SiteId) ? env.PUBLIC_SITE_ID as SiteId : 'academy';
 export function href(page: PageId, lang: Lang, prefix = '') {
@@ -40,66 +46,446 @@ export function siteHref(id: SiteId, lang: Lang, preview = false) {
 }
 
 export const copy = {
-  tr: {
-    nav: { home: 'Ana sayfa', training: 'Antrenmanlar', about: 'Akademi', schedule: 'Program', start: 'Başla', privacy: 'Gizlilik' },
-    skip: 'İçeriğe geç', menu: 'Menüyü aç', close: 'Kapat', start: 'İlk adımı at', explore: 'Antrenmanları keşfet',
-    eyebrow: 'SELF CONTROL FIGHT ACADEMY', scroll: 'KEŞFETMEYE DEVAM ET', philosophy: 'GÜÇ, KONTROLLE BAŞLAR.',
-    home: {
-      academy: { title: ['GÜCÜNÜ', 'KONTROL', 'ET.'], sub: 'Muay Thai, Kick Box ve MMA. Kendi yolunu bul. Her antrenmanda bir adım ileri git.', tag: 'ÜÇ DİSİPLİN. TEK KARAKTER.', image: 'Partnerli dövüş sporları antrenmanı' },
-      muaythai: { title: ['SEKİZ UZUV.', 'TEK', 'ODAK.'], sub: 'Duruş, ritim ve mesafe. Muay Thai dünyasına Self Control disipliniyle adım at.', tag: 'MUAY THAI / THE ART OF EIGHT LIMBS', image: 'Muay Thai pad antrenmanı' },
-      kickbox: { title: ['RİTMİNİ', 'BUL.', 'İLERLE.'], sub: 'Yumruk ve tekmelerin aynı ritimde buluştuğu yer. Kick Box ile hareketine yön ver.', tag: 'KICK BOX / PRECISION IN MOTION', image: 'Kum torbasında tekme antrenmanı' },
-      mma: { title: ['HER MESAFE.', 'TEK', 'ZİHİN.'], sub: 'Ayakta, clinch’te ve yerde. MMA ile oyunun parçalarını bir araya getir.', tag: 'MMA / COMPLETE YOUR GAME', image: 'MMA yer oyunu için grappling antrenmanı' }
+  "tr": {
+    "nav": {
+      "home": "Ana sayfa",
+      "training": "Antrenmanlar",
+      "about": "Akademi",
+      "schedule": "Program",
+      "start": "İletişim",
+      "privacy": "Gizlilik"
     },
-    introLabel: '01 / YAKLAŞIM', introTitle: 'KENDİNİ AŞ.\nKENDİN KAL.', introBody: 'Self Control, yalnızca bir isim değil. Hareketin arkasındaki niyet. Gücün arkasındaki disiplin. Burada yolculuk, kendine verdiğin sözle başlar.',
-    introWords: ['DİSİPLİN', 'SAYGI', 'GELİŞİM'], disciplinesLabel: '02 / KENDİ YOLUNU BUL', disciplinesTitle: 'FARKLI YOLLAR.\nAYNI İRADE.', allTraining: 'Tüm antrenmanlar', discover: 'Disiplini keşfet',
-    discipline: {
-      muaythai: { short: 'Ritim. Mesafe. Karakter.', description: 'Yumruk, tekme, diz ve dirsek. Sekiz uzvun sanatında teknik ve dengeyi birlikte keşfet.', tags: ['DURUŞ & DENGE', 'PAD ÇALIŞMASI', 'CLINCH'], focus: ['Temel duruş, gard ve ayak hareketleri', 'Yumruk, tekme, diz ve dirsek mekaniği', 'Mesafe, zamanlama ve clinch prensipleri'] },
-      kickbox: { short: 'Hız. Hassasiyet. Akış.', description: 'Yumruk ve tekme kombinasyonlarını akıcı bir oyuna dönüştür. Hareket ederken karar vermeyi öğren.', tags: ['KOMBİNASYON', 'AYAK OYUNU', 'KONDİSYON'], focus: ['Gard, savunma ve ayak hareketleri', 'Yumruk ve tekme kombinasyonları', 'Torba ve pad ile ritim çalışmaları'] },
-      mma: { short: 'Ayakta. Yerde. Her yerde.', description: 'Striking, güreş ve yer oyunu. Farklı mesafeler arasında geçiş yapabilen bütünlüklü bir yaklaşım.', tags: ['STRIKING', 'GÜREŞ', 'GRAPPLING'], focus: ['Ayakta vuruş ve mesafe yönetimi', 'Güreş ve yere alma prensipleri', 'Pozisyon kontrolü ve yerde geçişler'] }
+    "skip": "İçeriğe geç",
+    "menu": "Menüyü aç",
+    "close": "Kapat",
+    "start": "İletişim",
+    "explore": "Antrenmanları inceleyin",
+    "eyebrow": "SELF CONTROL FIGHT ACADEMY",
+    "scroll": "AKADEMİYİ İNCELEYİN",
+    "philosophy": "TEKNİK, DİSİPLİN VE DÜZENLİ ANTRENMAN",
+    "home": {
+      "academy": {
+        "title": [
+          "DENİZLİ",
+          "DÖVÜŞ",
+          "SPORLARI"
+        ],
+        "sub": "Denizli’de Muay Thai, kick boks ve MMA. Antrenman içeriklerini, ders programını ve üyelik seçeneklerini inceleyin.",
+        "tag": "MUAY THAI · KİCK BOKS · MMA",
+        "image": "Antrenör eşliğinde Muay Thai çalışması"
+      },
+      "muaythai": {
+        "title": [
+          "MUAY",
+          "THAI",
+          "ANTRENMANLARI"
+        ],
+        "sub": "Denizli’de Muay Thai antrenmanları. Temel duruş, savunma, yumruk, tekme, diz ve dirsek tekniklerine odaklanan çalışmalar.",
+        "tag": "MUAY THAI / TEKNİK VE KONDİSYON",
+        "image": "Muay Thai antrenmanında darbe yastığı çalışması"
+      },
+      "kickbox": {
+        "title": [
+          "KİCK",
+          "BOKS",
+          "ANTRENMANLARI"
+        ],
+        "sub": "Denizli’de kick boks antrenmanları. Yumruk ve tekme kombinasyonları, savunma, ayak hareketleri ve kondisyon çalışmaları.",
+        "tag": "KİCK BOKS / TEKNİK VE KONDİSYON",
+        "image": "Kum torbasında kick boks antrenmanı"
+      },
+      "mma": {
+        "title": [
+          "MMA",
+          "TEKNİK",
+          "ANTRENMANLARI"
+        ],
+        "sub": "Denizli’de MMA antrenmanları. Ayakta vuruş tekniklerini, güreşi ve yer çalışmalarını bir araya getiren antrenman içeriği.",
+        "tag": "MMA / KARMA DÖVÜŞ SANATLARI",
+        "image": "MMA antrenmanında yerde pozisyon kontrolü"
+      }
     },
-    processLabel: '03 / İLK ANTRENMANINA DOĞRU', processTitle: 'BAŞLAMAK İÇİN\nBİR ADIM YETER.',
-    steps: [ { title: 'Yolunu seç', body: 'Muay Thai, Kick Box veya MMA. İlgi alanını keşfet; kararsızsan bize sor.' }, { title: 'Birlikte planlayalım', body: 'Deneyimini, hedefini ve uygun olduğun günleri paylaş. Grup ve saat bilgilerini öğren.' }, { title: 'Hazır gel', body: 'İlk antrenmandan önce ekipman, kıyafet ve katılım detaylarını netleştir.' } ],
-    bannerTitle: 'EN ZOR ADIM,\nİLK ADIM.', bannerSub: 'Geri kalanını birlikte planlayalım.',
-    aboutLabel: 'AKADEMİ / BİZİ BİR ARAYA GETİREN', aboutTitle: 'ÖNCE\nKENDİNE\nHAKİM OL.', aboutBody: 'Self Control Fight Academy; Muay Thai, Kick Box ve MMA’yı ortak bir disiplin anlayışı altında bir araya getirir. Farklı teknikler. Aynı öz: kendini tanımak ve bilinçli hareket etmek.',
-    values: [ { title: 'Kontrol', body: 'Güç, ne zaman ve nasıl kullanacağını bildiğinde anlam kazanır.' }, { title: 'Saygı', body: 'Kendine, partnerine ve öğrenme sürecine saygı. Birlikte gelişmenin temeli.' }, { title: 'Süreklilik', body: 'Gelişim tek bir güne sığmaz. Her tekrar, bir sonraki adımın temelidir.' } ],
-    teamTitle: 'EKİPLE TANIŞ.', teamBody: 'Antrenör kadromuz ve akademi fotoğraflarımız burada yer alacak.', pending: 'BİLGİLER YAKINDA',
-    trainingLabel: 'ANTRENMANLAR / KENDİ YOLUNU SEÇ', trainingTitle: 'ODAĞINI\nBUL.', trainingSub: 'Her disiplinin dili farklı. Self Control yaklaşımı ortak.', focusLabel: 'TEKNİK ODAK', enquiry: 'Bu disiplin hakkında sor', academyLink: 'Ana akademiye dön',
-    scheduleLabel: 'PROGRAM / ANTRENMANINI PLANLA', scheduleTitle: 'ZAMANINI\nAYIR.', scheduleSub: 'Disiplinini seç. Güncel grup, seviye ve saat bilgilerini birlikte netleştirelim.', all: 'Tümü', schedulePending: 'Güncel ders programı yakında.', scheduleBody: 'Kesinleşmemiş saatler göstermiyoruz. İlgilendiğin disiplin ve uygun olduğun günlerle bir mesaj hazırla.', askSchedule: 'Program hakkında sor', prices: 'Üyelik & ücretler', pricesBody: 'Paketler, katılım koşulları ve ücret bilgileri netleştiğinde burada paylaşılacak.',
-    startLabel: 'İLK ADIM / TANIŞALIM', startTitle: 'SENİN YOLUN.\nSENİN İLK\nADIMIN.', startSub: 'Bir soru, bir hedef veya sadece merak. Buradan başlayabilirsin.',
-    contactTitle: 'AKADEMİYE ULAŞ.', address: 'Adres', addressPending: 'Konum bilgisi yakında paylaşılacak.', contact: 'İletişim', contactPending: 'E-posta ve WhatsApp bilgileri yakında.', instagram: 'Instagram', instagramPending: 'Resmî hesap yakında eklenecek.',
-    faqTitle: 'AKLINDAKİLER.', faqs: [ { q: 'Daha önce antrenman yapmış olmam gerekiyor mu?', a: 'Başlamadan önce deneyimini paylaş. Sana uygun grup, seviye ve katılım seçeneklerini akademiyle birlikte netleştirebilirsin.' }, { q: 'Hangi disiplini seçmeliyim?', a: 'Muay Thai sekiz uzuv tekniğine, Kick Box yumruk ve tekme kombinasyonlarına, MMA ise striking, güreş ve yer oyununun bütününe odaklanır. Hedefini paylaşarak seçim için bilgi alabilirsin.' }, { q: 'İlk antrenmana ne getirmeliyim?', a: 'Rahat spor kıyafetleri ve su iyi bir başlangıçtır. Eldiven, bandaj ve diğer ekipman gereksinimlerini katılmadan önce akademiyle doğrula.' }, { q: 'Ders saatlerini ve ücretleri nereden öğrenebilirim?', a: 'Program bölümünde günlere göre örnek dersleri, hemen altında grup üyeliklerini ve kişi sayısına göre özel ders paketlerini inceleyebilirsin. Gerçek program ve ücretler açılıştan önce güncellenecek.' } ],
-    install: 'Telefonuna ekle', installTitle: 'SELF CONTROL,\nHEP YANINDA.', installBody: 'Antrenman sayfalarına ana ekranından ulaş. Daha önce açtığın sayfalar çevrimdışıyken de görüntülenebilir.', installNative: 'Uygulamayı yükle', ios: 'iPhone / iPad', iosInstructions: 'Safari’de Paylaş simgesine dokun, ardından “Ana Ekrana Ekle”yi seç.', android: 'Android / masaüstü', androidInstructions: 'Tarayıcı menüsünden “Uygulamayı yükle” veya “Ana ekrana ekle” seçeneğini kullan. Seçenek, tarayıcına ve cihazına göre değişebilir.', installed: 'Ana ekran deneyimi hazır.', offline: 'Çevrimdışısın. Kayıtlı sayfaları görüntülüyorsun; bilgiler güncel olmayabilir.',
-    footerLine: 'GÜÇ. DİSİPLİN. SELF CONTROL.', footerNote: 'Fotoğraflar geçici stok görsellerdir; akademinin mekânını veya üyelerini temsil etmez.', photoCredits: 'Fotoğraf kaynakları', designPreview: 'TASARIM ÖNİZLEMESİ', previewNote: 'Program, ücretler ve antrenör profilleri örnek içeriktir. İletişim bilgileri yakında eklenecek.', identities: 'DİSİPLİNLER', exploreLabel: 'KEŞFET',
-    privacyTitle: 'GİZLİLİK.', privacyBody: 'Bu sürümde üyelik hesabı, takip çerezi veya sunucuya gönderilen iletişim formu bulunmuyor. E-posta veya WhatsApp seçersen, ilgili hizmetin koşulları geçerli olur. Ana ekrana ekleme ve çevrimdışı erişim için tarayıcın herkese açık sayfaları ve site dosyalarını önbelleğe alabilir. Son doğrulanan herkese açık program ve ücretler de geçici çevrimdışı erişim için cihazında saklanabilir. Bu kayıtları tarayıcı ayarlarından silebilirsin.', privacyPending: 'İşletmenin yasal bilgileri ve iletişim kanalları eklendiğinde, KVKK aydınlatma metni ve veri işleme süreçleri yayımdan önce ayrıca gözden geçirilmelidir.',
-    back: 'Ana sayfaya dön', notFound: 'BU SAYFA RİNGE ÇIKMADI.', notFoundBody: 'Sayfa bulunamadı. Akademiye geri dönebilirsin.'
+    "introLabel": "01 / AKADEMİ",
+    "introTitle": "ANTRENMAN\nYAKLAŞIMIMIZ",
+    "introBody": "Yeni başlayacak sporcuların branş ve grup seçimini antrenörle görüşmesini öneriyoruz. Ders saatleri, ekipman ve katılım koşulları hakkında iletişim bölümünden bilgi alabilirsiniz.",
+    "introWords": [
+      "TEKNİK",
+      "SAYGI",
+      "DÜZENLİ ÇALIŞMA"
+    ],
+    "disciplinesLabel": "02 / BRANŞLAR",
+    "disciplinesTitle": "MUAY THAI,\nKİCK BOKS VE MMA",
+    "allTraining": "Tüm antrenmanlar",
+    "discover": "Branşı inceleyin",
+    "discipline": {
+      "muaythai": {
+        "short": "Yumruk, tekme, diz ve dirsek teknikleri.",
+        "description": "Muay Thai; yumruk, tekme, diz ve dirsek teknikleriyle yakın mesafe çalışmalarını kapsar. Antrenmanlarda duruş, denge, savunma ve mesafe kontrolü birlikte ele alınır.",
+        "tags": [
+          "DURUŞ VE DENGE",
+          "DARBE YASTIĞI",
+          "YAKIN MESAFE"
+        ],
+        "focus": [
+          "Temel duruş, gard ve ayak hareketleri",
+          "Yumruk, tekme, diz ve dirsek teknikleri",
+          "Mesafe kontrolü ve yakın mesafe çalışmaları"
+        ]
+      },
+      "kickbox": {
+        "short": "Yumruk, tekme, savunma ve kondisyon.",
+        "description": "Kick boks antrenmanlarında yumruk ve tekme kombinasyonları, savunma ve ayak hareketleri çalışılır. Torba ve darbe yastığı çalışmalarıyla teknik ve kondisyon geliştirilir.",
+        "tags": [
+          "KOMBİNASYON",
+          "AYAK HAREKETLERİ",
+          "KONDİSYON"
+        ],
+        "focus": [
+          "Gard, savunma ve ayak hareketleri",
+          "Yumruk ve tekme kombinasyonları",
+          "Torba, darbe yastığı ve kondisyon çalışmaları"
+        ]
+      },
+      "mma": {
+        "short": "Ayakta teknik, güreş ve yer çalışmaları.",
+        "description": "Karma dövüş sanatları olarak bilinen MMA, ayakta vuruş tekniklerini güreş ve yer çalışmalarıyla birleştirir. Antrenmanlarda bu alanlar arasındaki geçişler ve pozisyon kontrolü üzerinde durulur.",
+        "tags": [
+          "AYAKTA TEKNİK",
+          "GÜREŞ",
+          "YER ÇALIŞMALARI"
+        ],
+        "focus": [
+          "Ayakta vuruş teknikleri ve mesafe kontrolü",
+          "Güreş ve yere alma teknikleri",
+          "Yerde pozisyon kontrolü ve geçişler"
+        ]
+      }
+    },
+    "processLabel": "03 / BAŞVURU VE KATILIM",
+    "processTitle": "İLK ANTRENMAN\nÖNCESİNDE",
+    "steps": [
+      {
+        "title": "Branş hakkında bilgi alın",
+        "body": "Muay Thai, kick boks ve MMA içeriklerini inceleyin. Karar vermeden önce antrenöre danışabilirsiniz."
+      },
+      {
+        "title": "Grup ve saatleri öğrenin",
+        "body": "Deneyiminizi ve uygun olduğunuz günleri paylaşarak grup ve ders saatleri hakkında bilgi alın."
+      },
+      {
+        "title": "Katılımınızı teyit edin",
+        "body": "İlk antrenmandan önce gerekli ekipmanı, ders saatini ve katılım koşullarını öğrenin."
+      }
+    ],
+    "bannerTitle": "ANTRENMANLAR\nHAKKINDA BİLGİ ALIN",
+    "bannerSub": "Branş, ders saati ve üyelik sorularınız için bize ulaşabilirsiniz.",
+    "aboutLabel": "AKADEMİ HAKKINDA",
+    "aboutTitle": "SELF CONTROL\nFIGHT ACADEMY",
+    "aboutBody": "Self Control Fight Academy, Denizli’de Muay Thai, kick boks ve MMA branşlarını bir araya getirir. Antrenman yaklaşımının temelinde teknik çalışma, disiplin ve karşılıklı saygı yer alır.",
+    "values": [
+      {
+        "title": "Teknik ve kontrol",
+        "body": "Hareketleri doğru öğrenmek ve kontrollü uygulamak, antrenmanın temelidir."
+      },
+      {
+        "title": "Karşılıklı saygı",
+        "body": "Antrenörlere, çalışma arkadaşlarına ve salon kurallarına saygılı bir ortamı önemsiyoruz."
+      },
+      {
+        "title": "Düzenli çalışma",
+        "body": "Temel tekniklerin yerleşmesi için düzenli katılım ve tekrar önemlidir."
+      }
+    ],
+    "teamTitle": "ANTRENÖRLERİMİZ",
+    "teamBody": "Antrenör bilgileri ve akademiye ait fotoğraflar bu alanda paylaşılacaktır.",
+    "pending": "BİLGİLER GÜNCELLENECEK",
+    "trainingLabel": "BRANŞLAR VE ANTRENMAN İÇERİKLERİ",
+    "trainingTitle": "ANTRENMAN\nİÇERİĞİ",
+    "trainingSub": "Branşların temel tekniklerini ve çalışma alanlarını inceleyin.",
+    "focusLabel": "ÇALIŞMA ALANLARI",
+    "enquiry": "Branş hakkında bilgi alın",
+    "academyLink": "Akademi ana sayfası",
+    "scheduleLabel": "DERS PROGRAMI",
+    "scheduleTitle": "HAFTALIK\nDERS PROGRAMI",
+    "scheduleSub": "Branşa ve güne göre dersleri inceleyin. Güncel grup ve saat bilgilerini katılımdan önce teyit edin.",
+    "all": "Tümü",
+    "schedulePending": "Güncel ders programı henüz yayımlanmadı.",
+    "scheduleBody": "Ders saatleri ve gruplar hakkında bilgi almak için ilgilendiğiniz branşı ve uygun olduğunuz günleri paylaşabilirsiniz.",
+    "askSchedule": "Ders programı hakkında bilgi alın",
+    "prices": "Üyelik ve ücretler",
+    "pricesBody": "Üyelik süreleri, paket kapsamları ve ücret bilgileri bu bölümde paylaşılacaktır.",
+    "startLabel": "İLETİŞİM",
+    "startTitle": "BİLGİ VE\nKAYIT İÇİN",
+    "startSub": "Branşlar, ders saatleri ve üyelik hakkında bilgi alabilirsiniz.",
+    "contactTitle": "İLETİŞİM BİLGİLERİ",
+    "address": "Adres",
+    "addressPending": "Denizli · Açık adres bilgisi henüz eklenmedi.",
+    "contact": "İletişim",
+    "contactPending": "Telefon ve e-posta bilgileri henüz eklenmedi.",
+    "instagram": "Instagram",
+    "instagramPending": "Resmî Instagram hesabı henüz eklenmedi.",
+    "faqTitle": "SIK SORULAN\nSORULAR",
+    "faqs": [
+      {
+        "q": "Daha önce antrenman yapmış olmak gerekiyor mu?",
+        "a": "Daha önce antrenman yapmadıysanız başvuru sırasında belirtin. Başlangıç grupları ve katılım koşulları hakkında antrenörden bilgi alabilirsiniz."
+      },
+      {
+        "q": "Hangi branşı seçmeliyim?",
+        "a": "Muay Thai; yumruk, tekme, diz ve dirsek tekniklerini, kick boks; yumruk ve tekme kombinasyonlarını kapsar. MMA ise ayakta vuruş, güreş ve yer çalışmalarını birleştirir. Hedefinize uygun branşı seçmek için antrenöre danışabilirsiniz."
+      },
+      {
+        "q": "İlk antrenman için hangi ekipmanlar gerekli?",
+        "a": "Rahat spor kıyafeti ve su getirebilirsiniz. Eldiven, bandaj ve diğer ekipman gereksinimlerini katılacağınız branşa göre önceden öğrenin."
+      },
+      {
+        "q": "Ders saatlerini ve ücretleri nereden öğrenebilirim?",
+        "a": "Program bölümünde haftalık dersleri, Üyelik bölümünde grup ve özel ders paketlerini inceleyebilirsiniz. Şu anda gösterilen saatler ve ücretler örnektir; güncel bilgileri akademiden teyit edin."
+      }
+    ],
+    "install": "Ana ekrana ekleyin",
+    "installTitle": "ANA EKRANA\nEKLEME",
+    "installBody": "Siteyi cihazınızın ana ekranına ekleyerek daha kolay açabilirsiniz. Cihazınıza kaydedilmiş sayfalar internet bağlantısı olmadığında da görüntülenebilir.",
+    "installNative": "Uygulamayı yükle",
+    "ios": "iPhone ve iPad",
+    "iosInstructions": "Safari’de Paylaş simgesine dokunun ve “Ana Ekrana Ekle” seçeneğini kullanın.",
+    "android": "Android ve bilgisayar",
+    "androidInstructions": "Tarayıcı menüsündeki “Uygulamayı yükle” veya “Ana ekrana ekle” seçeneğini kullanın. Seçeneğin adı ve kullanılabilirliği cihazınıza göre değişebilir.",
+    "installed": "Site ana ekranınıza eklenmiş.",
+    "offline": "İnternet bağlantısı yok. Kaydedilmiş sayfalar gösteriliyor; bilgiler güncel olmayabilir.",
+    "footerLine": "SELF CONTROL FIGHT ACADEMY",
+    "footerNote": "Temsili fotoğraflar akademinin salonunu, antrenörlerini veya üyelerini göstermemektedir.",
+    "photoCredits": "Fotoğraf kaynakları",
+    "designPreview": "ÖRNEK İÇERİK",
+    "previewNote": "Ders programı, ücretler ve antrenör profilleri örnektir. Güncel bilgiler ve iletişim ayrıntıları eklenecektir.",
+    "identities": "BRANŞLAR",
+    "exploreLabel": "SİTE MENÜSÜ",
+    "privacyTitle": "GİZLİLİK\nBİLGİLENDİRMESİ",
+    "privacyBody": "Bu sürümde üyelik hesabı, takip çerezi veya sunucuya bilgi gönderen bir iletişim formu bulunmaz. E-posta ve WhatsApp bağlantıları ilgili hizmeti açar; bu hizmetlerin kendi koşulları geçerlidir. Ana ekrana ekleme ve çevrimdışı erişim için herkese açık sayfalar ile site dosyaları tarayıcı önbelleğinde saklanabilir. Son doğrulanan program ve ücret bilgileri de geçici çevrimdışı erişim için cihazınızda tutulabilir. Bu kayıtları tarayıcı ayarlarından silebilirsiniz.",
+    "privacyPending": "İşletmenin yasal bilgileri ve iletişim kanalları tamamlandığında, KVKK aydınlatma metni ve veri işleme süreçleri yayımdan önce ayrıca gözden geçirilmelidir.",
+    "back": "Ana sayfaya dönün",
+    "notFound": "SAYFA\nBULUNAMADI",
+    "notFoundBody": "Bu bağlantıya ait bir sayfa bulunamadı. Ana sayfadan devam edebilirsiniz."
   },
-  en: {
-    nav: { home: 'Home', training: 'Training', about: 'Academy', schedule: 'Schedule', start: 'Start', privacy: 'Privacy' },
-    skip: 'Skip to content', menu: 'Open menu', close: 'Close', start: 'Take the first step', explore: 'Explore training',
-    eyebrow: 'SELF CONTROL FIGHT ACADEMY', scroll: 'KEEP EXPLORING', philosophy: 'POWER BEGINS WITH CONTROL.',
-    home: {
-      academy: { title: ['OWN', 'YOUR', 'POWER.'], sub: 'Muay Thai, Kick Box and MMA. Find your discipline. Move forward with every session.', tag: 'THREE DISCIPLINES. ONE CHARACTER.', image: 'Partner martial arts training' },
-      muaythai: { title: ['EIGHT LIMBS.', 'ONE', 'FOCUS.'], sub: 'Stance, rhythm and distance. Discover Muay Thai through the discipline of Self Control.', tag: 'MUAY THAI / THE ART OF EIGHT LIMBS', image: 'Muay Thai pad training' },
-      kickbox: { title: ['FIND', 'YOUR', 'RHYTHM.'], sub: 'Where punches and kicks move in rhythm. Give your movement direction with Kick Box.', tag: 'KICK BOX / PRECISION IN MOTION', image: 'Kickboxing bag training' },
-      mma: { title: ['EVERY RANGE.', 'ONE', 'MIND.'], sub: 'On the feet, in the clinch and on the ground. Bring the pieces together with MMA.', tag: 'MMA / COMPLETE YOUR GAME', image: 'Grappling practice for the ground component of MMA' }
+  "en": {
+    "nav": {
+      "home": "Home",
+      "training": "Training",
+      "about": "Academy",
+      "schedule": "Timetable",
+      "start": "Contact",
+      "privacy": "Privacy"
     },
-    introLabel: '01 / THE APPROACH', introTitle: 'GO FURTHER.\nSTAY YOURSELF.', introBody: 'Self Control is more than a name. Intent behind movement. Discipline behind power. The journey starts with a commitment to yourself.', introWords: ['DISCIPLINE', 'RESPECT', 'PROGRESS'], disciplinesLabel: '02 / FIND YOUR DISCIPLINE', disciplinesTitle: 'DIFFERENT PATHS.\nTHE SAME DRIVE.', allTraining: 'All training', discover: 'Explore the discipline',
-    discipline: {
-      muaythai: { short: 'Rhythm. Distance. Character.', description: 'Punches, kicks, knees and elbows. Explore technique and balance through the art of eight limbs.', tags: ['STANCE & BALANCE', 'PAD WORK', 'CLINCH'], focus: ['Fundamental stance, guard and footwork', 'Punch, kick, knee and elbow mechanics', 'Distance, timing and clinch principles'] },
-      kickbox: { short: 'Speed. Precision. Flow.', description: 'Turn punch and kick combinations into a flowing game. Learn to make decisions while moving.', tags: ['COMBINATIONS', 'FOOTWORK', 'CONDITIONING'], focus: ['Guard, defence and footwork', 'Punch and kick combinations', 'Rhythm through bag and pad work'] },
-      mma: { short: 'Standing. Grounded. Complete.', description: 'Striking, wrestling and ground work. A connected approach to moving between different ranges.', tags: ['STRIKING', 'WRESTLING', 'GRAPPLING'], focus: ['Striking and distance management', 'Wrestling and takedown principles', 'Position control and ground transitions'] }
+    "skip": "Skip to content",
+    "menu": "Open menu",
+    "close": "Close",
+    "start": "Contact us",
+    "explore": "View training",
+    "eyebrow": "SELF CONTROL FIGHT ACADEMY",
+    "scroll": "ABOUT THE ACADEMY",
+    "philosophy": "TECHNIQUE, DISCIPLINE AND REGULAR TRAINING",
+    "home": {
+      "academy": {
+        "title": [
+          "MARTIAL",
+          "ARTS IN",
+          "DENİZLİ"
+        ],
+        "sub": "Muay Thai, kickboxing and MMA in Denizli. Explore training, class timetables and membership options at Self Control Fight Academy.",
+        "tag": "MUAY THAI · KICKBOXING · MMA",
+        "image": "Muay Thai training with a coach"
+      },
+      "muaythai": {
+        "title": [
+          "MUAY",
+          "THAI",
+          "TRAINING"
+        ],
+        "sub": "Muay Thai training in Denizli, covering stance, defence, punches, kicks, knees and elbows.",
+        "tag": "MUAY THAI / TECHNIQUE AND CONDITIONING",
+        "image": "Muay Thai pad training"
+      },
+      "kickbox": {
+        "title": [
+          "KICK",
+          "BOXING",
+          "TRAINING"
+        ],
+        "sub": "Kickboxing training in Denizli, with punch and kick combinations, defence, footwork and conditioning.",
+        "tag": "KICKBOXING / TECHNIQUE AND CONDITIONING",
+        "image": "Kickboxing bag training"
+      },
+      "mma": {
+        "title": [
+          "MMA",
+          "TECHNIQUE",
+          "TRAINING"
+        ],
+        "sub": "MMA training in Denizli, bringing together striking, wrestling and ground techniques.",
+        "tag": "MMA / MIXED MARTIAL ARTS",
+        "image": "Ground position practice in MMA training"
+      }
     },
-    processLabel: '03 / TOWARDS YOUR FIRST SESSION', processTitle: 'IT STARTS WITH\nONE STEP.', steps: [ { title: 'Find your discipline', body: 'Muay Thai, Kick Box or MMA. Explore what interests you; ask us if you are undecided.' }, { title: 'Make a plan together', body: 'Share your experience, goals and availability. Ask about groups and training times.' }, { title: 'Come prepared', body: 'Confirm equipment, clothing and participation details before your first session.' } ],
-    bannerTitle: 'THE HARDEST STEP\nIS THE FIRST.', bannerSub: 'Let’s plan what comes next together.', aboutLabel: 'THE ACADEMY / WHAT CONNECTS US', aboutTitle: 'MASTER\nYOURSELF\nFIRST.', aboutBody: 'Self Control Fight Academy brings Muay Thai, Kick Box and MMA together under one shared approach to discipline. Different techniques. The same foundation: knowing yourself and moving with intent.',
-    values: [ { title: 'Control', body: 'Power has meaning when you understand when and how to use it.' }, { title: 'Respect', body: 'Respect for yourself, your training partner and the process. The foundation of learning together.' }, { title: 'Consistency', body: 'Progress takes more than a day. Every repetition prepares the next step.' } ], teamTitle: 'MEET THE TEAM.', teamBody: 'Our coaching team and academy photography will appear here.', pending: 'DETAILS COMING SOON',
-    trainingLabel: 'TRAINING / CHOOSE YOUR PATH', trainingTitle: 'FIND YOUR\nFOCUS.', trainingSub: 'Each discipline has its own language. The Self Control approach connects them.', focusLabel: 'TECHNICAL FOCUS', enquiry: 'Ask about this discipline', academyLink: 'Back to the main academy',
-    scheduleLabel: 'SCHEDULE / PLAN YOUR TRAINING', scheduleTitle: 'MAKE\nTHE TIME.', scheduleSub: 'Choose your discipline. Let’s confirm current groups, levels and training times together.', all: 'All', schedulePending: 'The current timetable is coming soon.', scheduleBody: 'We do not display unconfirmed training times. Prepare a message with your preferred discipline and availability.', askSchedule: 'Ask about the timetable', prices: 'Membership & pricing', pricesBody: 'Packages, participation terms and pricing will appear here once confirmed.',
-    startLabel: 'THE FIRST STEP / LET’S TALK', startTitle: 'YOUR PATH.\nYOUR FIRST\nSTEP.', startSub: 'A question, a goal or simply curiosity. You can start here.',
-    contactTitle: 'REACH THE ACADEMY.', address: 'Address', addressPending: 'Location details will be shared soon.', contact: 'Contact', contactPending: 'Email and WhatsApp details are coming soon.', instagram: 'Instagram', instagramPending: 'Our official account will be added soon.',
-    faqTitle: 'ON YOUR MIND.', faqs: [ { q: 'Do I need previous training experience?', a: 'Share your experience before getting started. Confirm suitable groups, levels and participation options with the academy.' }, { q: 'Which discipline should I choose?', a: 'Muay Thai focuses on eight-limb technique, Kick Box on punch and kick combinations, and MMA on connecting striking, wrestling and ground work. Share your goals to ask about the options.' }, { q: 'What should I bring to my first session?', a: 'Comfortable sportswear and water are a good start. Confirm gloves, wraps and any other equipment requirements with the academy before attending.' }, { q: 'Where can I find training times and prices?', a: 'Explore sample classes by day in the Schedule section, followed by group memberships and private lesson packages by participant count. Actual timetables and prices will be updated before launch.' } ],
-    install: 'Add to your phone', installTitle: 'SELF CONTROL,\nWITH YOU.', installBody: 'Reach training pages from your home screen. Previously opened pages can also be viewed offline.', installNative: 'Install app', ios: 'iPhone / iPad', iosInstructions: 'In Safari, tap the Share icon, then choose “Add to Home Screen”.', android: 'Android / desktop', androidInstructions: 'Choose “Install app” or “Add to Home screen” in your browser menu. Availability depends on your browser and device.', installed: 'Your home-screen experience is ready.', offline: 'You are offline. Viewing saved pages; information may be out of date.',
-    footerLine: 'POWER. DISCIPLINE. SELF CONTROL.', footerNote: 'Temporary stock photography does not depict academy premises or members.', photoCredits: 'Photo credits', designPreview: 'DESIGN PREVIEW', previewNote: 'Timetable, prices and trainer profiles are sample content. Contact information will be added later.', identities: 'DISCIPLINES', exploreLabel: 'EXPLORE',
-    privacyTitle: 'PRIVACY.', privacyBody: 'This version has no membership accounts, tracking cookies or contact forms that send data to a server. If you choose email or WhatsApp, that service’s terms apply. For home-screen installation and offline access, your browser may cache public pages and site files. The last confirmed public timetable and prices may also be saved on your device for temporary offline access. You can remove them in your browser settings.', privacyPending: 'Before launch, the business’s legal details, privacy notice and data handling practices must be reviewed when real contact channels are added.',
-    back: 'Back to home', notFound: 'THIS PAGE MISSED THE RING.', notFoundBody: 'We couldn’t find that page. Head back to the academy.'
+    "introLabel": "01 / THE ACADEMY",
+    "introTitle": "OUR TRAINING\nAPPROACH",
+    "introBody": "Before joining, speak with a coach about your choice of discipline and group. Use the Contact section to ask about class times, equipment and joining requirements.",
+    "introWords": [
+      "TECHNIQUE",
+      "RESPECT",
+      "CONSISTENCY"
+    ],
+    "disciplinesLabel": "02 / DISCIPLINES",
+    "disciplinesTitle": "MUAY THAI,\nKICKBOXING AND MMA",
+    "allTraining": "All training",
+    "discover": "View discipline",
+    "discipline": {
+      "muaythai": {
+        "short": "Punches, kicks, knees and elbows.",
+        "description": "Muay Thai combines punches, kicks, knees and elbows with clinch work. Training covers stance, balance, defence and distance control.",
+        "tags": [
+          "STANCE AND BALANCE",
+          "PAD WORK",
+          "CLINCH"
+        ],
+        "focus": [
+          "Fundamental stance, guard and footwork",
+          "Punch, kick, knee and elbow techniques",
+          "Distance control and clinch work"
+        ]
+      },
+      "kickbox": {
+        "short": "Combinations, defence and conditioning.",
+        "description": "Kickboxing training covers punch and kick combinations, defence and footwork. Bag and pad drills develop technique and conditioning.",
+        "tags": [
+          "COMBINATIONS",
+          "FOOTWORK",
+          "CONDITIONING"
+        ],
+        "focus": [
+          "Guard, defence and footwork",
+          "Punch and kick combinations",
+          "Bag work, pad drills and conditioning"
+        ]
+      },
+      "mma": {
+        "short": "Striking, wrestling and ground techniques.",
+        "description": "Mixed martial arts combines striking with wrestling and ground techniques. Training covers transitions between these areas and position control.",
+        "tags": [
+          "STRIKING",
+          "WRESTLING",
+          "GROUND TECHNIQUES"
+        ],
+        "focus": [
+          "Striking techniques and distance control",
+          "Wrestling and takedowns",
+          "Ground positions and transitions"
+        ]
+      }
+    },
+    "processLabel": "03 / GETTING STARTED",
+    "processTitle": "BEFORE YOUR\nFIRST SESSION",
+    "steps": [
+      {
+        "title": "Learn about the disciplines",
+        "body": "Review Muay Thai, kickboxing and MMA training. A coach can help you compare the options."
+      },
+      {
+        "title": "Check groups and times",
+        "body": "Share your experience and availability to find out about suitable groups and class times."
+      },
+      {
+        "title": "Confirm your attendance",
+        "body": "Check equipment, class times and joining requirements before your first session."
+      }
+    ],
+    "bannerTitle": "TRAINING\nINFORMATION",
+    "bannerSub": "Contact us with questions about disciplines, class times and memberships.",
+    "aboutLabel": "ABOUT THE ACADEMY",
+    "aboutTitle": "SELF CONTROL\nFIGHT ACADEMY",
+    "aboutBody": "Self Control Fight Academy brings together Muay Thai, kickboxing and MMA in Denizli. Our training approach is based on technical practice, discipline and mutual respect.",
+    "values": [
+      {
+        "title": "Technique and control",
+        "body": "Learning correct technique and applying it with control are central to training."
+      },
+      {
+        "title": "Mutual respect",
+        "body": "We value respect for coaches, training partners and gym rules."
+      },
+      {
+        "title": "Regular practice",
+        "body": "Consistent attendance and repetition help establish sound technique."
+      }
+    ],
+    "teamTitle": "OUR COACHES",
+    "teamBody": "Coach information and original academy photography will be added here.",
+    "pending": "INFORMATION TO BE UPDATED",
+    "trainingLabel": "DISCIPLINES AND TRAINING",
+    "trainingTitle": "TRAINING\nCONTENT",
+    "trainingSub": "Read about each discipline’s fundamental techniques and areas of practice.",
+    "focusLabel": "TRAINING AREAS",
+    "enquiry": "Ask about this discipline",
+    "academyLink": "Academy home",
+    "scheduleLabel": "CLASS TIMETABLE",
+    "scheduleTitle": "WEEKLY\nCLASS TIMETABLE",
+    "scheduleSub": "Browse classes by discipline and day. Confirm current groups and times before attending.",
+    "all": "All",
+    "schedulePending": "The current class timetable has not been published yet.",
+    "scheduleBody": "Share your preferred discipline and availability to ask about class times and groups.",
+    "askSchedule": "Ask about class times",
+    "prices": "Memberships and prices",
+    "pricesBody": "Membership durations, package details and prices will be listed here.",
+    "startLabel": "CONTACT",
+    "startTitle": "ENQUIRIES AND\nREGISTRATION",
+    "startSub": "Contact us for information about training, class times and memberships.",
+    "contactTitle": "CONTACT DETAILS",
+    "address": "Address",
+    "addressPending": "Denizli · The street address has not been added yet.",
+    "contact": "Contact",
+    "contactPending": "Phone and email details have not been added yet.",
+    "instagram": "Instagram",
+    "instagramPending": "The official Instagram account has not been added yet.",
+    "faqTitle": "FREQUENTLY ASKED\nQUESTIONS",
+    "faqs": [
+      {
+        "q": "Do I need previous training experience?",
+        "a": "Let us know if you are new to martial arts. A coach can explain beginner groups and joining requirements."
+      },
+      {
+        "q": "Which discipline should I choose?",
+        "a": "Muay Thai covers punches, kicks, knees and elbows. Kickboxing focuses on punch and kick combinations, while MMA combines striking, wrestling and ground techniques. A coach can help you choose based on your goals."
+      },
+      {
+        "q": "What equipment do I need for my first session?",
+        "a": "Bring comfortable sportswear and water. Check the glove, wrap and other equipment requirements for your chosen discipline before attending."
+      },
+      {
+        "q": "Where can I find class times and prices?",
+        "a": "The Timetable section lists weekly classes, and Memberships covers group and private lesson packages. The times and prices currently shown are examples; confirm current information with the academy."
+      }
+    ],
+    "install": "Add to home screen",
+    "installTitle": "ADD TO\nHOME SCREEN",
+    "installBody": "Add the site to your home screen for easier access. Pages saved on your device can also be viewed without an internet connection.",
+    "installNative": "Install app",
+    "ios": "iPhone and iPad",
+    "iosInstructions": "In Safari, tap Share and select “Add to Home Screen”.",
+    "android": "Android and desktop",
+    "androidInstructions": "Select “Install app” or “Add to Home screen” from your browser menu. The wording and availability depend on your device.",
+    "installed": "The site is already added to your home screen.",
+    "offline": "No internet connection. Saved pages are being displayed and may be out of date.",
+    "footerLine": "SELF CONTROL FIGHT ACADEMY",
+    "footerNote": "Illustrative photographs do not show the academy’s premises, coaches or members.",
+    "photoCredits": "Photo credits",
+    "designPreview": "SAMPLE CONTENT",
+    "previewNote": "Class times, prices and coach profiles are examples. Current information and contact details will be added.",
+    "identities": "DISCIPLINES",
+    "exploreLabel": "SITE MENU",
+    "privacyTitle": "PRIVACY\nINFORMATION",
+    "privacyBody": "This version has no membership accounts, tracking cookies or contact forms that send information to a server. Email and WhatsApp links open the relevant service, which has its own terms. Your browser may cache public pages and site files for home-screen installation and offline access. The last verified public timetable and prices may also be stored on your device for temporary offline access. You can remove these records through your browser settings.",
+    "privacyPending": "The privacy notice and data handling practices will be reviewed before launch once the business’s legal information and contact channels are complete.",
+    "back": "Return to home",
+    "notFound": "PAGE\nNOT FOUND",
+    "notFoundBody": "There is no page at this address. You can continue from the home page."
   }
 };

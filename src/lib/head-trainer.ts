@@ -8,64 +8,170 @@ export const headTrainerGallery = [
 ];
 
 export const headTrainerCopy = {
-  tr: {
-    role: 'Baş Antrenör', title: ['BAŞ', 'ANTRENÖR'], back: 'Ekibe dön',
-    description: 'Self Control baş antrenör profili. Antrenman felsefesi, örnek biyografi ve altı fotoğraflık antrenman günlüğü.',
-    intro: 'Tekniği öğretmekten fazlası. Her sporcunun kendi gücünü anlamasına, kontrol etmesine ve geliştirmesine eşlik eden bir yaklaşım.',
-    demo: 'ÖRNEK PROFİL', name: 'Antrenör adı yakında eklenecek', bioLink: 'Hikâyeyi keşfet', galleryLink: 'Fotoğraf günlüğü', approachLink: 'Antrenman yaklaşımı',
-    portrait: 'Baş antrenör profili için kullanılan temsili sporcu portresi',
-    signature: 'ÖNCE TEMEL. SONRA TEKRAR. HER ZAMAN KONTROL.',
-    bioLabel: '01 / BİYOGRAFİ', bioTitle: 'GÜÇLÜ BİR TEMEL.\nBİLİNÇLİ BİR YOL.',
-    bioLead: 'İyi bir antrenman, sporcuyu tanımakla başlar.',
-    bio: [
-      'Self Control’ün baş antrenör profili; tekniği, disiplini ve insana gösterilen özeni aynı çizgide buluşturur. İlk kez salona gelen bir sporcu için de oyununu geliştirmek isteyen biri için de başlangıç noktası aynıdır: sağlam bir temel, anlaşılır bir hedef ve dikkatle kurulan bir antrenman düzeni.',
-      'Antrenmanın merkezinde yalnızca hareketi yapmak değil, neden yaptığını anlamak vardır. Duruş, mesafe, denge ve zamanlama; her tekrarın içinde yeniden ele alınır. Geri bildirim, sporcunun kendi gelişimini fark etmesine ve bir sonraki adımını bilinçli atmasına yardımcı olur.',
-      'Muay Thai, Kick Box ve MMA farklı teknik diller konuşur. Ortak yaklaşım ise değişmez: partnerine saygı göster, kontrolünü koru ve öğrenmeye açık kal. Amaç, salonda kurulan bu alışkanlığı her antrenmanda biraz daha güçlendirmektir.'
+  "tr": {
+    "role": "Baş Antrenör",
+    "title": [
+      "BAŞ",
+      "ANTRENÖR"
     ],
-    bioNote: 'Bu biyografi tasarım için hazırlanmış örnek bir anlatımdır. Gerçek isim, özgeçmiş ve uzmanlık bilgileri daha sonra eklenecek.',
-    roleLabel: 'Akademideki rolü', roleValue: 'Teknik yaklaşım & ekip koordinasyonu', focusLabel: 'Ortak çalışma alanları',
-    quote: 'Gelişim, her tekrarı daha bilinçli yaptığında başlar.', quoteLabel: 'SELF CONTROL / ANTRENMAN FELSEFESİ',
-    approachLabel: '02 / ANTRENMAN YAKLAŞIMI', approachTitle: 'HER SPORCUYA\nBİR YOL.',
-    principles: [
-      { title: 'Önce dinle.', body: 'Deneyimi, hedefi ve antrenman alışkanlıklarını anlamak. Doğru başlangıcı birlikte belirlemek.' },
-      { title: 'Temeli kur.', body: 'Duruş, denge ve tekniği adım adım ele almak. Her yeni hareketi sağlam bir temelin üzerine eklemek.' },
-      { title: 'Birlikte ilerle.', body: 'Açık geri bildirim, düzenli tekrar ve kontrollü uygulamayla gelişimi görünür kılmak.' }
+    "back": "Antrenör kadrosuna dönün",
+    "description": "Self Control Fight Academy, Denizli. Baş antrenör profili, çalışma alanları ve antrenman yaklaşımı. Profil bilgileri henüz tamamlanmamıştır.",
+    "intro": "Baş antrenörün özgeçmişi, çalışma alanları ve akademideki görevleri bu sayfada paylaşılacaktır.",
+    "demo": "ÖRNEK PROFİL",
+    "name": "İsim ve özgeçmiş bilgileri henüz eklenmedi.",
+    "bioLink": "Profil bilgileri",
+    "galleryLink": "Fotoğraflar",
+    "approachLink": "Antrenman yaklaşımı",
+    "portrait": "Baş antrenör profili için kullanılan temsili portre fotoğrafı",
+    "signature": "SELF CONTROL FIGHT ACADEMY · DENİZLİ",
+    "bioLabel": "01 / PROFİL BİLGİLERİ",
+    "bioTitle": "ÇALIŞMA\nYAKLAŞIMI",
+    "bioLead": "Antrenmanın içeriği, sporcunun deneyimine ve çalışma hedeflerine göre değerlendirilir.",
+    "bio": [
+      "Yeni başlayan sporcular için temel duruş, denge, gard ve hareketlerin doğru uygulanması önceliklidir. Teknikler aşamalı olarak ele alınır; düzenli tekrar ve antrenör geri bildirimiyle pekiştirilir.",
+      "Deneyim arttıkça kombinasyonlar, savunma, mesafe kontrolü ve uygulama çalışmaları antrenmanın daha geniş bir bölümünü oluşturur. Çalışmaların içeriği branşa ve grubun seviyesine göre belirlenir.",
+      "Muay Thai, kick boks ve MMA farklı teknik alanları kapsar. Her branşta kontrollü çalışma, antrenman arkadaşına saygı ve salon kurallarına uyum önemlidir."
     ],
-    galleryLabel: '03 / FOTOĞRAF GÜNLÜĞÜ', galleryTitle: 'HER KAREDE\nAYNI ODAK.', galleryBody: 'Portre, çalışma alanı ve antrenman anları. Self Control yaklaşımına görsel bir bakış.',
-    photoLabels: ['Odak & duruş', 'Antrenmanda rehberlik', 'Çalışma alanı', 'Birlikte gelişim', 'Ritim & teknik', 'Pozisyon & kontrol'],
-    photoAlts: ['Temsili baş antrenör portresi; stok fotoğraf', 'Antrenman sırasında yönlendirme; stok fotoğraf', 'Boş boks ringi; stok fotoğraf', 'Partnerli dövüş sporları antrenmanı; stok fotoğraf', 'Muay Thai pad çalışması; stok fotoğraf', 'Grappling ve yer oyunu çalışması; stok fotoğraf'],
-    galleryNote: 'Portre ve antrenman kareleri temsili stok görsellerdir. Gerçek antrenör fotoğraflarıyla güncellenecek.',
-    open: 'Fotoğrafı büyüt', close: 'Kapat', previous: 'Önceki fotoğraf', next: 'Sonraki fotoğraf', gallery: 'Baş antrenör fotoğraf günlüğü',
-    ctaLabel: 'BİR SONRAKİ ADIM', ctaTitle: 'GELİŞİMİNE\nYER AÇ.', ctaBody: 'Hedefini paylaş. Sana uygun antrenman yolunu birlikte konuşalım.', cta: 'Antrenman hakkında sor', return: 'Tüm ekibi gör'
+    "bioNote": "Bu metin genel antrenman yaklaşımını anlatan örnek içeriktir. Antrenörün gerçek özgeçmişi, uzmanlıkları ve belgeleri henüz eklenmedi.",
+    "roleLabel": "Görev alanı",
+    "roleValue": "Teknik çalışmalar ve antrenör koordinasyonu",
+    "focusLabel": "Branşlar",
+    "quote": "Temel teknik, düzenli çalışma ve kontrollü uygulama.",
+    "quoteLabel": "GENEL ANTRENMAN YAKLAŞIMI",
+    "approachLabel": "02 / ANTRENMAN YAKLAŞIMI",
+    "approachTitle": "TEKNİK\nÇALIŞMA ESASLARI",
+    "principles": [
+      {
+        "title": "Seviyenin belirlenmesi",
+        "body": "Sporcunun deneyimi, hedefi ve antrenman geçmişi değerlendirilerek uygun çalışma içeriği belirlenir."
+      },
+      {
+        "title": "Temel teknikler",
+        "body": "Duruş, denge, gard ve ayak hareketleri çalışılır. Yeni teknikler bu temel üzerine eklenir."
+      },
+      {
+        "title": "Uygulama ve tekrar",
+        "body": "Teknikler kontrollü alıştırmalarla pekiştirilir. Antrenör geri bildirimiyle gerekli düzeltmeler yapılır."
+      }
+    ],
+    "galleryLabel": "03 / FOTOĞRAFLAR",
+    "galleryTitle": "ANTRENMAN\nFOTOĞRAFLARI",
+    "galleryBody": "Bu bölümde kullanılan portre, salon ve antrenman fotoğrafları temsilidir.",
+    "photoLabels": [
+      "Portre",
+      "Antrenör eşliğinde çalışma",
+      "Ring",
+      "Partnerli antrenman",
+      "Muay Thai çalışması",
+      "Yerde pozisyon çalışması"
+    ],
+    "photoAlts": [
+      "Temsili antrenör portresi",
+      "Antrenman sırasında teknik gösteren antrenör; temsili fotoğraf",
+      "Boş boks ringi; temsili fotoğraf",
+      "Antrenör eşliğinde Muay Thai çalışması; temsili fotoğraf",
+      "Muay Thai darbe yastığı çalışması; temsili fotoğraf",
+      "MMA antrenmanında yerde pozisyon çalışması; temsili fotoğraf"
+    ],
+    "galleryNote": "Fotoğraflar akademinin antrenörlerini veya salonunu göstermemektedir. Gerçek fotoğraflar daha sonra eklenecektir.",
+    "open": "Fotoğrafı büyüt",
+    "close": "Kapat",
+    "previous": "Önceki fotoğraf",
+    "next": "Sonraki fotoğraf",
+    "gallery": "Antrenör ve antrenman fotoğrafları",
+    "ctaLabel": "İLETİŞİM",
+    "ctaTitle": "ANTRENMAN\nHAKKINDA BİLGİ",
+    "ctaBody": "Branş, grup ve ders saatleriyle ilgili sorularınız için bizimle iletişime geçebilirsiniz.",
+    "cta": "İletişim bilgileri",
+    "return": "Tüm antrenörler",
+    "profileMarker": "ANTRENÖR PROFİLİ",
+    "stock": "TEMSİLİ FOTOĞRAF",
+    "coachMarker": "BAŞ ANTRENÖR",
+    "biographyMarker": "PROFİL BİLGİLERİ",
+    "approachMarker": "TEKNİK VE UYGULAMA",
+    "galleryMarker": "FOTOĞRAF"
   },
-  en: {
-    role: 'Head Trainer', title: ['HEAD', 'TRAINER'], back: 'Back to the team',
-    description: 'The Self Control head trainer profile. Coaching philosophy, sample biography and a six-image training journal.',
-    intro: 'More than teaching technique. An approach that helps each athlete understand, control and develop their own strength.',
-    demo: 'SAMPLE PROFILE', name: 'Trainer name to be added', bioLink: 'Explore the story', galleryLink: 'Photo journal', approachLink: 'Coaching approach',
-    portrait: 'Illustrative athlete portrait used for the head trainer profile',
-    signature: 'FOUNDATIONS FIRST. THEN REPETITION. ALWAYS CONTROL.',
-    bioLabel: '01 / BIOGRAPHY', bioTitle: 'STRONG FOUNDATIONS.\nA PURPOSEFUL PATH.',
-    bioLead: 'Good coaching begins with understanding the athlete.',
-    bio: [
-      'The Self Control head trainer profile brings technique, discipline and care for the individual into one approach. Whether an athlete is walking into the gym for the first time or developing their game, the starting point is the same: strong foundations, a clear goal and a thoughtfully structured training routine.',
-      'At the centre of training is understanding why a movement matters, as well as how to perform it. Stance, distance, balance and timing are revisited with every repetition. Feedback helps the athlete recognise their own progress and take the next step with purpose.',
-      'Muay Thai, Kick Box and MMA speak different technical languages. The shared approach remains consistent: respect your partner, maintain control and stay open to learning. The aim is to strengthen that practice a little more with every session.'
+  "en": {
+    "role": "Head Coach",
+    "title": [
+      "HEAD",
+      "COACH"
     ],
-    bioNote: 'This is a sample biography written for the design. The real name, background and coaching credentials will be added later.',
-    roleLabel: 'Role at the academy', roleValue: 'Technical approach & team coordination', focusLabel: 'Shared training disciplines',
-    quote: 'Progress begins when every repetition becomes more purposeful.', quoteLabel: 'SELF CONTROL / COACHING PHILOSOPHY',
-    approachLabel: '02 / COACHING APPROACH', approachTitle: 'A PATH FOR\nEVERY ATHLETE.',
-    principles: [
-      { title: 'Listen first.', body: 'Understand experience, goals and training habits. Find the right starting point together.' },
-      { title: 'Build the basics.', body: 'Work through stance, balance and technique step by step. Build every new movement on strong foundations.' },
-      { title: 'Progress together.', body: 'Make improvement visible through clear feedback, purposeful repetition and controlled practice.' }
+    "back": "Back to the coaching team",
+    "description": "Self Control Fight Academy, Denizli. Head coach profile, training areas and coaching approach. Profile details are not yet complete.",
+    "intro": "The head coach’s background, areas of practice and role at the academy will be published on this page.",
+    "demo": "SAMPLE PROFILE",
+    "name": "The coach’s name and background have not been added yet.",
+    "bioLink": "Profile information",
+    "galleryLink": "Photos",
+    "approachLink": "Coaching approach",
+    "portrait": "Illustrative portrait used for the head coach profile",
+    "signature": "SELF CONTROL FIGHT ACADEMY · DENİZLİ",
+    "bioLabel": "01 / PROFILE INFORMATION",
+    "bioTitle": "COACHING\nAPPROACH",
+    "bioLead": "Training content is considered in relation to each participant’s experience and goals.",
+    "bio": [
+      "For beginners, the focus is on stance, balance, guard and correct movement. Techniques are introduced gradually and reinforced through regular practice and feedback from the coach.",
+      "As experience develops, training includes more combinations, defence, distance control and practical drills. The content depends on the discipline and the group’s level.",
+      "Muay Thai, kickboxing and MMA cover different technical areas. Controlled practice, respect for training partners and following gym rules remain important in every discipline."
     ],
-    galleryLabel: '03 / PHOTO JOURNAL', galleryTitle: 'A SHARED FOCUS.\nIN EVERY FRAME.', galleryBody: 'Portraits, training spaces and moments of practice. A visual look at the Self Control approach.',
-    photoLabels: ['Focus & stance', 'Guidance in practice', 'The training space', 'Progress together', 'Rhythm & technique', 'Position & control'],
-    photoAlts: ['Illustrative head trainer portrait; stock photograph', 'Guidance during training; stock photograph', 'Empty boxing ring; stock photograph', 'Partner martial arts training; stock photograph', 'Muay Thai pad practice; stock photograph', 'Grappling and ground practice; stock photograph'],
-    galleryNote: 'Portraits and training scenes are illustrative stock photographs. They will be replaced with original trainer photography.',
-    open: 'Enlarge photograph', close: 'Close', previous: 'Previous photograph', next: 'Next photograph', gallery: 'Head trainer photo journal',
-    ctaLabel: 'YOUR NEXT STEP', ctaTitle: 'MAKE ROOM\nFOR PROGRESS.', ctaBody: 'Share your goal. Let’s talk about a training path that suits you.', cta: 'Ask about training', return: 'Meet the full team'
+    "bioNote": "This is sample content describing a general training approach. The coach’s actual background, qualifications and credentials have not been added yet.",
+    "roleLabel": "Area of responsibility",
+    "roleValue": "Technical training and coach coordination",
+    "focusLabel": "Disciplines",
+    "quote": "Fundamental technique, regular training and controlled practice.",
+    "quoteLabel": "GENERAL TRAINING APPROACH",
+    "approachLabel": "02 / COACHING APPROACH",
+    "approachTitle": "PRINCIPLES\nOF TRAINING",
+    "principles": [
+      {
+        "title": "Assessing experience",
+        "body": "Training content is informed by the participant’s experience, goals and training background."
+      },
+      {
+        "title": "Fundamental techniques",
+        "body": "Stance, balance, guard and footwork provide the foundation for learning new techniques."
+      },
+      {
+        "title": "Practice and feedback",
+        "body": "Controlled drills reinforce technique. Feedback from the coach helps identify and correct mistakes."
+      }
+    ],
+    "galleryLabel": "03 / PHOTOS",
+    "galleryTitle": "TRAINING\nPHOTOS",
+    "galleryBody": "The portraits, facilities and training photographs in this section are illustrative.",
+    "photoLabels": [
+      "Portrait",
+      "Coached practice",
+      "Boxing ring",
+      "Partner training",
+      "Muay Thai practice",
+      "Ground position practice"
+    ],
+    "photoAlts": [
+      "Illustrative coach portrait",
+      "Coach demonstrating technique; illustrative photo",
+      "Empty boxing ring; illustrative photo",
+      "Muay Thai training with a coach; illustrative photo",
+      "Muay Thai pad practice; illustrative photo",
+      "Ground position practice in MMA; illustrative photo"
+    ],
+    "galleryNote": "These photographs do not show the academy’s coaches or facilities. Original photography will be added later.",
+    "open": "Enlarge photo",
+    "close": "Close",
+    "previous": "Previous photo",
+    "next": "Next photo",
+    "gallery": "Coach and training photos",
+    "ctaLabel": "CONTACT",
+    "ctaTitle": "TRAINING\nENQUIRIES",
+    "ctaBody": "Contact us with questions about disciplines, groups and class times.",
+    "cta": "Contact details",
+    "return": "All coaches",
+    "profileMarker": "COACH PROFILE",
+    "stock": "ILLUSTRATIVE PHOTO",
+    "coachMarker": "HEAD COACH",
+    "biographyMarker": "PROFILE INFORMATION",
+    "approachMarker": "TECHNIQUE AND PRACTICE",
+    "galleryMarker": "PHOTOS"
   }
 };

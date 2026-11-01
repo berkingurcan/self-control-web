@@ -3,7 +3,7 @@
   "name": "Self Control Fight Academy",
   "short_name": "Self Control",
   "lang": "tr",
-  "description": "Self Control Fight Academy — Muay Thai, Kick Box, MMA",
+  "description": "Denizli’de Muay Thai, kick boks ve MMA antrenmanları — Self Control Fight Academy",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -36,11 +36,11 @@
       "url": "/#training"
     },
     {
-      "name": "Program",
+      "name": "Ders programı",
       "url": "/#schedule"
     },
     {
-      "name": "Başla",
+      "name": "İletişim",
       "url": "/#start"
     }
   ]

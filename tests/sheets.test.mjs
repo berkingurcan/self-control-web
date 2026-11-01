@@ -19,7 +19,7 @@ test('Turkish template matches the content model, prices remain per person',()=>
  for(const id of ['academy','muaythai','kickbox','mma'])assert.equal(privateGroups(data.catalog,id).length,4);
  const selection={...initialSelection('kickbox'),type:'private',participants:2,lessons:16};
  assert.equal(selectedOffer(selection,data.catalog).price,22000);assert.equal(selectedOffer(selection,data.catalog).unitPrice,1375);
- assert(enquiryMessage(selection,'tr',data.catalog,'Kick Box').includes('₺22.000 / kişi'));
+ assert(enquiryMessage(selection,'tr',data.catalog,'Kick Boks').includes('Kişi başı paket ücreti: ₺22.000'));
 });
 test('CSV parses quoted commas, escaped quotes, CRLF and newlines; rejects malformed CSV',()=>{
  assert.deepEqual(parseCsv('\uFEFFA,B\r\n"a,b","a""b\nc"\r\n'),[['A','B'],['a,b','a"b\nc']]);

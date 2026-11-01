@@ -79,7 +79,7 @@ export function parseSheetContent(csv: CsvSheets, checkedAt = new Date().toISOSt
   for (const row of table('Program',csv.Program)) {
     if (!row.active()) continue;
     row.id('Ders kodu'); const discipline = scope(row.text('Branş'));
-    if (!discipline || discipline === 'academy') fail('Program: Branş Muay Thai, Kick Box veya MMA olmalı.');
+    if (!discipline || discipline === 'academy') fail('Program: Branş Muay Thai, Kick Boks veya MMA olmalı.');
     const day = days.indexOf(normal(row.text('Gün'))); if (day < 0) fail('Program: Gün geçersiz.');
     const rawTime = row.text('Başlangıç saati');
     const match = /^(\d{1,2}):(\d{2})(?::00(?:\.000)?)?$/.exec(rawTime);

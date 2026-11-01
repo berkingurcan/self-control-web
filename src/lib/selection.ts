@@ -42,15 +42,15 @@ export function packageLabel(selection: Selection, lang: Lang, catalog: Membersh
   const offer = selectedOffer(selection, catalog);
   if (!offer) return lang === 'tr' ? 'Paket bilgisi güncelleniyor' : 'Plan information is being updated';
   if (selection.type === 'group') return lang === 'tr' ? `${offer.quantity} ay · Grup dersleri` : `${offer.quantity} ${offer.quantity === 1 ? 'month' : 'months'} · Group classes`;
-  return lang === 'tr' ? `${selection.participants} kişi · ${offer.quantity} özel ders` : `${selection.participants} ${selection.participants === 1 ? 'person' : 'people'} · ${offer.quantity} private lessons`;
+  return lang === 'tr' ? `${selection.participants} kişi · ${offer.quantity} özel ders` : `${selection.participants} ${selection.participants === 1 ? 'person' : 'people'} · ${offer.quantity} private ${offer.quantity === 1 ? 'lesson' : 'lessons'}`;
 }
 export function enquiryMessage(selection: Selection, lang: Lang, catalog: MembershipCatalog, name: string) {
   const offer = selectedOffer(selection, catalog);
   if (!offer) return '';
   const price = formatMoney(offer.price, lang, catalog.currency);
   return lang === 'tr'
-    ? `Merhaba Self Control! ${name} için bilgi almak istiyorum.\nPaket: ${packageLabel(selection, lang, catalog)}\nGösterilen paket toplamı: ${price} / kişi\n${catalog.status === 'sample' ? 'Önizlemedeki örnek paketi inceliyorum. ' : ''}Güncel fiyatı, uygun saatleri ve katılım koşullarını paylaşabilir misiniz?`
-    : `Hello Self Control! I'd like information about ${name}.\nPlan: ${packageLabel(selection, lang, catalog)}\nDisplayed package total: ${price} / person\n${catalog.status === 'sample' ? 'I am viewing a sample plan in the preview. ' : ''}Could you confirm the current price, available times and joining details?`;
+    ? `Merhaba, ${name} dersleri hakkında bilgi almak istiyorum.\nPaket: ${packageLabel(selection, lang, catalog)}\nKişi başı paket ücreti: ${price}\n${catalog.status === 'sample' ? 'Sitede örnek olarak gösterilen paketi inceliyorum. ' : ''}Güncel ücreti, ders saatlerini ve kayıt koşullarını paylaşabilir misiniz?`
+    : `Hello, I would like information about ${name} classes.\nPlan: ${packageLabel(selection, lang, catalog)}\nPackage price per person: ${price}\n${catalog.status === 'sample' ? 'I am viewing a sample package on your website. ' : ''}Could you confirm the current price, class times and registration requirements?`;
 }
 export function whatsappHref(phone: string, message: string) {
   const digits = phone.replace(/\D/g, '');

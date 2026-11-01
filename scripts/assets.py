@@ -4,7 +4,7 @@ from PIL import Image, ImageDraw, ImageFont, ImageOps
 import re, xml.etree.ElementTree as ET
 root=Path(__file__).resolve().parents[1];static=root/'static'
 colors={'academy':'#FFFFFF','muaythai':'#B7D19C','kickbox':'#AAC6E6','mma':'#E0A097'}
-labels={'academy':'FIGHT ACADEMY','muaythai':'MUAY THAI','kickbox':'KICK BOX','mma':'MMA'}
+labels={'academy':'FIGHT ACADEMY','muaythai':'MUAY THAI','kickbox':'KİCK BOKS','mma':'MMA'}
 polys=[]
 for el in ET.parse(static/'brand/mark.svg').getroot():
  vals=[float(v) for v in re.findall(r'[\d.]+',el.attrib['points'])];polys.append(list(zip(vals[::2],vals[1::2])))

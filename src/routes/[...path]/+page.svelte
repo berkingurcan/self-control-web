@@ -1,6 +1,6 @@
 <script lang="ts">
   import { config as env } from '#lib/config.ts';
-  import { copy, href, sites } from '#lib/site.ts';
+  import { copy, href, sites, siteName } from '#lib/site.ts';
   import Shell from '#lib/components/Shell.svelte';
   import OnePage from '#lib/components/OnePage.svelte';
   import HeadTrainer from '#lib/components/HeadTrainer.svelte';
@@ -11,7 +11,7 @@
   const profile = $derived(data.page === 'coach');
   const description = $derived(profile ? headTrainerCopy[data.lang].description : copy[data.lang].home[data.site].sub);
   const canonical = $derived(`https://${identity.domain}${href(profile ? 'coach' : 'home', data.lang)}`);
-  const title = $derived(profile ? `${headTrainerCopy[data.lang].role} — Self Control Fight Academy` : data.site === 'academy' ? 'Self Control Fight Academy' : `${identity.name} — Self Control Fight Academy`);
+  const title = $derived(profile ? `${headTrainerCopy[data.lang].role} — Self Control Fight Academy` : data.site === 'academy' ? 'Self Control Fight Academy | Denizli' : `${siteName(data.site, data.lang)} | Self Control Fight Academy, Denizli`);
 </script>
 <svelte:head>
   <title>{title}</title>

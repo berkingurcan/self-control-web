@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getContext, onMount, untrack, tick } from 'svelte';
-  import { sites, type SiteId, type Lang } from '#lib/site.ts';
+  import { siteName, sites, type SiteId, type Lang } from '#lib/site.ts';
   import { editorial } from '#lib/editorial.ts';
   import { demoCopy, disciplines } from '#lib/demo.ts';
   import { reveal } from '#lib/effects.ts';
@@ -59,27 +59,27 @@
   <ContentStatus {lang}/>
   {#if available}
   {#if catalog.status === 'sample'}<div class="demo-notice"><span class="demo-badge">{d.badge}</span><p>{d.note}</p></div>{/if}
-  {#if site === 'academy'}<div class="routine-filters" role="group" aria-label={d.disciplineSelect}>{#each ['academy', ...disciplines] as id}<button class:active={scheduleDiscipline === id} aria-pressed={scheduleDiscipline === id} onclick={() => scheduleDiscipline = id as SiteId}>{id === 'academy' ? d.allAccess : sites[id as SiteId].name}</button>{/each}</div>{/if}
+  {#if site === 'academy'}<div class="routine-filters" role="group" aria-label={d.disciplineSelect}>{#each ['academy', ...disciplines] as id}<button class:active={scheduleDiscipline === id} aria-pressed={scheduleDiscipline === id} onclick={() => scheduleDiscipline = id as SiteId}>{id === 'academy' ? d.allAccess : siteName(id as SiteId, lang)}</button>{/each}</div>{/if}
   {#if next}
-    <button class="next-session" type="button" aria-controls="weekly-planner" aria-label={`${ux.showDay}: ${d.days[next.session.day]}, ${next.session.time}, ${sites[next.session.discipline].name}`} onclick={showNextSession}>
+    <button class="next-session" type="button" aria-controls="weekly-planner" aria-label={`${ux.showDay}: ${d.days[next.session.day]}, ${next.session.time}, ${siteName(next.session.discipline, lang)}`} onclick={showNextSession}>
       <span class="next-session-top"><span class="next-session-label"><i aria-hidden="true"></i>{nextLabel}</span><span class="next-session-action">{ux.showDay}<Icon name="arrow" size={17}/></span></span>
-      <span class="next-session-main"><time datetime={next.session.time}>{next.session.time}</time><span class="next-session-details"><strong>{sites[next.session.discipline].name}</strong><span>{`${next.dayOffset === 0 ? ux.today : d.days[next.session.day]} · ${next.session.duration} ${d.minutes}`}</span></span></span>
+      <span class="next-session-main"><time datetime={next.session.time}>{next.session.time}</time><span class="next-session-details"><strong>{siteName(next.session.discipline, lang)}</strong><span>{`${next.dayOffset === 0 ? ux.today : d.days[next.session.day]} · ${next.session.duration} ${d.minutes}`}</span></span></span>
     </button>
   {/if}
   <div id="weekly-planner" class="weekly-planner" bind:this={weeklyPlanner}>
-    <div class="planner-sidebar"><span class="eyebrow">{d.weekly}</span><h3 class="selected-day-heading" tabindex="-1" bind:this={dayHeading}>{d.days[day]}<span>↗</span></h3><p>{day === today ? ux.today : scheduleDiscipline === 'academy' ? 'SELF CONTROL FIGHT ACADEMY' : sites[scheduleDiscipline].name}</p><span class="class-count">{String(classes.length).padStart(2, '0')} <small>{d.sessions}</small></span></div>
+    <div class="planner-sidebar"><span class="eyebrow">{d.weekly}</span><h3 class="selected-day-heading" tabindex="-1" bind:this={dayHeading}>{d.days[day]}<span>↗</span></h3><p>{day === today ? ux.today : scheduleDiscipline === 'academy' ? 'SELF CONTROL FIGHT ACADEMY' : siteName(scheduleDiscipline, lang)}</p><span class="class-count">{String(classes.length).padStart(2, '0')} <small>{lang === 'en' && classes.length === 1 ? 'class' : d.sessions}</small></span></div>
     <div class="planner-main"><div class="day-selector" role="group" aria-label={d.daySelect}>{#each d.shortDays as name, index}<button class:active={day === index} class:today={today === index} aria-pressed={day === index} aria-label={`${d.days[index]}${index === today ? ` / ${ux.today}` : ''}`} onclick={() => { dayChosen = true; day = index; }}><span>{name}</span><i aria-hidden="true"></i></button>{/each}</div>
-      <div class="session-list" aria-live="polite" aria-atomic="true">{#each classes as session}<article class="session-row" style={`--session-accent:${sites[session.discipline].accent}`}><div class="session-time"><time>{session.time}</time><span>{endTime(session.time, session.duration)}</span></div><div class="session-info"><span class="session-discipline" lang="en">{sites[session.discipline].name}</span><h4>{session.title[lang]}</h4><div class="session-meta"><span>{d.levels[session.level]}</span><span>{session.duration} {d.minutes}</span></div></div><span class="session-arrow" aria-hidden="true">↗</span></article>{:else}<div class="rest-day"><Icon name="calendar" size={28}/><h4>{ux.noClass}</h4><p>{ux.noClassBody}</p>{#if next}<button class="underlined-link" onclick={showNextSession}>{ux.showDay}<Icon name="arrow" size={17}/></button>{/if}</div>{/each}</div>
+      <div class="session-list" aria-live="polite" aria-atomic="true">{#each classes as session}<article class="session-row" style={`--session-accent:${sites[session.discipline].accent}`}><div class="session-time"><time>{session.time}</time><span>{endTime(session.time, session.duration)}</span></div><div class="session-info"><span class="session-discipline" lang={lang}>{siteName(session.discipline, lang)}</span><h4>{session.title[lang]}</h4><div class="session-meta"><span>{d.levels[session.level]}</span><span>{session.duration} {d.minutes}</span></div></div><span class="session-arrow" aria-hidden="true">↗</span></article>{:else}<div class="rest-day"><Icon name="calendar" size={28}/><h4>{ux.noClass}</h4><p>{ux.noClassBody}</p>{#if next}<button class="underlined-link" onclick={showNextSession}>{ux.showDay}<Icon name="arrow" size={17}/></button>{/if}</div>{/each}</div>
     </div>
-  </div><p class="schedule-footnote">{catalog.status === 'sample' ? ux.timetableNote : lang === 'tr' ? `Ders saatleri: ${content.data.timezone}. Katılımdan önce güncel bilgiyi doğrula.` : `Class times: ${content.data.timezone}. Confirm details before attending.`}</p>
+  </div><p class="schedule-footnote">{catalog.status === 'sample' ? ux.timetableNote : lang === 'tr' ? `Saat dilimi: ${content.data.timezone}. Güncel ders bilgilerini katılımdan önce teyit edin.` : `Class times: ${content.data.timezone}. Confirm details before attending.`}</p>
   {/if}
 </section>
 
 <section id="membership" class="section membership-section" bind:this={membership}>
-  <div class="membership-heading"><div><span class="eyebrow">{d.membershipLabel}{available && catalog.status === 'sample' ? ' / DEMO' : ''}</span><h2 class="display">{lang === 'tr' ? 'KENDİNE UYGUN\nYOLU SEÇ.' : 'FIND A PLAN.\nMAKE IT YOURS.'}</h2></div><div><p>{d.membershipIntro}</p><span class="membership-scope"><small>{d.scope}</small><strong>{experience.selection.discipline === 'academy' ? d.allAccessBody : sites[experience.selection.discipline].name}</strong></span></div></div>
+  <div class="membership-heading"><div><span class="eyebrow">{d.membershipLabel}{available && catalog.status === 'sample' ? (lang === 'tr' ? ' / ÖRNEK' : ' / SAMPLE') : ''}</span><h2 class="display">{d.membershipTitle}</h2></div><div><p>{d.membershipIntro}</p><span class="membership-scope"><small>{d.scope}</small><strong>{experience.selection.discipline === 'academy' ? d.allAccessBody : siteName(experience.selection.discipline, lang)}</strong></span></div></div>
   <ContentStatus {lang}/>
   {#if available}
-  {#if site === 'academy'}<div class="routine-filters" role="group" aria-label={lang === 'tr' ? 'Üyelik disiplini' : 'Membership discipline'}>{#each ['academy', ...disciplines] as id}<button class:active={experience.selection.discipline === id} aria-pressed={experience.selection.discipline === id} onclick={() => chooseDiscipline(id as SiteId)}>{id === 'academy' ? d.allAccess : sites[id as SiteId].name}</button>{/each}</div>{/if}
+  {#if site === 'academy'}<div class="routine-filters" role="group" aria-label={lang === 'tr' ? 'Üyelik branşı' : 'Membership discipline'}>{#each ['academy', ...disciplines] as id}<button class:active={experience.selection.discipline === id} aria-pressed={experience.selection.discipline === id} onclick={() => chooseDiscipline(id as SiteId)}>{id === 'academy' ? d.allAccess : siteName(id as SiteId, lang)}</button>{/each}</div>{/if}
   <div class="membership-types" role="group" aria-label={c.type}><button class:active={experience.selection.type === 'group'} aria-pressed={experience.selection.type === 'group'} onclick={() => experience.selection.type = 'group'}><Icon name="training" size={18}/>{c.group}</button><button class:active={experience.selection.type === 'private'} aria-pressed={experience.selection.type === 'private'} onclick={() => experience.selection.type = 'private'}><Icon name="diagonal" size={18}/>{c.private}</button></div>
   {#if experience.selection.type === 'private'}<PrivateLessons {lang}/>{:else}
     {#if plans.length}<div class="pricing-grid">
@@ -91,7 +91,7 @@
         <button class="button price-cta" onclick={() => choosePlan(plan.months, true)}>{d.cta}<Icon name="diagonal" size={19}/></button>
       </article>{/each}
     </div>
-    {:else}<p class="pricing-note">{lang === 'tr' ? 'Bu kapsam için grup paketleri henüz yayımlanmadı.' : 'Group packages have not been published for this scope.'}</p>{/if}
+    {:else}<p class="pricing-note">{lang === 'tr' ? 'Seçilen branş için grup dersi paketleri henüz yayımlanmadı.' : 'Group class packages have not been published for the selected discipline.'}</p>{/if}
     {#if plans.length}<details class="plan-inclusions"><summary>{ux.included}<Icon name="plus" size={20}/></summary><ul>{#each (experience.selection.discipline === 'academy' ? d.allBenefits : d.benefits) as benefit}<li><Icon name="check" size={18}/>{benefit}</li>{/each}</ul><p>{c.groupNote}</p></details>{/if}
     <p class="pricing-note">{catalog.status === 'sample' ? ux.preview : c.groupNote}</p>
   {/if}

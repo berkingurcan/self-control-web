@@ -1,7 +1,7 @@
 <script lang="ts">
   import { getContext } from 'svelte';
   import { config } from '#lib/config.ts';
-  import { sites, type Lang } from '#lib/site.ts';
+  import { siteName, type Lang } from '#lib/site.ts';
   import { contentKey, type ContentState } from '#lib/content-schema.ts';
   import { experienceCopy } from '#lib/experience-copy.ts';
   import { experienceKey, enquiryMessage, selectedOffer, packageLabel, formatMoney, whatsappHref, type Experience } from '#lib/selection.ts';
@@ -13,7 +13,7 @@
   const catalog = $derived(content.data.catalog);
   const c = $derived(experienceCopy[lang]);
   const selection = $derived(experience.selection);
-  const name = $derived(selection.discipline === 'academy' ? 'Muay Thai + Kick Box + MMA' : sites[selection.discipline].name);
+  const name = $derived(selection.discipline === 'academy' ? (lang === 'tr' ? 'Muay Thai · Kick Boks · MMA' : 'Muay Thai · Kickboxing · MMA') : siteName(selection.discipline, lang));
   const offer = $derived(selectedOffer(selection, catalog));
   const message = $derived(enquiryMessage(selection, lang, catalog, name));
   const whatsapp = $derived(whatsappHref(config.PUBLIC_WHATSAPP, message));

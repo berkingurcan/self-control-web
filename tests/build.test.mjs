@@ -14,7 +14,7 @@ for(const id of ids){
   assert(home.includes(`data-identity="${id}"`));assert(home.includes('noindex,nofollow'));
   const manifest=JSON.parse(await readFile(`${root}/manifest.webmanifest`,'utf8'));
   assert.equal(manifest.display,'standalone');assert.equal(manifest.lang,'tr');
-  assert(manifest.name.includes(id==='academy'?'Fight Academy':id==='muaythai'?'Muay Thai':id==='kickbox'?'Kick Box':'MMA'));
+  assert(manifest.name.includes(id==='academy'?'Fight Academy':id==='muaythai'?'Muay Thai':id==='kickbox'?'Kick Boks':'MMA'));
   for(const icon of manifest.icons)await access(`${root}${icon.src}`);
   for(const section of ['top','training',...(id === 'academy' ? ['academy'] : []),'space','trainers','schedule','start']) assert(home.includes(`id="${section}"`), `${id}: missing ${section}`);
   assert.equal(home.includes('id="academy"'), id === 'academy');
