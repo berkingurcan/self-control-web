@@ -2,14 +2,6 @@ import type { Lang, SiteId } from './site.ts';
 
 export type DisciplineId = Exclude<SiteId, 'academy'>;
 export const disciplines: DisciplineId[] = ['muaythai', 'kickbox', 'mma'];
-export const periods = [1, 6, 12] as const;
-export const membershipPrices: Record<SiteId, Record<1 | 6 | 12, number>> = {
-  academy: { 1: 4500, 6: 22500, 12: 39600 },
-  muaythai: { 1: 3000, 6: 15300, 12: 27000 },
-  kickbox: { 1: 2800, 6: 14400, 12: 25200 },
-  mma: { 1: 3500, 6: 18000, 12: 31200 }
-};
-
 export type Session = { day: number; time: string; duration: number; discipline: DisciplineId; title: Record<Lang, string>; level: 'beginner' | 'all' | 'advanced' };
 export const sessions: Session[] = [
   { day: 0, time: '18:00', duration: 60, discipline: 'muaythai', title: { tr: 'Temel teknik', en: 'Fundamentals' }, level: 'beginner' },

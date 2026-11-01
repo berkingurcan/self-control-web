@@ -1,0 +1,154 @@
+{
+  "currency": "TRY",
+  "priceBasis": "per_person",
+  "status": "sample",
+  "groupLessons": {
+    "academy": [
+      {
+        "months": 1,
+        "price": 4500
+      },
+      {
+        "months": 6,
+        "price": 22500
+      },
+      {
+        "months": 12,
+        "price": 39600
+      }
+    ],
+    "muaythai": [
+      {
+        "months": 1,
+        "price": 3000
+      },
+      {
+        "months": 6,
+        "price": 15300
+      },
+      {
+        "months": 12,
+        "price": 27000
+      }
+    ],
+    "kickbox": [
+      {
+        "months": 1,
+        "price": 5000
+      },
+      {
+        "months": 3,
+        "price": 12000
+      },
+      {
+        "months": 6,
+        "price": 18000
+      }
+    ],
+    "mma": [
+      {
+        "months": 1,
+        "price": 3500
+      },
+      {
+        "months": 6,
+        "price": 18000
+      },
+      {
+        "months": 12,
+        "price": 31200
+      }
+    ]
+  },
+  "privateLessons": [
+    {
+      "participants": 1,
+      "sessionMinutes": 60,
+      "packages": [
+        {
+          "lessons": 1,
+          "price": 3000,
+          "validityMonths": null
+        },
+        {
+          "lessons": 8,
+          "price": 18000,
+          "validityMonths": 1
+        },
+        {
+          "lessons": 16,
+          "price": 28000,
+          "validityMonths": 2
+        },
+        {
+          "lessons": 24,
+          "price": 36000,
+          "validityMonths": 3
+        }
+      ]
+    },
+    {
+      "participants": 2,
+      "sessionMinutes": 60,
+      "packages": [
+        {
+          "lessons": 8,
+          "price": 14000,
+          "validityMonths": 1
+        },
+        {
+          "lessons": 16,
+          "price": 22000,
+          "validityMonths": 2
+        },
+        {
+          "lessons": 24,
+          "price": 28000,
+          "validityMonths": 3
+        }
+      ]
+    },
+    {
+      "participants": 3,
+      "sessionMinutes": 60,
+      "packages": [
+        {
+          "lessons": 8,
+          "price": 11000,
+          "validityMonths": 1
+        },
+        {
+          "lessons": 16,
+          "price": 16000,
+          "validityMonths": 2
+        },
+        {
+          "lessons": 24,
+          "price": 24000,
+          "validityMonths": 3
+        }
+      ]
+    },
+    {
+      "participants": 4,
+      "sessionMinutes": 60,
+      "packages": [
+        {
+          "lessons": 8,
+          "price": 9000,
+          "validityMonths": 1
+        },
+        {
+          "lessons": 16,
+          "price": 12000,
+          "validityMonths": 2
+        },
+        {
+          "lessons": 24,
+          "price": 18000,
+          "validityMonths": 3
+        }
+      ]
+    }
+  ]
+}
