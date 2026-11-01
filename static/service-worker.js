@@ -1,0 +1,20 @@
+const CACHE='self-control-academy-4b54daccd3d8';
+const SHELL=["/offline.html","/brand/mark.svg","/brand/wordmark.svg","/brand/wordmark-team.svg","/icons/icon-192.png","/bas-antrenor","/en/head-trainer","/en","/","/preview/academy/bas-antrenor","/preview/academy/en/head-trainer","/preview/academy/en","/preview/academy","/preview/kickbox/bas-antrenor","/preview/kickbox/en/head-trainer","/preview/kickbox/en","/preview/kickbox","/preview/mma/bas-antrenor","/preview/mma/en/head-trainer","/preview/mma/en","/preview/mma","/preview/muaythai/bas-antrenor","/preview/muaythai/en/head-trainer","/preview/muaythai/en","/preview/muaythai","/_app/immutable/assets/0.BgG2GD5I.css","/_app/immutable/assets/2.BwXgDIUL.css","/_app/immutable/chunks/BIyABUVl.js","/_app/immutable/chunks/Bjy-W4x2.js","/_app/immutable/chunks/CRzLMJPS.js","/_app/immutable/chunks/CXhGrZh5.js","/_app/immutable/chunks/ClFXGKD8.js","/_app/immutable/chunks/D2Y7vyLR.js","/_app/immutable/chunks/DfGI-vi9.js","/_app/immutable/entry/app.BNy93hlz.js","/_app/immutable/entry/payload.DSmR2FwN.js","/_app/immutable/entry/start.VN6N5IWR.js","/_app/immutable/nodes/0.CBYB0cUB.js","/_app/immutable/nodes/1.XVs04Y4q.js","/_app/immutable/nodes/2.BJW0_g_9.js","/fonts/BarlowCondensed-ExtraBold.ttf","/fonts/Poppins-Medium.woff2","/fonts/licenses/BarlowCondensed-OFL.txt","/fonts/licenses/Poppins-OFL.txt","/images/coach-1280.webp","/images/coach-640.webp","/images/grappling-1280.webp","/images/grappling-640.webp","/images/gym-1280.webp","/images/gym-640.webp","/images/kickbox-1280.webp","/images/kickbox-640.webp","/images/muay-thai-1280.webp","/images/muay-thai-640.webp","/images/ring-1280.webp","/images/ring-640.webp","/images/trainer-head-1280.webp","/images/trainer-head-640.webp","/images/trainer-kickbox-1280.webp","/images/trainer-kickbox-640.webp","/images/trainer-mma-1280.webp","/images/trainer-mma-640.webp","/images/trainer-muaythai-1280.webp","/images/trainer-muaythai-640.webp","/images/training-1280.webp","/images/training-640.webp"];
+self.addEventListener('install',event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(SHELL)))});
+self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith('self-control-')&&key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim()))});
+self.addEventListener('fetch',event=>{
+ const request=event.request; const url=new URL(request.url);
+ if(request.method!=='GET'||url.origin!==self.location.origin||url.pathname.includes('__data')||url.search||url.pathname.startsWith('/api/'))return;
+ const isPublic=request.mode==='navigate'||url.pathname.startsWith('/_app/immutable/')||url.pathname.startsWith('/fonts/')||url.pathname.startsWith('/brand/')||url.pathname.startsWith('/images/');
+ if(!isPublic)return;
+ event.respondWith((async()=>{
+   const cache=await caches.open(CACHE);
+   if(request.mode==='navigate'){
+     try{const response=await fetch(request);if(response.ok)await cache.put(request,response.clone());return response}
+     catch{return(await cache.match(request))||(await cache.match('/offline.html'))}
+   }
+   const saved=await cache.match(request);if(saved)return saved;
+   try{const response=await fetch(request);if(response.ok){await cache.put(request,response.clone());const keys=await cache.keys();if(keys.length>100)await cache.delete(keys[SHELL.length])}return response}
+   catch{return Response.error()}
+ })())
+});
