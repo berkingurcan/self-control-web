@@ -198,4 +198,6 @@ Source references: [Google spreadsheet query parameters](https://developers.goog
 
 ## Website copy
 
+The discipline homepages share a split hero with a clear separation between typography and photography, their existing sage/blue/clay accents and direct links between branches. `DisciplineHero.svelte` and `DisciplineTraining.svelte` contain the responsive layouts; `src/lib/discipline-copy.ts` contains the branch-specific Turkish and English introductions and expandable training areas. Pointer depth is shared with the academy through `heroDepth` in `effects.ts` and respects reduced-motion preferences.
+
 Turkish visitor copy uses a consistent, polite tone suited to the academy in Denizli. Headings describe training, classes and memberships directly. English copy is written naturally rather than translated word for word. `siteName(id, lang)` localizes discipline names, including Kick Boks / Kickboxing. The hero, discipline pages, coach profiles, schedule, memberships, enquiries, navigation, accessibility labels, metadata and offline messages follow the same wording. Sample schedules, prices, profiles and photography remain identified as illustrative. No contact details, qualifications or achievements have been invented.

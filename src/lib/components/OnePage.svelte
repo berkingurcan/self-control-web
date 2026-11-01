@@ -9,6 +9,8 @@
   import Photo from './Photo.svelte';
   import Icon from './Icon.svelte';
   import AcademyHero from './AcademyHero.svelte';
+  import DisciplineHero from './DisciplineHero.svelte';
+  import DisciplineTraining from './DisciplineTraining.svelte';
   import TrainingSchedule from './TrainingSchedule.svelte';
   import { coaches, demoCopy, type CoachId } from '#lib/demo.ts';
   let { site, lang }: { site: SiteId; lang: Lang } = $props();
@@ -16,7 +18,6 @@
   const content = getContext<ContentState>(contentKey);
   const ux = $derived(experienceCopy[lang]);
   const academy = $derived(site === 'academy');
-  const discipline = $derived(site === 'academy' ? 'mma' : site as Exclude<SiteId, 'academy'>);
   const preview = env.PUBLIC_ENABLE_PREVIEWS === 'true';
   const headProfile = $derived(href('coach', lang, preview ? `/preview/${site}` : ''));
   const ids = ['muaythai', 'kickbox', 'mma'] as const;
@@ -32,27 +33,24 @@
   function changePhoto(step: number) { galleryIndex = (galleryIndex + step + gallery.length) % gallery.length; }
 </script>
 
-<section id="top" class:academy-hero={academy} class:discipline-hero={!academy} class="landing-hero">
+<section id="top" class:academy-hero={academy} class:branch-hero={!academy} class="landing-hero">
   {#if academy}
     <AcademyHero {lang} {preview}/>
   {:else}
-    <div class="discipline-hero-image"><Photo name={identity.image} alt={t.home[site].image} eager position={identity.position}/></div><div class="discipline-hero-shade"></div>
-    <div class="discipline-hero-top"><span class="eyebrow">SELF CONTROL / {identity.number}</span><a href={siteHref('academy', lang, preview)} class="eyebrow">{e.website}<Icon name="diagonal" size={15}/></a></div>
-    <div class="discipline-hero-content"><span class="eyebrow hero-kicker"><i></i>{e.disciplineStatements[discipline]}</span><h1 lang={lang}>{#if site === 'muaythai'}<span>MUAY</span><span>THAI</span>{:else if site === 'kickbox'}<span>KICK</span><span>{lang === 'tr' ? 'BOKS' : 'BOXING'}</span>{:else}<span>MMA</span>{/if}</h1><p>{t.home[site].sub}</p><div class="hero-actions"><a class="button solid" href="#schedule">{ux.schedule}<Icon name="diagonal"/></a><a class="underlined-link" href="#membership">{ux.memberships}<Icon name="arrow" size={18}/></a></div></div>
-    <div class="discipline-hero-seal"><img src="/brand/mark.svg" width="110" height="80" alt=""/><span>{siteName(site, lang)}<br/>{e.teamSignature}</span></div>
-    <div class="hero-baseline"><span>{t.home[site].tag}</span><a href="#training">{e.down}<span>↓</span></a><span>{identity.number} / 03</span></div>
+    <DisciplineHero site={site as Exclude<SiteId, 'academy'>} {lang} {preview}/>
   {/if}
 </section>
 
+{#if academy}
 <section id="training" class="section training-section" use:reveal>
-  <div class="section-top"><span class="eyebrow">{academy ? e.disciplineLabel : e.techniqueLabel}</span><span class="eyebrow">SELF CONTROL / {e.trainingMarker}</span></div>
-  <div class="section-heading"><h2 class="display">{academy ? e.disciplineTitle : e.techniqueTitle}</h2><p>{academy ? e.disciplineBody : e.techniqueBody}</p></div>
-  {#if academy}
+  <div class="section-top"><span class="eyebrow">{e.disciplineLabel}</span><span class="eyebrow">SELF CONTROL / {e.trainingMarker}</span></div>
+  <div class="section-heading"><h2 class="display">{e.disciplineTitle}</h2><p>{e.disciplineBody}</p></div>
     <div class="discipline-grid">{#each ids as id}<a class="discipline-card" style={`--card-accent:${sites[id].accent}`} href={siteHref(id, lang, preview)} use:tilt><div class="discipline-photo"><Photo name={sites[id].image} alt={t.home[id].image} position={sites[id].position}/><div class="card-shade"></div><span class="card-index">0{ids.indexOf(id) + 1} / SELF CONTROL</span><div class="discipline-card-title"><h3 lang={id === 'muaythai' ? 'en' : lang}>{#if id === 'kickbox' && lang === 'en'}Kick<br/>boxing{:else}{siteName(id, lang)}{/if}</h3><span class="circle-arrow"><Icon name="diagonal"/></span></div></div><div class="discipline-card-copy"><p>{t.discipline[id].short}</p><span>{e.enter}<Icon name="diagonal" size={16}/></span></div></a>{/each}</div>
-  {:else}
-    <div class="technique-grid"><div class="technique-photo"><Photo name={identity.image} alt={t.home[site].image} position={identity.position}/><span class="image-label">SELF CONTROL / {identity.label}</span></div><div class="technique-copy"><h3>{t.discipline[discipline].short}</h3><p>{t.discipline[discipline].description}</p><ol>{#each t.discipline[discipline].focus as point, index}<li><span>0{index + 1}</span><p>{point}</p><Icon name="plus" size={17}/></li>{/each}</ol><div class="tag-row">{#each t.discipline[discipline].tags as tag}<span>{tag}</span>{/each}</div></div></div>
-  {/if}
+
 </section>
+{:else}
+  <DisciplineTraining site={site as Exclude<SiteId, 'academy'>} {lang}/>
+{/if}
 
 {#if academy}
 <section id="academy" class="section approach-section" use:reveal>

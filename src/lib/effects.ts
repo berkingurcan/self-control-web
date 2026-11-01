@@ -55,3 +55,38 @@ export function modalFocus(node: HTMLDialogElement) {
   node.addEventListener('keydown', keydown);
   return { destroy() { node.removeEventListener('keydown', keydown); } };
 }
+
+/** Decorative depth is pointer-only, frame-throttled, and never needed to use the hero. */
+export function heroDepth(node: HTMLElement) {
+  const preference = window.matchMedia('(prefers-reduced-motion: no-preference) and (hover: hover) and (pointer: fine)');
+  let frame = 0;
+  const reset = () => {
+    cancelAnimationFrame(frame);
+    node.style.setProperty('--drift-x', '0px');
+    node.style.setProperty('--drift-y', '0px');
+    node.style.setProperty('--light-x', '65%');
+    node.style.setProperty('--light-y', '40%');
+  };
+  const move = (event: PointerEvent) => {
+    if (!preference.matches || event.pointerType === 'touch') return;
+    cancelAnimationFrame(frame);
+    frame = requestAnimationFrame(() => {
+      const bounds = node.getBoundingClientRect();
+      const x = Math.max(0, Math.min(1, (event.clientX - bounds.left) / bounds.width));
+      const y = Math.max(0, Math.min(1, (event.clientY - bounds.top) / bounds.height));
+      node.style.setProperty('--drift-x', `${(x - .5) * 12}px`);
+      node.style.setProperty('--drift-y', `${(y - .5) * 10}px`);
+      node.style.setProperty('--light-x', `${x * 100}%`);
+      node.style.setProperty('--light-y', `${y * 100}%`);
+    });
+  };
+  node.addEventListener('pointermove', move);
+  node.addEventListener('pointerleave', reset);
+  preference.addEventListener('change', reset);
+  return { destroy() {
+    reset();
+    node.removeEventListener('pointermove', move);
+    node.removeEventListener('pointerleave', reset);
+    preference.removeEventListener('change', reset);
+  } };
+}
