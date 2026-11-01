@@ -74,7 +74,7 @@ Legacy routes such as `/antrenmanlar`, `/akademi`, `/program`, `/basla` and Engl
 - Display typography: locally hosted Barlow Condensed ExtraBold, with solid Turkish headings.
 - UI typography: locally hosted Poppins Medium.
 - Supplied original emblem and wordmark paths retained in SVG. Team headers use only the SELF CONTROL line plus a colour-coded, title-case discipline descriptor. The academy retains its full signature.
-- White, minimal academy hero with a framed signature; full-image dark discipline heroes with one metal accent. Progressive scroll reveals, section-aware navigation, reading progress, desktop-only restrained tilt, image zoom and native gallery/profile dialogs. Content remains visible without JavaScript, and reduced-motion preferences disable decorative movement.
+- White, minimal academy hero with a framed signature; full-image dark discipline heroes with one metal accent. Progressive scroll reveals, section-aware navigation, reading progress, desktop-only restrained tilt, image zoom and native gallery/profile dialogs. Editorial content remains visible without JavaScript; live schedules and prices require JavaScript. Reduced-motion preferences disable decorative movement.
 - Phone-first heroes with the action in the initial viewport, mobile bottom navigation, safe-area spacing, 44px+ primary controls, portrait trainer cards with native horizontal scrolling on phones, touch gallery navigation and a seven-day timetable selector.
 
 `src/lib/site.ts` contains base localized copy, routing and identity tokens. `src/lib/editorial.ts` contains the one-page editorial copy. `src/lib/demo.ts` contains explicitly labelled sample sessions, bilingual coaching copy and portrait mapping; pricing lives in `src/lib/data/memberships.json`; `TrainingSchedule.svelte` renders the timetable and plans. `src/lib/effects.ts` contains progressive motion/touch enhancements. `src/lib/config.ts` reads explicitly public build settings. Components are under `src/lib/components`; page composition is in `src/lib/components/OnePage.svelte`; shared styles are in `src/app.css`.
@@ -134,7 +134,7 @@ The current design intentionally includes demo business content requested for re
 | Kick Box | ₺5,000 | ₺18,000 | — |
 | MMA | ₺3,500 | ₺18,000 | ₺31,200 |
 
-The longer plans display their full upfront price, monthly equivalent and rounded saving against monthly payments. These are sample prices, not researched market rates or a real sales offer. Kick Box uses the supplied 1/3/6-month reference prices (₺5,000 / ₺12,000 / ₺18,000), with no annual plan in that reference. CTAs scroll to contact; they do not take payments or reserve classes. All-access memberships cover all three disciplines, single-discipline memberships cover the selected branch. Private lessons and equipment are excluded from the sample plans.
+The longer plans display their full upfront price, monthly equivalent and rounded saving against monthly payments. These are sample prices, not researched market rates or a real sales offer. Kick Box uses the supplied 1/3/6-month reference prices (₺5,000 / ₺12,000 / ₺18,000), with no annual plan in that reference. Package CTAs open a prepared enquiry containing the selected package; they do not take payments or reserve classes. All-access memberships cover all three disciplines, single-discipline memberships cover the selected branch. Private lessons and equipment are excluded from the sample plans.
 
 Additional self-hosted stock portraits:
 
@@ -169,4 +169,29 @@ Private lesson options use `participants` (1–4), `sessionMinutes` (60), and a 
 }
 ```
 
-The membership section switches between group classes and private lessons. Participants and package selection update the per-person package total, per-lesson equivalent and validity without navigation. Changing participant count selects the 8-lesson option when available. The contact CTA scrolls to existing contact information; no payment or reservation is submitted. Both languages use the same numeric catalogue.
+The membership section switches between group classes and private lessons. Participants and package selection update the per-person package total, per-lesson equivalent and validity without navigation. Changing participant count preserves the chosen lesson count when available, otherwise it selects 8 lessons. Package CTAs open an accessible enquiry preview; no payment or reservation is submitted. Both languages use the same numeric catalogue.
+
+
+## Mobile experience and enquiries
+
+The mobile dock links directly to training, timetable, memberships and contact. While the membership section is on screen, it becomes a compact selected-package summary with a navigation button and enquiry action. Only one fixed dock is shown; it respects the device safe area. The price, package cards and enquiry share per-page Svelte context, avoiding cross-request state on the server.
+
+Group cards show the full per-person package price, monthly equivalent and a shared expandable benefits section. Private options use native radio controls. TR/EN links carry validated numeric package selections in query parameters. No personal information is stored. `selection.ts` validates these values against the catalogue and locks team pages to their own discipline.
+
+The enquiry modal displays the exact selection and a prepared message. Set `PUBLIC_WHATSAPP` to an international number (country code included, 10–15 digits) and/or `PUBLIC_CONTACT_EMAIL` to enable the corresponding outbound links. Until then, visitors can copy the message; no fake contact destination is used. Opening WhatsApp only prepares a draft: the visitor sends it themselves. Sample catalogue status is included in the draft.
+
+The timetable opens on the current day in the configured gym timezone, shows all classes for the selected day and discipline, and highlights the next sample weekly session. The next-class clock refreshes every minute. All timetable content remains illustrative. Calendar export is deferred until actual dated sessions and the gym timezone are confirmed.
+
+Heroes offer timetable and pricing shortcuts. A bilingual first-session guide covers level, scheduling and equipment confirmation. Native modal navigation and enquiries support Escape, focus containment and focus return. New price animation respects reduced motion. Essential pricing details are at least 12px, with touch-sized label controls. Real trainer photography and verified credentials still require academy content.
+
+## Google Sheets content source
+
+Set the server-only `SHEETS_SPREADSHEET_URL` to the standard public-view Google Sheets URL. Four named tabs (`Ayarlar`, `Program`, `Grup Paketleri`, `Özel Dersler`) supply runtime content to `/api/content`. No API key is needed for a publicly viewable file. Without a configured URL, the bundled sample content remains available. Once configured, a failed fetch never silently reverts to demo prices.
+
+The Turkish upload workbook is supplied separately. Full owner instructions, column rules, Vercel setup and cache limitations: [Google Sheets setup in Turkish](docs/GOOGLE_SHEETS_TR.md).
+
+Private pricing can vary by scope through `privateLessonsBySite`. Legacy bundled JSON retains its shared private catalogue. The live importer supports inactive/empty catalogues, per-person pricing, optional English labels and the configured gym timezone. A native SvelteKit server function validates all four tabs together, limits responses, restricts upstream hosts and caches successful reads. Successful responses use a five-minute shared-cache lifetime; last-confirmed data can be shown with an explicit stale notice for up to one hour. The server's warm cache is not durable storage; a cold-start failure returns unavailable. Browser storage is optional and checked before use.
+
+Prices, timetable, mobile summary and prepared enquiry all read the same page-local content context. Only the dynamic API reads the private configuration. Static home/profile pages remain prerendered, while timetable and price content loads after hydration and refreshes without redeployment. With a live `Yayında` status, sample schedule/price labels are replaced; trainer stock content remains marked as illustrative.
+
+Source references: [Google spreadsheet query parameters](https://developers.google.com/chart/interactive/docs/spreadsheets), [CSV response protocol](https://developers.google.com/chart/interactive/docs/dev/implementing_data_source), [Vercel cache headers](https://vercel.com/docs/caching/cache-control-headers), [SvelteKit environment variables](https://svelte.dev/docs/kit/environment-variables).

@@ -42,3 +42,16 @@ export function swipe(node: HTMLElement, change: (direction: number) => void) {
   node.addEventListener('pointerdown', down); node.addEventListener('pointerup', up); node.addEventListener('pointercancel', cancel);
   return { destroy() { node.removeEventListener('pointerdown', down); node.removeEventListener('pointerup', up); node.removeEventListener('pointercancel', cancel); } };
 }
+/** Keep keyboard focus inside an open modal, including reverse tabbing. */
+export function modalFocus(node: HTMLDialogElement) {
+  const keydown = (event: KeyboardEvent) => {
+    if (event.key !== 'Tab' || !node.open) return;
+    const controls = [...node.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex="0"]')].filter(control => control.getClientRects().length > 0);
+    const first = controls[0], last = controls.at(-1);
+    if (!first || !last) { event.preventDefault(); node.focus(); return; }
+    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+  };
+  node.addEventListener('keydown', keydown);
+  return { destroy() { node.removeEventListener('keydown', keydown); } };
+}

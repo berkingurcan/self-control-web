@@ -10,6 +10,7 @@ export type MembershipCatalog = {
   status: 'sample' | 'published';
   groupLessons: Record<SiteId, GroupPackage[]>;
   privateLessons: PrivateLessonGroup[];
+  privateLessonsBySite?: Record<SiteId, PrivateLessonGroup[]>;
 };
 export const membershipCatalog: MembershipCatalog = data as MembershipCatalog;
 
