@@ -1,8 +1,9 @@
 <script lang="ts">
-  let { name = 'arrow', size = 20 }: { name?: string; size?: number } = $props();
+  let { name = 'arrow', size = 20 }: { name?: string; size?: number | string } = $props();
   const paths: Record<string, string> = {
     plans: 'M5 3h14v18l-7-4-7 4zM9 8h6M9 12h4', copy: 'M9 9h12v12H9zM15 9V3H3v12h6',
     arrow: 'M5 12h14M12 5l7 7-7 7', diagonal: 'M6 18 18 6M6 6h12v12',
+    'arrow-left': 'M19 12H5m7 7-7-7 7-7', 'arrow-down': 'M12 5v14m7-7-7 7-7-7',
     home: 'm3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z',
     training: 'M5 8v8M2 10v4M19 8v8M22 10v4M5 12h14',
     calendar: 'M8 3v4M16 3v4M4 10h16M5 5h14a1 1 0 0 1 1 1v14H4V6a1 1 0 0 1 1-1ZM8 14h2M14 14h2',

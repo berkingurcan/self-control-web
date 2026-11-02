@@ -1,7 +1,8 @@
+import { disciplineOrder } from './discipline-order.ts';
 import type { Lang, SiteId } from './site.ts';
 
 export type DisciplineId = Exclude<SiteId, 'academy'>;
-export const disciplines: DisciplineId[] = ['muaythai', 'kickbox', 'mma'];
+export const disciplines: DisciplineId[] = [...disciplineOrder];
 export type Session = { day: number; time: string; duration: number; discipline: DisciplineId; title: Record<Lang, string>; level: 'beginner' | 'all' | 'advanced' };
 export const sessions: Session[] = [
   { day: 0, time: '18:00', duration: 60, discipline: 'muaythai', title: { tr: 'Temel teknik', en: 'Fundamentals' }, level: 'beginner' },
@@ -92,7 +93,7 @@ export const demoCopy = {
     "membershipIntro": "Branş, ders türü ve süreye göre paketleri karşılaştırın. Güncel ücret ve katılım koşullarını akademiden öğrenebilirsiniz.",
     "membershipLabel": "ÜYELİK VE ÜCRETLER",
     "allAccess": "Tüm branşlar",
-    "allAccessBody": "Muay Thai · Kick Boks · MMA",
+    "allAccessBody": "Kick Boks · MMA · Muay Thai",
     "singleAccess": "Tek branş",
     "scope": "Paket kapsamı",
     "periodNames": {
@@ -166,7 +167,7 @@ export const demoCopy = {
     "membershipIntro": "Compare packages by discipline, class type and duration. Contact the academy for current prices and joining requirements.",
     "membershipLabel": "MEMBERSHIPS AND PRICES",
     "allAccess": "All disciplines",
-    "allAccessBody": "Muay Thai · Kickboxing · MMA",
+    "allAccessBody": "Kickboxing · MMA · Muay Thai",
     "singleAccess": "Single discipline",
     "scope": "Package coverage",
     "periodNames": {

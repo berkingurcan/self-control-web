@@ -13,7 +13,7 @@
   const catalog = $derived(content.data.catalog);
   const c = $derived(experienceCopy[lang]);
   const selection = $derived(experience.selection);
-  const name = $derived(selection.discipline === 'academy' ? (lang === 'tr' ? 'Muay Thai · Kick Boks · MMA' : 'Muay Thai · Kickboxing · MMA') : siteName(selection.discipline, lang));
+  const name = $derived(selection.discipline === 'academy' ? (lang === 'tr' ? 'Kick Boks · MMA · Muay Thai' : 'Kickboxing · MMA · Muay Thai') : siteName(selection.discipline, lang));
   const offer = $derived(selectedOffer(selection, catalog));
   const message = $derived(enquiryMessage(selection, lang, catalog, name));
   const whatsapp = $derived(whatsappHref(config.PUBLIC_WHATSAPP, message));

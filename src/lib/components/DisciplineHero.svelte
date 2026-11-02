@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { disciplineOrder } from '#lib/discipline-order.ts';
   import { copy, siteName, siteHref, sites, type Lang } from '#lib/site.ts';
   import { disciplineCopy, type DisciplineId } from '#lib/discipline-copy.ts';
   import { heroDepth } from '#lib/effects.ts';
@@ -8,7 +9,7 @@
   let { site, lang, preview }: { site: DisciplineId; lang: Lang; preview: boolean } = $props();
   const identity = $derived(sites[site]);
   const content = $derived(disciplineCopy[lang][site]);
-  const ids = ['muaythai', 'kickbox', 'mma'] as const;
+  const ids = disciplineOrder;
   const text = $derived(lang === 'tr' ? {
     academy: 'Akademi', location: 'FIGHT ACADEMY · DENİZLİ',
     training: 'Antrenman içeriği', schedule: 'Ders programı', prices: 'Üyelik ve ücretler',

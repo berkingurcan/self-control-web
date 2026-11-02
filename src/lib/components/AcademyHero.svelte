@@ -1,18 +1,19 @@
 <script lang="ts">
+  import { disciplineOrder } from '#lib/discipline-order.ts';
   import { siteName, copy, siteHref, type Lang } from '#lib/site.ts';
   import { heroDepth } from '#lib/effects.ts';
   import Photo from './Photo.svelte';
   import Icon from './Icon.svelte';
 
   let { lang, preview }: { lang: Lang; preview: boolean } = $props();
-  const disciplines = ['muaythai', 'kickbox', 'mma'] as const;
-  const images = ['training', 'kickbox', 'grappling'];
-  const positions = ['57% 48%', '56% 42%', '52% 48%'];
+  const disciplines = disciplineOrder;
+  const images = { kickbox: 'kickbox', mma: 'grappling', muaythai: 'training' };
+  const positions = { kickbox: '56% 42%', mma: '52% 48%', muaythai: '57% 48%' };
   let selected = $state(0);
   const active = $derived(disciplines[selected]);
   const text = $derived(lang === 'tr' ? {
     first: 'SELF', second: 'CONTROL',
-    body: 'Denizli’de Muay Thai, kick boks ve MMA. Ders saatlerini ve ücretleri inceleyin.',
+    body: 'Denizli’de Kick boks, MMA ve Muay Thai. Ders saatlerini ve ücretleri inceleyin.',
     cta: 'Branşları inceleyin', schedule: 'Ders programı',
     statement: 'Üç branş.', statementEnd: 'Tek akademi.',
     path: 'BRANŞ HAKKINDA', explore: 'Branşı inceleyin',
@@ -22,7 +23,7 @@
     masthead: 'FIGHT ACADEMY · DENİZLİ', mastheadNote: 'ANTRENMAN', visualMarker: 'SC / ANTRENMAN', seal: 'TEKNİK · DİSİPLİN · SAYGI · '
   } : {
     first: 'SELF', second: 'CONTROL',
-    body: 'Muay Thai, kickboxing and MMA in Denizli. View class times and membership prices.',
+    body: 'Kickboxing, MMA and Muay Thai in Denizli. View class times and membership prices.',
     cta: 'Explore training', schedule: 'Class timetable',
     statement: 'Three disciplines.', statementEnd: 'One academy.',
     path: 'ABOUT THE DISCIPLINE', explore: 'View discipline',
@@ -45,7 +46,7 @@
     <div class="campaign-frames">
       {#each disciplines as id, index}
         <div class="campaign-frame" class:is-active={selected === index} aria-hidden={selected !== index}>
-          <Photo name={images[index]} alt={copy[lang].home[id].image} eager={index === 0} position={positions[index]}/>
+          <Photo name={images[id]} alt={copy[lang].home[id].image} eager={index === 0} position={positions[id]}/>
         </div>
       {/each}
     </div>
@@ -82,9 +83,9 @@
 </div>
 
 <div class="campaign-baseline">
-  <div class="baseline-statement"><span class="baseline-mark" aria-hidden="true">↗</span><p>{text.statement} <span>{text.statementEnd}</span></p></div>
+  <div class="baseline-statement"><span class="baseline-mark" aria-hidden="true"><Icon name="diagonal" size="1em"/></span><p>{text.statement} <span>{text.statementEnd}</span></p></div>
   <a class="baseline-membership" href="#membership">{text.membership}<Icon name="diagonal" size={16}/></a>
-  <a class="baseline-scroll" href="#academy"><span>{text.scroll}</span><span class="scroll-track" aria-hidden="true">↓</span></a>
+  <a class="baseline-scroll" href="#academy"><span>{text.scroll}</span><span class="scroll-track" aria-hidden="true"><Icon name="arrow-down" size={17}/></span></a>
 </div>
 
 <style>
@@ -143,7 +144,7 @@
   .selected .selector-dot{opacity:1}
   .campaign-baseline{display:flex;align-items:center;justify-content:space-between;gap:25px;min-height:96px;margin-top:17px;border-bottom:1px solid var(--line)}
   .baseline-statement{display:flex;align-items:center;gap:15px}
-  .baseline-mark{font:500 35px/1 Arial,sans-serif}
+  .baseline-mark{display:flex;font-size:35px;line-height:1}
   .baseline-statement>p{font-size:10px;line-height:1.6}
   .baseline-statement>p>span{color:#74746d}
   .baseline-membership,.baseline-scroll{display:flex;align-items:center;gap:15px;min-height:44px;font-size:10px}

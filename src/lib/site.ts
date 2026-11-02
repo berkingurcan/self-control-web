@@ -1,18 +1,19 @@
+import { disciplineOrder, siteOrder } from './discipline-order.ts';
 import { config as env } from '#lib/config.ts';
 export type SiteId = 'academy' | 'muaythai' | 'kickbox' | 'mma';
 export type Lang = 'tr' | 'en';
 export type PageId = 'home' | 'coach' | 'training' | 'about' | 'schedule' | 'start' | 'privacy';
-export const ids: SiteId[] = ['academy', 'muaythai', 'kickbox', 'mma'];
+export const ids: SiteId[] = [...siteOrder];
 export const pages: PageId[] = ['home', 'coach', 'training', 'about', 'schedule', 'start', 'privacy'];
 export const routes: Record<Lang, Record<PageId, string>> = {
   tr: { home: '', coach: 'bas-antrenor', training: 'antrenmanlar', about: 'akademi', schedule: 'program', start: 'basla', privacy: 'gizlilik' },
   en: { home: '', coach: 'head-trainer', training: 'training', about: 'academy', schedule: 'schedule', start: 'start', privacy: 'privacy' }
 };
 export const sites = {
-  academy: { name: 'Fight Academy', label: 'SELF CONTROL', accent: '#ffffff', dark: '#222222', image: 'training', domain: 'selfcontrolfightacademy.com', number: '00', position: '50% 45%', disciplines: ['muaythai', 'kickbox', 'mma'] },
-  muaythai: { name: 'Muay Thai', label: 'MUAY THAI', accent: '#B7D19C', dark: '#263D2D', image: 'muay-thai', domain: 'muaythai.selfcontrolfightacademy.com', number: '01', position: '50% 36%', disciplines: ['muaythai'] },
-  kickbox: { name: 'Kick Boks', label: 'KİCK BOKS', accent: '#AAC6E6', dark: '#253B55', image: 'kickbox', domain: 'kickbox.selfcontrolfightacademy.com', number: '02', position: '50% 42%', disciplines: ['kickbox'] },
-  mma: { name: 'MMA', label: 'MMA', accent: '#E0A097', dark: '#4B2729', image: 'grappling', domain: 'mma.selfcontrolfightacademy.com', number: '03', position: '55% 42%', disciplines: ['mma'] }
+  academy: { name: 'Fight Academy', label: 'SELF CONTROL', accent: '#ffffff', dark: '#222222', image: 'training', domain: 'selfcontrolfightacademy.com', number: '00', position: '50% 45%', disciplines: disciplineOrder },
+  muaythai: { name: 'Muay Thai', label: 'MUAY THAI', accent: '#B7D19C', dark: '#263D2D', image: 'muay-thai', domain: 'muaythai.selfcontrolfightacademy.com', number: '03', position: '50% 36%', disciplines: ['muaythai'] },
+  kickbox: { name: 'Kick Boks', label: 'KİCK BOKS', accent: '#AAC6E6', dark: '#253B55', image: 'kickbox', domain: 'kickbox.selfcontrolfightacademy.com', number: '01', position: '50% 42%', disciplines: ['kickbox'] },
+  mma: { name: 'MMA', label: 'MMA', accent: '#E0A097', dark: '#4B2729', image: 'grappling', domain: 'mma.selfcontrolfightacademy.com', number: '02', position: '55% 42%', disciplines: ['mma'] }
 } as const;
 
 export function siteName(id: SiteId, lang: Lang) {
@@ -70,8 +71,8 @@ export const copy = {
           "DÖVÜŞ",
           "SPORLARI"
         ],
-        "sub": "Denizli’de Muay Thai, kick boks ve MMA. Antrenman içeriklerini, ders programını ve üyelik seçeneklerini inceleyin.",
-        "tag": "MUAY THAI · KİCK BOKS · MMA",
+        "sub": "Denizli’de Kick boks, MMA ve Muay Thai. Antrenman içeriklerini, ders programını ve üyelik seçeneklerini inceleyin.",
+        "tag": "KİCK BOKS · MMA · MUAY THAI",
         "image": "Antrenör eşliğinde Muay Thai çalışması"
       },
       "muaythai": {
@@ -166,7 +167,7 @@ export const copy = {
     "steps": [
       {
         "title": "Branş hakkında bilgi alın",
-        "body": "Muay Thai, kick boks ve MMA içeriklerini inceleyin. Karar vermeden önce antrenöre danışabilirsiniz."
+        "body": "Kick boks, MMA ve Muay Thai içeriklerini inceleyin. Karar vermeden önce antrenöre danışabilirsiniz."
       },
       {
         "title": "Grup ve saatleri öğrenin",
@@ -181,7 +182,7 @@ export const copy = {
     "bannerSub": "Branş, ders saati ve üyelik sorularınız için bize ulaşabilirsiniz.",
     "aboutLabel": "AKADEMİ HAKKINDA",
     "aboutTitle": "SELF CONTROL\nFIGHT ACADEMY",
-    "aboutBody": "Self Control Fight Academy, Denizli’de Muay Thai, kick boks ve MMA branşlarını bir araya getirir. Antrenman yaklaşımının temelinde teknik çalışma, disiplin ve karşılıklı saygı yer alır.",
+    "aboutBody": "Self Control Fight Academy, Denizli’de Kick boks, MMA ve Muay Thai branşlarını bir araya getirir. Antrenman yaklaşımının temelinde teknik çalışma, disiplin ve karşılıklı saygı yer alır.",
     "values": [
       {
         "title": "Teknik ve kontrol",
@@ -291,8 +292,8 @@ export const copy = {
           "ARTS IN",
           "DENİZLİ"
         ],
-        "sub": "Muay Thai, kickboxing and MMA in Denizli. Explore training, class timetables and membership options at Self Control Fight Academy.",
-        "tag": "MUAY THAI · KICKBOXING · MMA",
+        "sub": "Kickboxing, MMA and Muay Thai in Denizli. Explore training, class timetables and membership options at Self Control Fight Academy.",
+        "tag": "KICKBOXING · MMA · MUAY THAI",
         "image": "Muay Thai training with a coach"
       },
       "muaythai": {
@@ -387,7 +388,7 @@ export const copy = {
     "steps": [
       {
         "title": "Learn about the disciplines",
-        "body": "Review Muay Thai, kickboxing and MMA training. A coach can help you compare the options."
+        "body": "Review Kickboxing, MMA and Muay Thai training. A coach can help you compare the options."
       },
       {
         "title": "Check groups and times",
@@ -402,7 +403,7 @@ export const copy = {
     "bannerSub": "Contact us with questions about disciplines, class times and memberships.",
     "aboutLabel": "ABOUT THE ACADEMY",
     "aboutTitle": "SELF CONTROL\nFIGHT ACADEMY",
-    "aboutBody": "Self Control Fight Academy brings together Muay Thai, kickboxing and MMA in Denizli. Our training approach is based on technical practice, discipline and mutual respect.",
+    "aboutBody": "Self Control Fight Academy brings together Kickboxing, MMA and Muay Thai in Denizli. Our training approach is based on technical practice, discipline and mutual respect.",
     "values": [
       {
         "title": "Technique and control",

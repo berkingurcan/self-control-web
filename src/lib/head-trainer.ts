@@ -30,7 +30,7 @@ export const headTrainerCopy = {
     "bio": [
       "Yeni başlayan sporcular için temel duruş, denge, gard ve hareketlerin doğru uygulanması önceliklidir. Teknikler aşamalı olarak ele alınır; düzenli tekrar ve antrenör geri bildirimiyle pekiştirilir.",
       "Deneyim arttıkça kombinasyonlar, savunma, mesafe kontrolü ve uygulama çalışmaları antrenmanın daha geniş bir bölümünü oluşturur. Çalışmaların içeriği branşa ve grubun seviyesine göre belirlenir.",
-      "Muay Thai, kick boks ve MMA farklı teknik alanları kapsar. Her branşta kontrollü çalışma, antrenman arkadaşına saygı ve salon kurallarına uyum önemlidir."
+      "Kick boks, MMA ve Muay Thai farklı teknik alanları kapsar. Her branşta kontrollü çalışma, antrenman arkadaşına saygı ve salon kurallarına uyum önemlidir."
     ],
     "bioNote": "Bu metin genel antrenman yaklaşımını anlatan örnek içeriktir. Antrenörün gerçek özgeçmişi, uzmanlıkları ve belgeleri henüz eklenmedi.",
     "roleLabel": "Görev alanı",
@@ -113,7 +113,7 @@ export const headTrainerCopy = {
     "bio": [
       "For beginners, the focus is on stance, balance, guard and correct movement. Techniques are introduced gradually and reinforced through regular practice and feedback from the coach.",
       "As experience develops, training includes more combinations, defence, distance control and practical drills. The content depends on the discipline and the group’s level.",
-      "Muay Thai, kickboxing and MMA cover different technical areas. Controlled practice, respect for training partners and following gym rules remain important in every discipline."
+      "Kickboxing, MMA and Muay Thai cover different technical areas. Controlled practice, respect for training partners and following gym rules remain important in every discipline."
     ],
     "bioNote": "This is sample content describing a general training approach. The coach’s actual background, qualifications and credentials have not been added yet.",
     "roleLabel": "Area of responsibility",

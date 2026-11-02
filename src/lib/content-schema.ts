@@ -1,3 +1,4 @@
+import { siteOrder } from './discipline-order.ts';
 import type { Session } from './demo.ts';
 import type { MembershipCatalog, PrivateLessonGroup } from './memberships.ts';
 import type { SiteId } from './site.ts';
@@ -6,7 +7,7 @@ export const FRESH_MS = 5 * 60_000;
 export const MAX_AGE_MS = 60 * 60_000;
 export type ContentSnapshot = { schemaVersion: 1; source: 'demo' | 'sheets'; checkedAt: string | null; timezone: string; catalog: MembershipCatalog; sessions: Session[] };
 export type ContentState = { data: ContentSnapshot; phase: 'loading' | 'ready' | 'stale' | 'unavailable' };
-export const siteIds: SiteId[] = ['academy','muaythai','kickbox','mma'];
+export const siteIds: SiteId[] = [...siteOrder];
 export const sheetHeaders = {
   'Ayarlar': ['Ayar', 'Değer'],
   'Program': ['Ders kodu', 'Branş', 'Gün', 'Başlangıç saati', 'Süre (dk)', 'Ders adı', 'İngilizce ders adı', 'Seviye', 'Aktif'],

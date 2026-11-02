@@ -9,9 +9,9 @@ export const editorial = {
       "start": "İletişim"
     },
     "academyTitle": [
-      "MUAY THAI",
       "KİCK BOKS",
-      "MMA"
+      "MMA",
+      "MUAY THAI"
     ],
     "academyTag": "DENİZLİ’DE DÖVÜŞ SPORLARI",
     "academyBody": "Self Control Fight Academy’de branşları, antrenman içeriklerini ve üyelik seçeneklerini inceleyin.",
@@ -21,14 +21,14 @@ export const editorial = {
     "down": "Antrenman içeriği",
     "disciplineLabel": "01 / BRANŞLAR",
     "disciplineTitle": "BRANŞLARIMIZ",
-    "disciplineBody": "Muay Thai, kick boks ve MMA antrenmanlarının temel çalışma alanlarını inceleyin.",
+    "disciplineBody": "Kick boks, MMA ve Muay Thai antrenmanlarının temel çalışma alanlarını inceleyin.",
     "enter": "Branşı inceleyin",
     "techniqueLabel": "01 / ANTRENMAN",
     "techniqueTitle": "TEKNİK VE\nANTRENMAN",
     "techniqueBody": "Temel teknikler, savunma, kondisyon ve kontrollü uygulama çalışmaları.",
     "approachLabel": "02 / AKADEMİ",
     "approachTitle": "ANTRENMAN\nYAKLAŞIMIMIZ",
-    "approachBody": "Self Control Fight Academy, Denizli’de Muay Thai, kick boks ve MMA branşlarını bir araya getirir. Teknik gelişimi, disiplini ve karşılıklı saygıyı önemsiyoruz.",
+    "approachBody": "Self Control Fight Academy, Denizli’de Kick boks, MMA ve Muay Thai branşlarını bir araya getirir. Teknik gelişimi, disiplini ve karşılıklı saygıyı önemsiyoruz.",
     "spaceLabel": "03 / SALON",
     "spaceTitle": "ANTRENMAN\nALANLARI",
     "spaceBody": "Salon ve antrenman alanlarına ait fotoğraflar bu bölümde yer alacaktır.",
@@ -76,7 +76,7 @@ export const editorial = {
     "imageCount": "fotoğraf",
     "more": "Ayrıntıları inceleyin",
     "trainingMarker": "ANTRENMAN",
-    "ribbon": "MUAY THAI · KİCK BOKS · MMA",
+    "ribbon": "KİCK BOKS · MMA · MUAY THAI",
     "teamSignature": "SELF CONTROL FIGHT ACADEMY"
   },
   "en": {
@@ -89,9 +89,9 @@ export const editorial = {
       "start": "Contact"
     },
     "academyTitle": [
-      "MUAY THAI",
       "KICKBOXING",
-      "MMA"
+      "MMA",
+      "MUAY THAI"
     ],
     "academyTag": "MARTIAL ARTS IN DENİZLİ",
     "academyBody": "Read about training disciplines, class timetables and memberships at Self Control Fight Academy.",
@@ -101,14 +101,14 @@ export const editorial = {
     "down": "Training content",
     "disciplineLabel": "01 / DISCIPLINES",
     "disciplineTitle": "OUR DISCIPLINES",
-    "disciplineBody": "Explore the main training areas in Muay Thai, kickboxing and MMA.",
+    "disciplineBody": "Explore the main training areas in Kickboxing, MMA and Muay Thai.",
     "enter": "View discipline",
     "techniqueLabel": "01 / TRAINING",
     "techniqueTitle": "TECHNIQUE\nAND TRAINING",
     "techniqueBody": "Fundamental techniques, defence, conditioning and controlled practice.",
     "approachLabel": "02 / THE ACADEMY",
     "approachTitle": "OUR TRAINING\nAPPROACH",
-    "approachBody": "Self Control Fight Academy brings together Muay Thai, kickboxing and MMA in Denizli. We value technical development, discipline and mutual respect.",
+    "approachBody": "Self Control Fight Academy brings together Kickboxing, MMA and Muay Thai in Denizli. We value technical development, discipline and mutual respect.",
     "spaceLabel": "03 / FACILITIES",
     "spaceTitle": "TRAINING\nFACILITIES",
     "spaceBody": "Photos of the gym and training areas will be added to this section.",
@@ -156,7 +156,7 @@ export const editorial = {
     "imageCount": "photos",
     "more": "View details",
     "trainingMarker": "TRAINING",
-    "ribbon": "MUAY THAI · KICKBOXING · MMA",
+    "ribbon": "KICKBOXING · MMA · MUAY THAI",
     "teamSignature": "SELF CONTROL FIGHT ACADEMY"
   }
 };

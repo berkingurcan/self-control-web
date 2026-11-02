@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { disciplineOrder } from '#lib/discipline-order.ts';
   import { getContext } from 'svelte';
   import { contentKey, type ContentState } from '#lib/content-schema.ts';
   import { config as env } from '#lib/config.ts';
@@ -20,7 +21,7 @@
   const academy = $derived(site === 'academy');
   const preview = env.PUBLIC_ENABLE_PREVIEWS === 'true';
   const headProfile = $derived(href('coach', lang, preview ? `/preview/${site}` : ''));
-  const ids = ['muaythai', 'kickbox', 'mma'] as const;
+  const ids = disciplineOrder;
   let galleryIndex = $state(0);
   let galleryDialog: HTMLDialogElement;
   const gallery = ['gym', 'ring', 'coach'];
@@ -55,7 +56,7 @@
 <section id="academy" class="section approach-section" use:reveal>
   <div class="section-top"><span class="eyebrow">{e.approachLabel}</span><img src="/brand/mark.svg" width="34" height="25" alt=""/></div>
   <div class="approach-grid"><h2 class="display">{e.approachTitle}</h2><div class="approach-copy"><p class="large-body">{e.approachBody}</p><p>{t.introBody}</p><div class="values-list">{#each t.values as value, i}<details open={i === 0}><summary><span>0{i + 1}</span>{value.title}<Icon name="plus" size={18}/></summary><p>{value.body}</p></details>{/each}</div></div></div>
-  <div class="type-ribbon" aria-hidden="true"><span>{e.ribbon}</span><span>↗</span></div>
+  <div class="type-ribbon" aria-hidden="true"><span>{e.ribbon}</span><span><Icon name="diagonal" size="1em"/></span></div>
 </section>
 {/if}
 
@@ -83,4 +84,4 @@
 
 <section id="start" class="section start-section contact-only" use:reveal><div class="start-intro"><div class="contact-heading"><span class="eyebrow">{sectionLabel(e.contactLabel)}</span><h2 class="display">{e.contactTitle}</h2><p class="large-body">{e.contactBody}</p></div><div class="contact-list"><div><Icon name="pin"/><div><span>{t.address}</span>{#if address}<a target="_blank" rel="noopener noreferrer" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`}>{address}<Icon name="diagonal" size={16}/></a>{:else}<p>{t.addressPending}</p>{/if}</div></div><div><Icon name="mail"/><div><span>{t.contact}</span>{#if email}<a href={`mailto:${email}`}>{email}</a>{/if}{#if whatsapp}<a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer">WhatsApp<Icon name="diagonal" size={16}/></a>{/if}{#if !email && !whatsapp}<p>{t.contactPending}</p>{/if}</div></div><div><Icon name="globe"/><div><span>Instagram</span>{#if instagram}<a href={`https://www.instagram.com/${instagram.replace(/^@/, '')}/`} target="_blank" rel="noopener noreferrer">@{instagram.replace(/^@/, '')}<Icon name="diagonal" size={16}/></a>{:else}<p>{t.instagramPending}</p>{/if}</div></div></div></div></section>
 
-<dialog use:modalFocus class="gallery-dialog" use:swipe={changePhoto} bind:this={galleryDialog} aria-label={e.gallery} onclick={(event) => { if (event.target === galleryDialog) galleryDialog.close(); }} onkeydown={(event) => { if (event.key === 'ArrowRight') changePhoto(1); if (event.key === 'ArrowLeft') changePhoto(-1); }}><div class="gallery-dialog-top"><span class="eyebrow">SELF CONTROL / {e.stock}</span><button aria-label={e.close} class="dialog-close" onclick={() => galleryDialog.close()}><Icon name="close"/></button></div><Photo name={gallery[galleryIndex]} alt={e.spaceCaption[galleryIndex]} eager/><div class="gallery-dialog-bottom"><button aria-label={e.previous} onclick={() => changePhoto(-1)}><span>←</span></button><span>0{galleryIndex + 1} / 03 — {e.spaceCaption[galleryIndex]}</span><button aria-label={e.next} onclick={() => changePhoto(1)}><span>→</span></button></div><p class="photo-note">{e.stockNote}</p></dialog>
+<dialog use:modalFocus class="gallery-dialog" use:swipe={changePhoto} bind:this={galleryDialog} aria-label={e.gallery} onclick={(event) => { if (event.target === galleryDialog) galleryDialog.close(); }} onkeydown={(event) => { if (event.key === 'ArrowRight') changePhoto(1); if (event.key === 'ArrowLeft') changePhoto(-1); }}><div class="gallery-dialog-top"><span class="eyebrow">SELF CONTROL / {e.stock}</span><button aria-label={e.close} class="dialog-close" onclick={() => galleryDialog.close()}><Icon name="close"/></button></div><Photo name={gallery[galleryIndex]} alt={e.spaceCaption[galleryIndex]} eager/><div class="gallery-dialog-bottom"><button aria-label={e.previous} onclick={() => changePhoto(-1)}><Icon name="arrow-left" size={24}/></button><span>0{galleryIndex + 1} / 03 — {e.spaceCaption[galleryIndex]}</span><button aria-label={e.next} onclick={() => changePhoto(1)}><Icon name="arrow" size={24}/></button></div><p class="photo-note">{e.stockNote}</p></dialog>
