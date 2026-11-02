@@ -12,7 +12,7 @@
   import DisciplineHero from './DisciplineHero.svelte';
   import DisciplineTraining from './DisciplineTraining.svelte';
   import TrainingSchedule from './TrainingSchedule.svelte';
-  import { coaches, demoCopy, type CoachId } from '#lib/demo.ts';
+  import { coaches, demoCopy } from '#lib/demo.ts';
   let { site, lang }: { site: SiteId; lang: Lang } = $props();
   const t = $derived(copy[lang]), e = $derived(editorial[lang]), identity = $derived(sites[site]);
   const content = getContext<ContentState>(contentKey);
@@ -21,15 +21,14 @@
   const preview = env.PUBLIC_ENABLE_PREVIEWS === 'true';
   const headProfile = $derived(href('coach', lang, preview ? `/preview/${site}` : ''));
   const ids = ['muaythai', 'kickbox', 'mma'] as const;
-  let galleryIndex = $state(0), selectedCoach = $state<CoachId>('head');
-  let galleryDialog: HTMLDialogElement, coachDialog: HTMLDialogElement;
+  let galleryIndex = $state(0);
+  let galleryDialog: HTMLDialogElement;
   const gallery = ['gym', 'ring', 'coach'];
-  const coach = $derived(coaches[selectedCoach]), d = $derived(demoCopy[lang]);
+  const d = $derived(demoCopy[lang]);
   const email = env.PUBLIC_CONTACT_EMAIL || '', address = env.PUBLIC_ADDRESS || '', instagram = env.PUBLIC_INSTAGRAM || '';
   const whatsapp = (env.PUBLIC_WHATSAPP || '').replace(/\D/g, '');
-  function sectionLabel(label: string) { return academy ? label : label.replace(/^0([3-6])/, (_, number) => `0${Number(number) - 1}`); }
+  function sectionLabel(label: string) { return academy ? label : label.replace(/^0([3-6])/, (_, number) => `0${Number(number) - (Number(number) >= 5 ? 2 : 1)}`); }
   function openGallery(index: number) { galleryIndex = index; galleryDialog.showModal(); }
-  function showCoach(id: CoachId) { selectedCoach = id; coachDialog.showModal(); }
   function changePhoto(step: number) { galleryIndex = (galleryIndex + step + gallery.length) % gallery.length; }
 </script>
 
@@ -67,10 +66,11 @@
   <p class="photo-note">{e.stockNote}</p>
 </section>
 
+{#if academy}
 <section id="trainers" class="trainers-section">
-  <div class="head-trainer" use:reveal><a class="head-photo head-profile-link" href={headProfile} aria-label={`${coaches.head.title[lang]} — ${e.details}`}><Photo name={coaches.head.image} alt={`${coaches.head.title[lang]} / ${e.trainerNote}`} position={coaches.head.position}/><span class="head-photo-index" aria-hidden="true">SC / 01</span><span class="image-label">{d.coachDemo} / {e.stock}</span><span class="head-profile-arrow"><Icon name="diagonal"/></span></a><div class="head-copy"><span class="eyebrow">{sectionLabel(e.headLabel)}</span><h2 class="display">{e.headTitle}</h2><div class="coach-name"><span>{d.coachDemo} / SELF CONTROL</span><h3><a href={headProfile}>{coaches.head.title[lang]}</a></h3></div><p>{coaches.head.body[lang]}</p><div class="tag-row coach-tags">{#each coaches.head.tags[lang] as tag}<span>{tag}</span>{/each}</div><div class="head-actions"><a class="underlined-link" href={headProfile}>{e.details}<Icon name="diagonal"/></a><a class="quiet-link" href="#team">{e.allTeam}<span aria-hidden="true">↓</span></a></div></div></div>
-  <div id="team" class="section team-section" use:reveal><div class="section-top"><span class="eyebrow">{e.teamLabel}</span><span class="eyebrow">SELF CONTROL / {e.teamMarker}</span></div><div class="section-heading"><h2 class="display">{e.teamTitle}</h2><p>{e.teamBody}</p></div><div class="team-grid">{#each ids as id, index}<button class="trainer-card" style={`--coach-accent:${sites[id].accent}`} onclick={() => showCoach(id)} aria-label={`${e.profile}: ${siteName(id, lang)}`}><div class="trainer-photo"><Photo name={coaches[id].image} alt={`${coaches[id].title[lang]} / ${e.trainerNote}`} position={coaches[id].position}/><span class="trainer-stock">{d.coachDemo}</span><span class="trainer-number" aria-hidden="true">0{index + 2}</span><span class="circle-arrow"><Icon name="diagonal"/></span></div><div class="trainer-card-copy"><span class="eyebrow" lang={id === 'muaythai' ? 'en' : lang}>SELF CONTROL / {siteName(id, lang)}</span><h3 lang={id === 'muaythai' ? 'en' : lang}>{coaches[id].title[lang]}</h3><p>{coaches[id].subtitle[lang]}</p><span class="trainer-profile-link">{e.details}<Icon name="diagonal" size={14}/></span></div></button>{/each}</div><p class="photo-note team-demo-note">{d.coachNote}</p></div>
+  <div class="head-trainer" use:reveal><a class="head-photo head-profile-link" href={headProfile} aria-label={`${coaches.head.title[lang]} — ${e.details}`}><Photo name={coaches.head.image} alt={`${coaches.head.title[lang]} / ${e.trainerNote}`} position={coaches.head.position}/><span class="head-photo-index" aria-hidden="true">SC / 01</span><span class="image-label">{d.coachDemo} / {e.stock}</span><span class="head-profile-arrow"><Icon name="diagonal"/></span></a><div class="head-copy"><span class="eyebrow">{sectionLabel(e.headLabel)}</span><h2 class="display">{e.headTitle}</h2><div class="coach-name"><span>{d.coachDemo} / SELF CONTROL</span><h3><a href={headProfile}>{coaches.head.title[lang]}</a></h3></div><p>{coaches.head.body[lang]}</p><div class="tag-row coach-tags">{#each coaches.head.tags[lang] as tag}<span>{tag}</span>{/each}</div><div class="head-actions"><a class="underlined-link" href={headProfile}>{e.details}<Icon name="diagonal"/></a></div></div></div>
 </section>
+{/if}
 
 <TrainingSchedule {site} {lang} label={sectionLabel(e.scheduleLabel)}/>
 
@@ -84,4 +84,3 @@
 <section id="start" class="section start-section contact-only" use:reveal><div class="start-intro"><div class="contact-heading"><span class="eyebrow">{sectionLabel(e.contactLabel)}</span><h2 class="display">{e.contactTitle}</h2><p class="large-body">{e.contactBody}</p></div><div class="contact-list"><div><Icon name="pin"/><div><span>{t.address}</span>{#if address}<a target="_blank" rel="noopener noreferrer" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`}>{address}<Icon name="diagonal" size={16}/></a>{:else}<p>{t.addressPending}</p>{/if}</div></div><div><Icon name="mail"/><div><span>{t.contact}</span>{#if email}<a href={`mailto:${email}`}>{email}</a>{/if}{#if whatsapp}<a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer">WhatsApp<Icon name="diagonal" size={16}/></a>{/if}{#if !email && !whatsapp}<p>{t.contactPending}</p>{/if}</div></div><div><Icon name="globe"/><div><span>Instagram</span>{#if instagram}<a href={`https://www.instagram.com/${instagram.replace(/^@/, '')}/`} target="_blank" rel="noopener noreferrer">@{instagram.replace(/^@/, '')}<Icon name="diagonal" size={16}/></a>{:else}<p>{t.instagramPending}</p>{/if}</div></div></div></div></section>
 
 <dialog use:modalFocus class="gallery-dialog" use:swipe={changePhoto} bind:this={galleryDialog} aria-label={e.gallery} onclick={(event) => { if (event.target === galleryDialog) galleryDialog.close(); }} onkeydown={(event) => { if (event.key === 'ArrowRight') changePhoto(1); if (event.key === 'ArrowLeft') changePhoto(-1); }}><div class="gallery-dialog-top"><span class="eyebrow">SELF CONTROL / {e.stock}</span><button aria-label={e.close} class="dialog-close" onclick={() => galleryDialog.close()}><Icon name="close"/></button></div><Photo name={gallery[galleryIndex]} alt={e.spaceCaption[galleryIndex]} eager/><div class="gallery-dialog-bottom"><button aria-label={e.previous} onclick={() => changePhoto(-1)}><span>←</span></button><span>0{galleryIndex + 1} / 03 — {e.spaceCaption[galleryIndex]}</span><button aria-label={e.next} onclick={() => changePhoto(1)}><span>→</span></button></div><p class="photo-note">{e.stockNote}</p></dialog>
-<dialog use:modalFocus class="coach-dialog" bind:this={coachDialog} aria-labelledby="coach-title" onclick={(event) => { if (event.target === coachDialog) coachDialog.close(); }} onkeydown={(event) => { if (event.key === 'Escape') coachDialog.close(); }}><button aria-label={e.close} class="dialog-close" onclick={() => coachDialog.close()}><Icon name="close"/></button><div class="coach-dialog-photo"><Photo name={coach.image} alt={e.trainerNote} position={coach.position}/><span class="image-label">{d.coachDemo} / {e.stock}</span></div><div class="dialog-inner"><span class="eyebrow">SELF CONTROL / {d.coachDemo}</span><h2 id="coach-title">{coach.title[lang]}</h2><p>{coach.body[lang]}</p><div class="tag-row"><span class="sr-only">{d.focus}</span>{#each coach.tags[lang] as tag}<span>{tag}</span>{/each}</div><p class="coach-disclaimer">{d.coachNote}</p><a class="underlined-link" href="#start" onclick={() => coachDialog.close()}>{e.coachContact}<Icon name="diagonal"/></a></div></dialog>

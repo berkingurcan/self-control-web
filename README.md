@@ -52,18 +52,18 @@ Without these values, the site displays intentional placeholders. The site has n
 
 ## One-page structure and navigation
 
-Each identity has one complete homepage per language: `/` (Turkish) and `/en` (English), plus a dedicated head trainer profile at `/bas-antrenor` and `/en/head-trainer`. On the homepage, the header and mobile bottom bar scroll to sections. On the trainer profile, they return to the corresponding homepage section. Language switching preserves the current homepage section or stays on the translated head trainer profile. Discipline section numbers remain sequential after the approach section is omitted.
+Each identity has one complete homepage per language: `/` (Turkish) and `/en` (English). The academy also has a dedicated head trainer profile at `/bas-antrenor` and `/en/head-trainer`; discipline sites have no trainer sections or profile pages. On the homepage, the header and mobile bottom bar scroll to sections. On the trainer profile, they return to the corresponding homepage section. Language switching preserves the current homepage section or stays on the translated head trainer profile. Discipline section numbers remain sequential after the approach and trainer sections are omitted.
 
 - `#top`: identity-specific hero and first action.
 - `#training`: discipline selection on the academy, technical focus on discipline sites.
 - `#academy`: philosophy and expandable values, only on the main academy site. Discipline pages omit this section and its navigation links.
 - `#space`: gym photography with a native gallery dialog, touch swipe, arrows and keyboard controls.
-- `#trainers`: head trainer feature linking to a separate profile page, plus team cards with profile dialogs.
+- `#trainers`: academy-only head trainer feature linking to a separate profile page. Other coach cards and profile dialogs are omitted across all identities.
 - `#schedule`: interactive sample weekly timetable with discipline and day filters; monthly, 6-month and annual sample membership plans (`#membership`).
 - FAQ disclosures and `#start`: direct contact details, with no enquiry form.
 - Privacy and PWA installation open in native dialogs without leaving the page.
 
-Legacy routes such as `/antrenmanlar`, `/akademi`, `/program`, `/basla` and English equivalents redirect to their new sections. `/gizlilik` and `/en/privacy` open the privacy dialog through `#privacy`. Each production build prerenders four HTML pages: two homepages and two head trainer profiles.
+Legacy routes such as `/antrenmanlar`, `/akademi`, `/program`, `/basla` and English equivalents redirect to their new sections. `/gizlilik` and `/en/privacy` open the privacy dialog through `#privacy`. The academy build prerenders four HTML pages: two homepages and two head trainer profiles. Each discipline build prerenders only its two localized homepages; trainer profile URLs return 404.
 
 ## Design system
 
@@ -74,10 +74,10 @@ Legacy routes such as `/antrenmanlar`, `/akademi`, `/program`, `/basla` and Engl
 - Display typography: locally hosted Barlow Condensed ExtraBold, with solid Turkish headings.
 - UI typography: locally hosted Poppins Medium.
 - Supplied original emblem and wordmark paths retained in SVG. Team headers use only the SELF CONTROL line plus a colour-coded, title-case discipline descriptor. The academy retains its full signature.
-- White editorial academy hero with oversized overlapping type, monochrome photography, an emblem seal and a three-discipline photo selector; full-image dark discipline heroes with one metal accent. The academy hero uses brief entrance choreography, pointer-only photographic depth and matching localized discipline links. Native buttons support keyboard selection; decorative movement respects reduced-motion preferences. Progressive scroll reveals, section-aware navigation, reading progress, desktop-only restrained tilt, image zoom and native gallery/profile dialogs. Editorial content remains visible without JavaScript; live schedules and prices require JavaScript.
-- Phone-first heroes with the action in the initial viewport, mobile bottom navigation, safe-area spacing, 44px+ primary controls, portrait trainer cards with native horizontal scrolling on phones, touch gallery navigation and a seven-day timetable selector.
+- White editorial academy hero with oversized overlapping type, monochrome photography, an emblem seal and a three-discipline photo selector; full-image dark discipline heroes with one metal accent. The academy hero uses brief entrance choreography, pointer-only photographic depth and matching localized discipline links. Native buttons support keyboard selection; decorative movement respects reduced-motion preferences. Progressive scroll reveals, section-aware navigation, reading progress, desktop-only restrained tilt, image zoom and native gallery dialogs. Editorial content remains visible without JavaScript; live schedules and prices require JavaScript.
+- Phone-first heroes with the action in the initial viewport, mobile bottom navigation, safe-area spacing, 44px+ primary controls, touch gallery navigation and a seven-day timetable selector.
 
-`src/lib/site.ts` contains base localized copy, routing and identity tokens. `src/lib/editorial.ts` contains the one-page editorial copy. `src/lib/demo.ts` contains explicitly labelled sample sessions, bilingual coaching copy and portrait mapping; pricing lives in `src/lib/data/memberships.json`; `TrainingSchedule.svelte` renders the timetable and plans. `src/lib/effects.ts` contains progressive motion/touch enhancements. `src/lib/config.ts` reads explicitly public build settings. Components are under `src/lib/components`; page composition is in `src/lib/components/OnePage.svelte`; shared styles are in `src/app.css`.
+`src/lib/site.ts` contains base localized copy, routing and identity tokens. `src/lib/editorial.ts` contains the one-page editorial copy. `src/lib/demo.ts` contains explicitly labelled sample sessions, bilingual head coach copy and portrait mapping; pricing lives in `src/lib/data/memberships.json`; `TrainingSchedule.svelte` renders the timetable and plans. `src/lib/effects.ts` contains progressive motion/touch enhancements. `src/lib/config.ts` reads explicitly public build settings. Components are under `src/lib/components`; page composition is in `src/lib/components/OnePage.svelte`; shared styles are in `src/app.css`.
 
 ## PWA and offline behavior
 
@@ -95,7 +95,7 @@ npm run build:all
 npm test
 ```
 
-Tests verify all four build identities, four localized documents per production output, head trainer routing and six-image bento galleries, all required section anchors and dialogs, local navigation targets, manifests/icons, noindex defaults and offline cache/fallback behavior. Browser review covers Turkish and English layouts at phone, tablet and desktop widths, plus language switching, menu section navigation, gym gallery, trainer dialogs, contact layouts, timetable selection, FAQ and installation instructions. Real-device installation and touch gestures should be checked after deployment.
+Tests verify all four build identities, four localized academy documents and two per discipline, academy-only head trainer routing and six-image bento galleries, all required section anchors and dialogs, local navigation targets, manifests/icons, noindex defaults and offline cache/fallback behavior. Browser review covers Turkish and English layouts at phone, tablet and desktop widths, plus language switching, menu section navigation, gym gallery, contact layouts, timetable selection, FAQ and installation instructions. Real-device installation and touch gestures should be checked after deployment.
 
 The dependency lockfile is included. Patched glob/minimatch versions are pinned through overrides for the Vercel build dependency chain. The current dependency audit still reports low-severity issues in the upstream build-time dependency tree; no high or critical issues were reported. Do not use `npm audit fix --force` blindly: npm currently suggests incompatible framework downgrades.
 
@@ -120,7 +120,7 @@ New gym and coaching references (also credited in the footer):
 - Ron Lach — https://www.pexels.com/photo/empty-boxing-ring-8744796/
 - Mikhail Nilov — https://www.pexels.com/photo/man-training-a-woman-in-boxing-6740346/
 
-Trainer cards use separate stock portraits and role-based sample profiles. Stock subjects are not identified as actual academy staff; names, qualifications and achievements have not been invented. Replace `trainer-*`, `coach`, `gym`, `ring` and discipline image assets with actual material when available.
+The academy head trainer feature uses a stock portrait and a role-based sample profile. Stock subjects are not identified as actual academy staff; a name, qualifications and achievements have not been invented. Replace `trainer-head`, `coach`, `gym`, `ring` and discipline image assets with actual material when available.
 
 
 ## Sample timetable and pricing
@@ -136,19 +136,16 @@ The current design intentionally includes demo business content requested for re
 
 The longer plans display their full upfront price, monthly equivalent and rounded saving against monthly payments. These are sample prices, not researched market rates or a real sales offer. Kick Box uses the supplied 1/3/6-month reference prices (₺5,000 / ₺12,000 / ₺18,000), with no annual plan in that reference. Package CTAs open a prepared enquiry containing the selected package; they do not take payments or reserve classes. All-access memberships cover all three disciplines, single-discipline memberships cover the selected branch. Private lessons and equipment are excluded from the sample plans.
 
-Additional self-hosted stock portraits:
+Self-hosted head trainer stock portrait:
 
 - RDNE Stock project — https://www.pexels.com/photo/a-man-with-clenched-fists-8611936/
-- Gustavo Fring — https://www.pexels.com/photo/portrait-of-boxer-during-training-6699099/
-- Annushka Ahuja — https://www.pexels.com/photo/portrait-of-boxer-on-ring-7991903/
-- Amirr Zolfaghari — https://www.pexels.com/photo/black-and-white-boxer-in-training-pose-30323312/
 
 
 ## Dedicated head trainer profile
 
-The head portrait, role title and “View profile” link all open `/bas-antrenor` (Turkish) or `/en/head-trainer` (English), within the current identity and preview prefix. The main academy and discipline homepages remain one-page layouts. The profile has a dedicated portrait hero, biography, coaching principles and six-photo responsive bento grid. Gallery photographs open in a native lightbox with previous/next controls, keyboard arrows and touch swipe. The portrait, training and gym images are explicitly illustrative stock; the gallery does not claim all subjects are the same person. The biography is sample editorial copy, with no invented name, qualification or record.
+The head portrait, role title and “View profile” link all open `/bas-antrenor` (Turkish) or `/en/head-trainer` (English), on the academy, preserving its preview prefix. Discipline sites do not show trainers or expose head trainer profiles. The main academy and discipline homepages remain one-page layouts. The profile has a dedicated portrait hero, biography, coaching principles and six-photo responsive bento grid. Gallery photographs open in a native lightbox with previous/next controls, keyboard arrows and touch swipe. The portrait, training and gym images are explicitly illustrative stock; the gallery does not claim all subjects are the same person. The biography is sample editorial copy, with no invented name, qualification or record.
 
-`src/lib/head-trainer.ts` contains bilingual profile copy and the six-image gallery mapping. `HeadTrainer.svelte` contains the profile design. Sitemap, language alternates, canonical URLs and offline precaching include both profile languages.
+`src/lib/head-trainer.ts` contains bilingual profile copy and the six-image gallery mapping. `HeadTrainer.svelte` contains the profile design. Only the academy sitemap, language alternates, canonical URLs and offline precaching include both profile languages.
 
 
 ## Membership catalogue and private lessons

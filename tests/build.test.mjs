@@ -5,10 +5,10 @@ import { join } from 'node:path';
 const ids=['academy','muaythai','kickbox','mma'];
 async function walk(dir){const out=[];for(const e of await readdir(dir,{withFileTypes:true})){const path=join(dir,e.name);if(e.isDirectory())out.push(...await walk(path));else out.push(path)}return out}
 for(const id of ids){
- test(`${id}: production output has localized home and trainer pages with its own PWA identity`,async()=>{
+ test(`${id}: production output shows a head coach only on academy and retains its own PWA identity`,async()=>{
   const root=`builds/${id}/output/static`;
   const files=await walk(root); const html=files.filter(f=>f.endsWith('.html')&&!f.endsWith('/offline.html'));
-  assert.equal(html.length,4); assert(!html.some(f=>f.includes('/preview/')));
+  assert.equal(html.length,id === 'academy' ? 4 : 2); assert(!html.some(f=>f.includes('/preview/')));
   const home=await readFile(`${root}/index.html`,'utf8');const english=await readFile(`${root}/en.html`,'utf8');
   assert(home.includes('lang="tr"'));assert(english.includes('lang="en"'));
   assert(home.includes(`data-identity="${id}"`));assert(home.includes('noindex,nofollow'));
@@ -16,20 +16,45 @@ for(const id of ids){
   assert.equal(manifest.display,'standalone');assert.equal(manifest.lang,'tr');
   assert(manifest.name.includes(id==='academy'?'Fight Academy':id==='muaythai'?'Muay Thai':id==='kickbox'?'Kick Boks':'MMA'));
   for(const icon of manifest.icons)await access(`${root}${icon.src}`);
-  for(const section of ['top','training',...(id === 'academy' ? ['academy'] : []),'space','trainers','schedule','start']) assert(home.includes(`id="${section}"`), `${id}: missing ${section}`);
+  for(const section of ['top','training',...(id === 'academy' ? ['academy', 'trainers'] : []),'space','schedule','start']) assert(home.includes(`id="${section}"`), `${id}: missing ${section}`);
   assert.equal(home.includes('id="academy"'), id === 'academy');
-  assert(home.includes('gallery-dialog')); assert(home.includes('coach-dialog'));
+  assert(home.includes('gallery-dialog'));
+  for (const page of [home, english]) {
+   assert.equal(page.includes('id="trainers"'), id === 'academy');
+   assert.equal(page.includes('href="#trainers"'), id === 'academy');
+   assert(!page.includes('id="team"'));
+   assert(!page.includes('href="#team"'));
+   assert(!page.includes('class="trainer-card"'));
+   assert(!page.includes('class="coach-dialog"'));
+   for (const discipline of ['muaythai','kickbox','mma']) assert(!page.includes(`/images/trainer-${discipline}-`));
+   assert.equal(page.includes('/images/trainer-head-'), id === 'academy');
+   assert.equal(page.includes('href="/bas-antrenor"') || page.includes('href="/en/head-trainer"'), id === 'academy');
+  }
+  const sitemap=await readFile(`${root}/sitemap.xml`,'utf8');
+  const worker=await readFile(`${root}/service-worker.js`,'utf8');
+  for (const path of ['/bas-antrenor', '/en/head-trainer']) {
+   assert.equal(sitemap.includes(path), id === 'academy');
+   assert.equal(worker.includes(`"${path}"`), id === 'academy');
+  }
+  if (id === 'academy') {
   const trainer=await readFile(`${root}/bas-antrenor.html`,'utf8');
   const trainerEn=await readFile(`${root}/en/head-trainer.html`,'utf8');
   assert(home.includes('href="/bas-antrenor"'));assert(english.includes('href="/en/head-trainer"'));
   for(const profile of [trainer,trainerEn]){
    for(const anchor of ['top','biography','coaching','journal'])assert(profile.includes(`id="${anchor}"`));
    assert.equal((profile.match(/class="bento-tile /g)||[]).length,6,'six bento photographs');
-   assert(profile.includes('profile-lightbox'));assert(profile.includes('data-profile='));
+   assert(profile.includes('profile-lightbox'));assert(profile.includes('data-profile='));assert(!profile.includes('#team'));
   }
   assert(trainer.includes('href="/en/head-trainer"'));assert(trainerEn.includes('href="/bas-antrenor"'));
   assert(trainer.includes('href="/#trainers"'));assert(trainerEn.includes('href="/en#trainers"'));
-  const sitemap=await readFile(`${root}/sitemap.xml`,'utf8');assert(sitemap.includes('/bas-antrenor'));assert(sitemap.includes('/en/head-trainer'));
+  } else {
+   assert(!files.includes(`${root}/bas-antrenor.html`));
+   assert(!files.includes(`${root}/en/head-trainer.html`));
+   assert(home.includes('03 / DERS PROGRAMI'));
+   assert(home.includes('04 / İLETİŞİM'));
+   assert(english.includes('03 / CLASS TIMETABLE'));
+   assert(english.includes('04 / CONTACT'));
+  }
 
   for(const file of html){
    const text=await readFile(file,'utf8');assert(!/<form[\s>]/.test(text), `${file}: enquiry form must be absent`);assert.equal((text.match(/<h1[\s>]/g)||[]).length,1,file);

@@ -1,14 +1,14 @@
 {
   "id": "/",
-  "name": "Self Control Fight Academy",
-  "short_name": "Self Control",
+  "name": "Self Control MMA",
+  "short_name": "SC MMA",
   "lang": "tr",
   "description": "Denizli’de Muay Thai, kick boks ve MMA antrenmanları — Self Control Fight Academy",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#ffffff",
+  "background_color": "#080808",
+  "theme_color": "#080808",
   "orientation": "any",
   "icons": [
     {

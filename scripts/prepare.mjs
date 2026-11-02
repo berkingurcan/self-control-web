@@ -19,8 +19,8 @@ await writeFile('static/manifest.webmanifest', JSON.stringify({
 const indexable = process.env.PUBLIC_INDEXABLE === 'true';
 const domain = `${id === 'academy' ? '' : `${id}.`}selfcontrolfightacademy.com`;
 await writeFile('static/robots.txt', `User-agent: *\n${indexable ? 'Allow: /\nDisallow: /preview/' : 'Disallow: /'}\n${indexable ? `Sitemap: https://${domain}/sitemap.xml\n` : ''}`);
-const tr = ['', '/bas-antrenor'];
-const en = ['/en', '/en/head-trainer'];
+const tr = id === 'academy' ? ['', '/bas-antrenor'] : [''];
+const en = id === 'academy' ? ['/en', '/en/head-trainer'] : ['/en'];
 await writeFile('static/sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${[...tr, ...en].map(path => `<url><loc>https://${domain}${path || '/'}</loc></url>`).join('')}</urlset>`);
 const revision = createHash('sha256').update(`${Date.now()}-${id}`).digest('hex').slice(0, 12);
 const sw = `const CACHE='self-control-${id}-${revision}';

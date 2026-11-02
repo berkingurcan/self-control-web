@@ -4,7 +4,7 @@ export const editorial = {
       "training": "Branşlar",
       "academy": "Akademi",
       "space": "Salon",
-      "trainers": "Antrenörler",
+      "trainers": "Baş Antrenör",
       "schedule": "Program",
       "start": "İletişim"
     },
@@ -50,9 +50,6 @@ export const editorial = {
     "details": "Profili inceleyin",
     "biography": "Özgeçmiş ve uzmanlık bilgileri henüz eklenmedi.",
     "trainerNote": "TEMSİLİ ANTRENÖR PROFİLİ",
-    "teamLabel": "ANTRENÖR KADROSU",
-    "teamTitle": "BRANŞ\nANTRENÖRLERİ",
-    "teamBody": "Muay Thai, kick boks ve MMA antrenörleri hakkında bilgi alın.",
     "trainer": "Antrenör",
     "profile": "Antrenör profili",
     "scheduleLabel": "05 / DERS PROGRAMI",
@@ -68,9 +65,7 @@ export const editorial = {
     "contactBody": "Antrenmanlar, ders saatleri ve üyelik koşulları hakkında bilgi almak için bize ulaşabilirsiniz.",
     "footer": "SELF CONTROL",
     "footerSub": "Fight Academy · Denizli",
-    "allTeam": "Tüm antrenörler",
     "website": "Akademi",
-    "coachContact": "Antrenman hakkında bilgi alın",
     "close": "Kapat",
     "disciplineStatements": {
       "muaythai": "DENİZLİ / MUAY THAI",
@@ -81,7 +76,6 @@ export const editorial = {
     "imageCount": "fotoğraf",
     "more": "Ayrıntıları inceleyin",
     "trainingMarker": "ANTRENMAN",
-    "teamMarker": "ANTRENÖR KADROSU",
     "ribbon": "MUAY THAI · KİCK BOKS · MMA",
     "teamSignature": "SELF CONTROL FIGHT ACADEMY"
   },
@@ -90,7 +84,7 @@ export const editorial = {
       "training": "Disciplines",
       "academy": "Academy",
       "space": "Facilities",
-      "trainers": "Coaches",
+      "trainers": "Head Coach",
       "schedule": "Timetable",
       "start": "Contact"
     },
@@ -136,9 +130,6 @@ export const editorial = {
     "details": "View profile",
     "biography": "The coach’s background and credentials have not been added yet.",
     "trainerNote": "ILLUSTRATIVE COACH PROFILE",
-    "teamLabel": "COACHING TEAM",
-    "teamTitle": "DISCIPLINE\nCOACHES",
-    "teamBody": "Find out about the Muay Thai, kickboxing and MMA coaching roles.",
     "trainer": "Coach",
     "profile": "Coach profile",
     "scheduleLabel": "05 / CLASS TIMETABLE",
@@ -154,9 +145,7 @@ export const editorial = {
     "contactBody": "Contact us for information about training, class times and membership requirements.",
     "footer": "SELF CONTROL",
     "footerSub": "Fight Academy · Denizli",
-    "allTeam": "All coaches",
     "website": "Academy",
-    "coachContact": "Ask about training",
     "close": "Close",
     "disciplineStatements": {
       "muaythai": "DENİZLİ / MUAY THAI",
@@ -167,7 +156,6 @@ export const editorial = {
     "imageCount": "photos",
     "more": "View details",
     "trainingMarker": "TRAINING",
-    "teamMarker": "COACHING TEAM",
     "ribbon": "MUAY THAI · KICKBOXING · MMA",
     "teamSignature": "SELF CONTROL FIGHT ACADEMY"
   }
