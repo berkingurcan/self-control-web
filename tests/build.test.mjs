@@ -14,10 +14,8 @@ for(const id of ids){
   const server=await readFile(`builds/${id}/cloudflare-tmp/server.js`,'utf8');
   assert(server.includes('id: "/api/content"'));
   assert(server.includes('id: "/[...path]"'), 'legacy redirects must stay reachable on the Worker');
-  const routes=JSON.parse(await readFile(`${root}/_routes.json`,'utf8'));
-  assert.equal(routes.version,1);
-  assert(routes.include.includes('/*'));
-  assert(!routes.exclude.some(path => path === '/*' || path === '/api/*' || path === '/api/content'));
+  const ignoredAssets=await readFile(`${root}/.assetsignore`,'utf8');
+  for (const file of ['_worker.js','_routes.json','_headers','_redirects']) assert(ignoredAssets.split('\n').includes(file));
   const headers=await readFile(`${root}/_headers`,'utf8');
   assert(headers.includes("frame-ancestors 'none'"));
   assert(headers.includes('/service-worker.js\n  Cache-Control: no-cache'));

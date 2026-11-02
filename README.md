@@ -1,6 +1,6 @@
 # Self Control Fight Academy
 
-Aurum Arena website implementation in SvelteKit 3, Svelte 5 and TypeScript. Turkish is the default language; English has its own `/en` routes. One shared codebase produces four separately branded Cloudflare Pages projects.
+Aurum Arena website implementation in SvelteKit 3, Svelte 5 and TypeScript. Turkish is the default language; English has its own `/en` routes. One shared codebase produces four separately branded Cloudflare deployments.
 
 ## Run locally
 
@@ -22,43 +22,41 @@ Open the URL printed by Vite. The default development port is 5173.
 
 Preview routes are enabled only with `PUBLIC_ENABLE_PREVIEWS=true`. Production projects must use `false`.
 
-## Deploy to Cloudflare Pages
+## Deploy to Cloudflare
 
-The repository is ready for Git-connected **Cloudflare Pages**, using `@sveltejs/adapter-cloudflare`. The `/api/content` endpoint runs as a Pages Function so Google Sheets content can refresh without rebuilding the site. Full dashboard instructions in Turkish: [Cloudflare Pages setup](docs/CLOUDFLARE_PAGES_TR.md).
+The repository supports the dashboard's **Create an app → Git repository → `npx wrangler deploy`** flow. The checked-in `wrangler.jsonc` declares the Worker entrypoint, static assets binding, Node compatibility and build command. Wrangler uses this configuration directly; it does not need to auto-configure SvelteKit or insert `wrangler types --check` into the build script. `worker-configuration.d.ts` is included. Full setup in Turkish: [Cloudflare deployment](docs/CLOUDFLARE_WORKERS_TR.md).
 
-Connect `berkingurcan/self-control-web` in **Workers & Pages → Create application → Pages → Import an existing Git repository**. For this standalone repository, leave the root directory empty. Use:
+Connect `berkingurcan/self-control-web`, use the `main` branch and leave the root directory empty. Keep **Deploy command** as `npx wrangler deploy`. Wrangler runs `npm run build` through the configuration's custom build step. The tested Node version is `24.12.0` (`.nvmrc`, or `NODE_VERSION`). Set the public build variables:
 
-| Setting | Value |
-| --- | --- |
-| Production branch | `main` |
-| Framework preset | `SvelteKit` |
-| Build command | `npm run build` |
-| Build output directory | `.svelte-kit/cloudflare` |
-| Node version | `24.12.0` (`.nvmrc`, or `NODE_VERSION`) |
-| Runtime compatibility flag | `nodejs_compat`, for production and preview |
+```env
+PUBLIC_SITE_ID=academy
+PUBLIC_ENABLE_PREVIEWS=false
+PUBLIC_INDEXABLE=false
+```
 
-Pages installs dependencies from `package-lock.json`. No deploy command, API token, Vercel configuration or output override is needed beyond the output directory above. Runtime compatibility flags are set in each Pages project's settings. There is intentionally no project-specific Wrangler configuration in this shared repository.
+The default Worker name is `self-control-web`. If the dashboard's Worker name differs, use `npx wrangler deploy --name YOUR_WORKER_NAME` in its deploy command. For separate discipline deployments, reuse this repository, choose `PUBLIC_SITE_ID=muaythai`, `kickbox` or `mma`, and pass the corresponding Worker name. The `nodejs_compat` flag is already in the repository configuration.
 
-Import the **same repository four times**, using a different `PUBLIC_SITE_ID` per Pages project:
+The initial URL is under `workers.dev`. Add the existing canonical domains through each Worker's **Settings → Domains & Routes** when ready: `selfcontrolfightacademy.com`, `muaythai.selfcontrolfightacademy.com`, `kickbox.selfcontrolfightacademy.com`, and `mma.selfcontrolfightacademy.com`. Before these are attached, cross-site links still point to the canonical domains. A design-review deployment with `PUBLIC_ENABLE_PREVIEWS=true` keeps all identities reachable under `/preview/...` on one origin. Both `workers.dev` and `pages.dev` hostnames receive a `noindex` response header.
 
-| Pages project (suggested name) | `PUBLIC_SITE_ID` | Custom domain |
-| --- | --- | --- |
-| self-control-academy | academy | selfcontrolfightacademy.com |
-| self-control-muaythai | muaythai | muaythai.selfcontrolfightacademy.com |
-| self-control-kickbox | kickbox | kickbox.selfcontrolfightacademy.com |
-| self-control-mma | mma | mma.selfcontrolfightacademy.com |
+Set `SHEETS_SPREADSHEET_URL` as a Worker runtime secret to enable live schedule and pricing. Public build variables and runtime secrets have separate dashboard settings. The `/api/content` endpoint runs on the Worker. Static HTML, images, fonts and PWA files use the `ASSETS` binding. No deployed account resources or DNS records are changed by editing these files.
 
-For every production project set `PUBLIC_ENABLE_PREVIEWS=false` and initially `PUBLIC_INDEXABLE=false`. Add each listed domain through that project's **Custom domains** screen and follow Cloudflare's displayed DNS instructions. The domain names above remain the canonical identities. A `pages.dev` deployment can be used to verify its own site before attaching domains; links between identities point to the configured custom domains. A separate design-review Pages project with `PUBLIC_SITE_ID=academy` and `PUBLIC_ENABLE_PREVIEWS=true` keeps all four identities reachable under `/preview/...` before those domains exist. That flag is distinct from Cloudflare's branch preview deployments.
+Validation and local preview:
 
-No Cloudflare account, Pages project, Git connection or DNS record is created by these source changes. Production and branch preview settings must be configured in the dashboard. `pages.dev` hostnames also receive a `noindex` response header.
+```sh
+npm run check
+npm run build:all
+npm test
+npm run deploy:check
+npm run preview:cloudflare
+```
 
-Generate all four production builds locally with `npm run build:all`. Pages output directories are copied to `builds/{identity}/cloudflare`, with the required server modules preserved beside them; these are verification artifacts and are not committed. Normal Git-connected deployments build from source. `npm run preview:pages` runs the most recent build in Wrangler's local Workers runtime without deploying it. Build one identity with `PUBLIC_SITE_ID=academy npm run build` before using that command when needed. Use `.dev.vars` for private runtime variables in this preview; Wrangler also supports `.env.local` when no `.dev.vars` file overrides it; Vite development uses `.env.local`.
+`deploy:check` performs the real Wrangler build and upload bundling with `--dry-run`; it does not publish. `preview:cloudflare` starts the local Worker. `npm run deploy` publishes using Wrangler when authorized. Generate binding types after configuration changes with `npm run cf:types`; the application build does not depend on a missing generated type file.
 
-Security headers are declared in the root `_headers` file for static responses and in `src/hooks.server.ts` for Function responses. The adapter generates `_routes.json` so prerendered pages and assets use static hosting while dynamic routes remain available. The postbuild script finalizes the service worker in `.svelte-kit/cloudflare`, excluding the generated 404 fallback from the offline shell.
+Each identity's build is copied to `builds/{identity}/cloudflare`, with its server modules preserved beside it. These ignored verification artifacts are not uploaded as source. The adapter's `.assetsignore` keeps `_worker.js` and deployment metadata out of public static assets. Static responses use the root `_headers` rules; dynamic responses use `src/hooks.server.ts`. The postbuild script finalizes the offline shell in `.svelte-kit/cloudflare`.
 
 ### Contact configuration
 
-Copy `.env.example` to `.env` locally or set equivalent **public build-time** environment variables in Cloudflare Pages. Redeploy after changing them.
+Copy `.env.example` to `.env` locally or set equivalent **public build-time** environment variables in Cloudflare. Redeploy after changing them.
 
 - `PUBLIC_CONTACT_EMAIL`: actual public academy email.
 - `PUBLIC_WHATSAPP`: country code and number, digits only; no plus sign required.
@@ -202,13 +200,13 @@ Heroes offer timetable and pricing shortcuts. A bilingual first-session guide co
 
 Set the server-only `SHEETS_SPREADSHEET_URL` to the standard public-view Google Sheets URL. Four named tabs (`Ayarlar`, `Program`, `Grup Paketleri`, `Özel Dersler`) supply runtime content to `/api/content`. No API key is needed for a publicly viewable file. Without a configured URL, the bundled sample content remains available. Once configured, a failed fetch never silently reverts to demo prices.
 
-The Turkish upload workbook is supplied separately. Full owner instructions, column rules, Cloudflare Pages setup and cache limitations: [Google Sheets setup in Turkish](docs/GOOGLE_SHEETS_TR.md).
+The Turkish upload workbook is supplied separately. Full owner instructions, column rules, Cloudflare setup and cache limitations: [Google Sheets setup in Turkish](docs/GOOGLE_SHEETS_TR.md).
 
-Private pricing can vary by scope through `privateLessonsBySite`. Legacy bundled JSON retains its shared private catalogue. The live importer supports inactive/empty catalogues, per-person pricing, optional English labels and the configured gym timezone. A native SvelteKit server function validates all four tabs together, limits responses, restricts upstream hosts and caches successful reads. Successful responses advertise a five-minute shared-cache lifetime; Cloudflare Function responses are not assumed to enter a shared CDN cache automatically. The warm Function instance reuses successful reads for five minutes; last-confirmed data can be shown with an explicit stale notice for up to one hour. The server's warm cache is not durable storage; a cold-start failure returns unavailable. Browser storage is optional and checked before use.
+Private pricing can vary by scope through `privateLessonsBySite`. Legacy bundled JSON retains its shared private catalogue. The live importer supports inactive/empty catalogues, per-person pricing, optional English labels and the configured gym timezone. A native SvelteKit server function validates all four tabs together, limits responses, restricts upstream hosts and caches successful reads. Successful responses advertise a five-minute shared-cache lifetime; Cloudflare Worker responses are not assumed to enter a shared CDN cache automatically. The warm Worker instance reuses successful reads for five minutes; last-confirmed data can be shown with an explicit stale notice for up to one hour. The server's warm cache is not durable storage; a cold-start failure returns unavailable. Browser storage is optional and checked before use.
 
 Prices, timetable, mobile summary and prepared enquiry all read the same page-local content context. Only the dynamic API reads the private configuration. Static home/profile pages remain prerendered, while timetable and price content loads after hydration and refreshes without redeployment. With a live `Yayında` status, sample schedule/price labels are replaced; trainer stock content remains marked as illustrative.
 
-Source references: [Google spreadsheet query parameters](https://developers.google.com/chart/interactive/docs/spreadsheets), [CSV response protocol](https://developers.google.com/chart/interactive/docs/dev/implementing_data_source), [Cloudflare Pages SvelteKit deployment](https://developers.cloudflare.com/pages/framework-guides/deploy-a-svelte-kit-site/), [SvelteKit environment variables](https://svelte.dev/docs/kit/environment-variables).
+Source references: [Google spreadsheet query parameters](https://developers.google.com/chart/interactive/docs/spreadsheets), [CSV response protocol](https://developers.google.com/chart/interactive/docs/dev/implementing_data_source), [Cloudflare SvelteKit deployment](https://developers.cloudflare.com/workers/framework-guides/web-apps/sveltekit/), [SvelteKit environment variables](https://svelte.dev/docs/kit/environment-variables).
 
 ## Website copy
 
