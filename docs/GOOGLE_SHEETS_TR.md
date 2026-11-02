@@ -27,15 +27,15 @@
 
 ## Site yöneticisinin yapacakları
 
-Yerelde `.env.local`, Vercel’de her projenin Environment Variables alanına şu sunucu değişkenini ekleyin:
+Vite ile yerel geliştirmede `.env.local`, Wrangler önizlemesinde `.dev.vars`, Cloudflare Pages üzerinde ise her projenin **Settings → Variables and Secrets** alanına aşağıdaki sunucu değişkenini ekleyin. Pages’te **Secret** olarak ekleyin ve Production ile Preview ortamlarını ayrı ayrı yapılandırın:
 
 ```env
 SHEETS_SPREADSHEET_URL=https://docs.google.com/spreadsheets/d/1iHY6_vBx8lOnagMfkhKM9dy7nVKNun259iZC0Ys-los/edit
 ```
 
-Bu bağlantı yerel `.env.local` dosyasına eklendi ve herkese açık Google E-Tablolar kaynağından başarıyla okundu. `.env.local` Git'e dahil edilmez; Vercel ortam değişkenini ayrıca ekleyin. Başka bir tabloya geçerken yukarıdaki bağlantıyı değiştirin.
+Bu bağlantı yerel `.env.local` dosyasına eklendi ve herkese açık Google E-Tablolar kaynağından başarıyla okundu. `.env.local` ve `.dev.vars` Git'e dahil edilmez; Cloudflare Pages değişkenini ayrıca ekleyin. Başka bir tabloya geçerken yukarıdaki bağlantıyı değiştirin.
 
-Aynı bağlantı dört Vercel projesinde de kullanılabilir. Ortam değişkenini ilk eklediğinizde uygulamayı yeniden başlatın / yeniden deploy edin. Sonraki hücre değişiklikleri için deploy gerekmez. İndeksleme, iletişim bilgileri ve site kimliği için mevcut `PUBLIC_*` değişkenleri ayrı kalır.
+Aynı bağlantı dört Cloudflare Pages projesinde de kullanılabilir. Ortam değişkenini ilk eklediğinizde uygulamayı yeniden başlatın / yeniden deploy edin. Sonraki hücre değişiklikleri için deploy gerekmez. İndeksleme, iletişim bilgileri ve site kimliği için mevcut `PUBLIC_*` değişkenleri ayrı kalır.
 
 `SHEETS_SPREADSHEET_URL` boşsa yerel örnek veri kullanılır. Değişken doluyken erişim veya doğrulama hatası olursa örnek fiyatlara sessizce geçilmez.
 
@@ -43,7 +43,7 @@ Aynı bağlantı dört Vercel projesinde de kullanılabilir. Ortam değişkenini
 
 - `/api/content` sunucu uç noktası sabit dört sekmeyi Google’ın belgelenmiş Visualization CSV protokolüyle okur. Ziyaretçi tarayıcısı Google’a doğrudan istek göndermez.
 - Dört sekme birlikte doğrulanır. Aktif satırda hata varsa kısmi fiyat/program güncellemesi yayımlanmaz. Ayrıntılar sunucu logundadır; ziyaretçi genel bağlantı/hata mesajı görür.
-- Vercel CDN ve çalışan sunucu örneği yaklaşık 5 dakikalık önbellek kullanır. Açık sayfa görünürken 5 dakikada bir, görünür hale gelince ve bağlantı geri geldiğinde yenilenir. Google önbelleği ek gecikme yaratabilir.
+- Çalışan Pages Function örneği başarılı okumaları yaklaşık 5 dakika bellekte tutar. Yanıtta `s-maxage` başlığı olsa da dinamik yanıtların Cloudflare CDN önbelleğine kendiliğinden girdiği varsayılmaz. Açık sayfa görünürken 5 dakikada bir, görünür hale gelince ve bağlantı geri geldiğinde yenilenir. Google önbelleği ek gecikme yaratabilir.
 - Aynı çalışan sunucu örneğindeki eşzamanlı istekler birleştirilir. Hatalı kaynağa 60 saniyelik yeniden deneme aralığı uygulanır.
 - Tarayıcı son doğrulanan gerçek tablo verisini cihazda saklar. Hata halinde en fazla 1 saatlik eski veri görünür bir uyarıyla kullanılabilir. Kontrol zamanı yenilenmez. Süre aşılırsa fiyat/program gizlenir ve iletişim bağlantısı gösterilir.
 - Sunucunun bellek önbelleği kalıcı veri deposu değildir. Soğuk başlangıçta Google erişilemiyorsa sunucu 503 döner; önceki ziyaretçinin tarayıcı kaydı varsa yalnızca onun izin verilen eski verisi kullanılabilir.

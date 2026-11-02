@@ -1,6 +1,6 @@
 # Self Control Fight Academy
 
-Aurum Arena website implementation in SvelteKit 3, Svelte 5 and TypeScript. Turkish is the default language; English has its own `/en` routes. One shared codebase produces four separately branded Vercel projects.
+Aurum Arena website implementation in SvelteKit 3, Svelte 5 and TypeScript. Turkish is the default language; English has its own `/en` routes. One shared codebase produces four separately branded Cloudflare Pages projects.
 
 ## Run locally
 
@@ -22,26 +22,43 @@ Open the URL printed by Vite. The default development port is 5173.
 
 Preview routes are enabled only with `PUBLIC_ENABLE_PREVIEWS=true`. Production projects must use `false`.
 
-## Deploy to Vercel
+## Deploy to Cloudflare Pages
 
-Push this project to your Git provider, then import the **same repository four times** into Vercel. If this folder is inside a larger repository, set Root Directory to `self-control-web`. Use the SvelteKit framework preset, Node 24, install command `npm ci`, and build command `npm run build`. Leave the output-directory override unset: `@sveltejs/adapter-vercel` creates the Build Output API directory automatically.
+The repository is ready for Git-connected **Cloudflare Pages**, using `@sveltejs/adapter-cloudflare`. The `/api/content` endpoint runs as a Pages Function so Google Sheets content can refresh without rebuilding the site. Full dashboard instructions in Turkish: [Cloudflare Pages setup](docs/CLOUDFLARE_PAGES_TR.md).
 
-| Vercel project | `PUBLIC_SITE_ID` | Custom domain |
+Connect `berkingurcan/self-control-web` in **Workers & Pages → Create application → Pages → Import an existing Git repository**. For this standalone repository, leave the root directory empty. Use:
+
+| Setting | Value |
+| --- | --- |
+| Production branch | `main` |
+| Framework preset | `SvelteKit` |
+| Build command | `npm run build` |
+| Build output directory | `.svelte-kit/cloudflare` |
+| Node version | `24.12.0` (`.nvmrc`, or `NODE_VERSION`) |
+| Runtime compatibility flag | `nodejs_compat`, for production and preview |
+
+Pages installs dependencies from `package-lock.json`. No deploy command, API token, Vercel configuration or output override is needed beyond the output directory above. Runtime compatibility flags are set in each Pages project's settings. There is intentionally no project-specific Wrangler configuration in this shared repository.
+
+Import the **same repository four times**, using a different `PUBLIC_SITE_ID` per Pages project:
+
+| Pages project (suggested name) | `PUBLIC_SITE_ID` | Custom domain |
 | --- | --- | --- |
 | self-control-academy | academy | selfcontrolfightacademy.com |
 | self-control-muaythai | muaythai | muaythai.selfcontrolfightacademy.com |
 | self-control-kickbox | kickbox | kickbox.selfcontrolfightacademy.com |
 | self-control-mma | mma | mma.selfcontrolfightacademy.com |
 
-For every production project set `PUBLIC_ENABLE_PREVIEWS=false` and initially `PUBLIC_INDEXABLE=false`. Add each listed domain in that project's domain settings and apply the DNS records **shown by Vercel**. There is no need for a wildcard domain or runtime hostname routing. A `www` alias can redirect to the academy apex domain.
+For every production project set `PUBLIC_ENABLE_PREVIEWS=false` and initially `PUBLIC_INDEXABLE=false`. Add each listed domain through that project's **Custom domains** screen and follow Cloudflare's displayed DNS instructions. The domain names above remain the canonical identities. A `pages.dev` deployment can be used to verify its own site before attaching domains; links between identities point to the configured custom domains. A separate design-review Pages project with `PUBLIC_SITE_ID=academy` and `PUBLIC_ENABLE_PREVIEWS=true` keeps all four identities reachable under `/preview/...` before those domains exist. That flag is distinct from Cloudflare's branch preview deployments.
 
-No production domain is connected by this repository. Vercel account setup, billing and DNS have not been changed.
+No Cloudflare account, Pages project, Git connection or DNS record is created by these source changes. Production and branch preview settings must be configured in the dashboard. `pages.dev` hostnames also receive a `noindex` response header.
 
-The four production builds can be generated locally with `npm run build:all`. Complete Vercel output directories are copied to `builds/{identity}/output`. They are verification artifacts; normal Git-based Vercel deployments should build from source with the environment settings above.
+Generate all four production builds locally with `npm run build:all`. Pages output directories are copied to `builds/{identity}/cloudflare`, with the required server modules preserved beside them; these are verification artifacts and are not committed. Normal Git-connected deployments build from source. `npm run preview:pages` runs the most recent build in Wrangler's local Workers runtime without deploying it. Build one identity with `PUBLIC_SITE_ID=academy npm run build` before using that command when needed. Use `.dev.vars` for private runtime variables in this preview; Wrangler also supports `.env.local` when no `.dev.vars` file overrides it; Vite development uses `.env.local`.
+
+Security headers are declared in the root `_headers` file for static responses and in `src/hooks.server.ts` for Function responses. The adapter generates `_routes.json` so prerendered pages and assets use static hosting while dynamic routes remain available. The postbuild script finalizes the service worker in `.svelte-kit/cloudflare`, excluding the generated 404 fallback from the offline shell.
 
 ### Contact configuration
 
-Copy `.env.example` to `.env` locally or set equivalent **public build-time** environment variables in Vercel. Redeploy after changing them.
+Copy `.env.example` to `.env` locally or set equivalent **public build-time** environment variables in Cloudflare Pages. Redeploy after changing them.
 
 - `PUBLIC_CONTACT_EMAIL`: actual public academy email.
 - `PUBLIC_WHATSAPP`: country code and number, digits only; no plus sign required.
@@ -97,7 +114,7 @@ npm test
 
 Tests verify all four build identities, four localized academy documents and two per discipline, academy-only head trainer routing and six-image bento galleries, all required section anchors and dialogs, local navigation targets, manifests/icons, noindex defaults and offline cache/fallback behavior. Browser review covers Turkish and English layouts at phone, tablet and desktop widths, plus language switching, menu section navigation, gym gallery, contact layouts, timetable selection, FAQ and installation instructions. Real-device installation and touch gestures should be checked after deployment.
 
-The dependency lockfile is included. Patched glob/minimatch versions are pinned through overrides for the Vercel build dependency chain. The current dependency audit still reports low-severity issues in the upstream build-time dependency tree; no high or critical issues were reported. Do not use `npm audit fix --force` blindly: npm currently suggests incompatible framework downgrades.
+The dependency lockfile pins the Cloudflare adapter and Wrangler alongside the existing framework versions. Use Node 24 and `npm ci` for repeatable installs.
 
 ## Before the public business launch
 
@@ -185,13 +202,13 @@ Heroes offer timetable and pricing shortcuts. A bilingual first-session guide co
 
 Set the server-only `SHEETS_SPREADSHEET_URL` to the standard public-view Google Sheets URL. Four named tabs (`Ayarlar`, `Program`, `Grup Paketleri`, `Özel Dersler`) supply runtime content to `/api/content`. No API key is needed for a publicly viewable file. Without a configured URL, the bundled sample content remains available. Once configured, a failed fetch never silently reverts to demo prices.
 
-The Turkish upload workbook is supplied separately. Full owner instructions, column rules, Vercel setup and cache limitations: [Google Sheets setup in Turkish](docs/GOOGLE_SHEETS_TR.md).
+The Turkish upload workbook is supplied separately. Full owner instructions, column rules, Cloudflare Pages setup and cache limitations: [Google Sheets setup in Turkish](docs/GOOGLE_SHEETS_TR.md).
 
-Private pricing can vary by scope through `privateLessonsBySite`. Legacy bundled JSON retains its shared private catalogue. The live importer supports inactive/empty catalogues, per-person pricing, optional English labels and the configured gym timezone. A native SvelteKit server function validates all four tabs together, limits responses, restricts upstream hosts and caches successful reads. Successful responses use a five-minute shared-cache lifetime; last-confirmed data can be shown with an explicit stale notice for up to one hour. The server's warm cache is not durable storage; a cold-start failure returns unavailable. Browser storage is optional and checked before use.
+Private pricing can vary by scope through `privateLessonsBySite`. Legacy bundled JSON retains its shared private catalogue. The live importer supports inactive/empty catalogues, per-person pricing, optional English labels and the configured gym timezone. A native SvelteKit server function validates all four tabs together, limits responses, restricts upstream hosts and caches successful reads. Successful responses advertise a five-minute shared-cache lifetime; Cloudflare Function responses are not assumed to enter a shared CDN cache automatically. The warm Function instance reuses successful reads for five minutes; last-confirmed data can be shown with an explicit stale notice for up to one hour. The server's warm cache is not durable storage; a cold-start failure returns unavailable. Browser storage is optional and checked before use.
 
 Prices, timetable, mobile summary and prepared enquiry all read the same page-local content context. Only the dynamic API reads the private configuration. Static home/profile pages remain prerendered, while timetable and price content loads after hydration and refreshes without redeployment. With a live `Yayında` status, sample schedule/price labels are replaced; trainer stock content remains marked as illustrative.
 
-Source references: [Google spreadsheet query parameters](https://developers.google.com/chart/interactive/docs/spreadsheets), [CSV response protocol](https://developers.google.com/chart/interactive/docs/dev/implementing_data_source), [Vercel cache headers](https://vercel.com/docs/caching/cache-control-headers), [SvelteKit environment variables](https://svelte.dev/docs/kit/environment-variables).
+Source references: [Google spreadsheet query parameters](https://developers.google.com/chart/interactive/docs/spreadsheets), [CSV response protocol](https://developers.google.com/chart/interactive/docs/dev/implementing_data_source), [Cloudflare Pages SvelteKit deployment](https://developers.cloudflare.com/pages/framework-guides/deploy-a-svelte-kit-site/), [SvelteKit environment variables](https://svelte.dev/docs/kit/environment-variables).
 
 ## Website copy
 

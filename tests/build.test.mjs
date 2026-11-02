@@ -6,8 +6,21 @@ const ids=['academy','muaythai','kickbox','mma'];
 async function walk(dir){const out=[];for(const e of await readdir(dir,{withFileTypes:true})){const path=join(dir,e.name);if(e.isDirectory())out.push(...await walk(path));else out.push(path)}return out}
 for(const id of ids){
  test(`${id}: production output shows a head coach only on academy and retains its own PWA identity`,async()=>{
-  const root=`builds/${id}/output/static`;
-  const files=await walk(root); const html=files.filter(f=>f.endsWith('.html')&&!f.endsWith('/offline.html'));
+  const root=`builds/${id}/cloudflare`;
+  const files=await walk(root); const html=files.filter(f=>f.endsWith('.html')&&!f.endsWith('/offline.html')&&!f.endsWith('/404.html'));
+  await access(`${root}/_worker.js`);
+  await access(`builds/${id}/cloudflare-tmp/server.js`);
+  await access(`builds/${id}/output/server/index.js`);
+  const server=await readFile(`builds/${id}/cloudflare-tmp/server.js`,'utf8');
+  assert(server.includes('id: "/api/content"'));
+  assert(server.includes('id: "/[...path]"'), 'legacy redirects must stay reachable on the Worker');
+  const routes=JSON.parse(await readFile(`${root}/_routes.json`,'utf8'));
+  assert.equal(routes.version,1);
+  assert(routes.include.includes('/*'));
+  assert(!routes.exclude.some(path => path === '/*' || path === '/api/*' || path === '/api/content'));
+  const headers=await readFile(`${root}/_headers`,'utf8');
+  assert(headers.includes("frame-ancestors 'none'"));
+  assert(headers.includes('/service-worker.js\n  Cache-Control: no-cache'));
   assert.equal(html.length,id === 'academy' ? 4 : 2); assert(!html.some(f=>f.includes('/preview/')));
   const home=await readFile(`${root}/index.html`,'utf8');const english=await readFile(`${root}/en.html`,'utf8');
   assert(home.includes('lang="tr"'));assert(english.includes('lang="en"'));

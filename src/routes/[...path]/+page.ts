@@ -1,7 +1,8 @@
 import { error, redirect } from '@sveltejs/kit';
 import { parsePath, ids, href, selectedSite } from '#lib/site.ts';
 import { config as env } from '#lib/config.ts';
-export const prerender = true;
+// Prerender listed home/profile pages, while keeping legacy redirects and 404s on the Worker.
+export const prerender = 'auto';
 export function entries() {
   const prefixes = env.PUBLIC_ENABLE_PREVIEWS === 'true' ? ['', ...ids.map(id => `/preview/${id}`)] : [''];
   return prefixes.flatMap(prefix => {

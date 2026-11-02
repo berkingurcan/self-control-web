@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite';
 import { sveltekit } from '@sveltejs/kit/vite';
-import adapter from '@sveltejs/adapter-vercel';
+import adapter from '@sveltejs/adapter-cloudflare';
 
 export default defineConfig({
   envPrefix: ['VITE_', 'PUBLIC_'],
-  server: { watch: { ignored: ['**/builds/**', '**/.vercel/**'] } },
-  plugins: [sveltekit({ adapter: adapter({ runtime: 'nodejs24.x' }), prerender: { handleHttpError: 'fail' } })]
+  server: { watch: { ignored: ['**/builds/**', '**/.wrangler/**'] } },
+  plugins: [sveltekit({ adapter: adapter(), prerender: { handleHttpError: 'fail' } })]
 });
