@@ -52,7 +52,9 @@ for(const id of ids){
   const trainerEn=await readFile(`${root}/en/gokhandenizli.html`,'utf8');
   assert(home.includes('href="/gokhandenizli"'));assert(english.includes('href="/en/gokhandenizli"'));
   for(const profile of [trainer,trainerEn]){
-   for(const anchor of ['top','biography','coaching','journal'])assert(profile.includes(`id="${anchor}"`));
+   for(const anchor of ['top','biography','journal'])assert(profile.includes(`id="${anchor}"`));
+   assert(!profile.includes('id="coaching"'));
+   assert(!profile.includes('href="#coaching"'));
    assert.equal((profile.match(/class="bento-tile /g)||[]).length,9,'nine original bento photographs');
    assert(profile.includes('profile-lightbox'));assert(profile.includes('data-profile='));assert(!profile.includes('#team'));
   }

@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getContext } from 'svelte';
-  import { config } from '#lib/config.ts';
+  import { contactKey, type ContactConfig } from '#lib/contact-config.ts';
   import { siteName, type Lang } from '#lib/site.ts';
   import { contentKey, type ContentState } from '#lib/content-schema.ts';
   import { experienceCopy } from '#lib/experience-copy.ts';
@@ -8,6 +8,7 @@
   import { modalFocus } from '#lib/effects.ts';
   import Icon from './Icon.svelte';
   let { lang }: { lang: Lang } = $props();
+  const config = getContext<ContactConfig>(contactKey);
   const experience = getContext<Experience>(experienceKey);
   const content = getContext<ContentState>(contentKey);
   const catalog = $derived(content.data.catalog);

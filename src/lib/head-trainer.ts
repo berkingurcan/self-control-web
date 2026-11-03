@@ -20,7 +20,7 @@ export const headTrainerCopy = {
     role: 'Baş Antrenör', title: ['GÖKHAN', 'DENİZLİ'], back: 'Akademiye dön',
     description: 'Self Control Fight Academy baş antrenörü Gökhan Denizli. 2015’ten bu yana antrenörlük, Tayland’da Muay Thai eğitimi ve Denizli’de kick boks, Muay Thai ve MMA.',
     intro: 'Denizli’den Tayland’a uzanan bir antrenman yolculuğu. Ringde edinilen deneyim, salonda paylaşılan birikim.',
-    bioLink: 'Hikâyesini keşfet', galleryLink: 'Fotoğraf arşivi', approachLink: 'Antrenman yaklaşımı',
+    bioLink: 'Hikâyesini keşfet', galleryLink: 'Fotoğraf arşivi',
     portrait: 'Self Control Fight Academy baş antrenörü Gökhan Denizli’nin Tayland antrenman kampındaki portresi',
     signature: 'GÖKHAN DENİZLİ / SELF CONTROL FIGHT ACADEMY / DENİZLİ',
     disciplines: 'KİCK BOKS / MUAY THAI / MMA', instagram: 'Instagram’da takip et',
@@ -32,13 +32,7 @@ export const headTrainerCopy = {
       'Yetiştirdiği sporcular arasında 2025’te 52 kg K-1 kategorisinde Dünya Kupası ve Türkiye şampiyonluğu elde eden Yağmur Denizli de bulunur. Çalışmalarını teknik eğitim, düzenli antrenman ve müsabakaya hazırlık etrafında sürdürür.'
     ],
     sources: 'Biyografi kaynakları', roleLabel: 'Görevi', roleValue: 'Kurucu · Baş antrenör', focusLabel: 'Çalışma alanları',
-    approachLabel: '02 / ANTRENMAN YAKLAŞIMI', approachTitle: 'TEKNİKTEN\nUYGULAMAYA.',
-    principles: [
-      { title: 'Teknik temel', body: 'Kick boks ve Muay Thai teknikleri; birebir özel dersler ve grup çalışmaları.' },
-      { title: 'Çok yönlü çalışma', body: 'Teknik dersleri tamamlayan esneme, torba, patlayıcı kuvvet ve dayanıklılık antrenmanları.' },
-      { title: 'Müsabakaya hazırlık', body: 'Ring çalışmaları ve sparring ile teknik birikimin uygulamaya taşınması; sporcuların müsabaka sürecine hazırlanması.' }
-    ],
-    galleryLabel: '03 / FOTOĞRAF ARŞİVİ', galleryTitle: 'HER KAMP,\nYENİ BİR BİRİKİM.',
+    galleryLabel: '02 / FOTOĞRAF ARŞİVİ', galleryTitle: 'HER KAMP,\nYENİ BİR BİRİKİM.',
     galleryBody: 'Antrenman kampları, ring kenarı ve birlikte çalışılan ekipler. Gökhan Denizli’nin kendi arşivinden dokuz kare.',
     photoLabels: ['Venum Training Camp', 'Self Control MMA ekibi', 'Ring kenarında', 'Venum’da antrenman', 'Muay Thai kampı', 'MMA kampından', 'Birlikte antrenman', 'Antrenman sonrası', 'Tayland’dan bir kare'],
     photoAlts: ['Gökhan Denizli ve bir antrenör Venum Training Camp ringinde', 'Gökhan Denizli ve ekibi Self Control MMA bayrağıyla', 'Gökhan Denizli bir dövüş organizasyonunda Türk bayrağıyla', 'Gökhan Denizli Venum Training Camp antrenman alanında', 'Gökhan Denizli ve bir antrenör Muay Thai salonunda Türk bayrağıyla', 'Gökhan Denizli MMA antrenman alanında iki antrenman arkadaşıyla', 'Gökhan Denizli Self Control tişörtüyle antrenman ekibinin yanında', 'Gökhan Denizli ve antrenman arkadaşı çalışma sonrası', 'Gökhan Denizli Tayland antrenman salonunda bir antrenörle'],
@@ -49,7 +43,7 @@ export const headTrainerCopy = {
     role: 'Head Coach', title: ['GÖKHAN', 'DENİZLİ'], back: 'Back to the academy',
     description: 'Meet Gökhan Denizli, head coach at Self Control Fight Academy. Coaching since 2015, Muay Thai training in Thailand, and kickboxing, Muay Thai and MMA in Denizli.',
     intro: 'A training journey from Denizli to Thailand. Experience gained around the ring, knowledge shared in the gym.',
-    bioLink: 'Discover his story', galleryLink: 'Photo archive', approachLink: 'Training approach',
+    bioLink: 'Discover his story', galleryLink: 'Photo archive',
     portrait: 'Portrait of Gökhan Denizli, head coach at Self Control Fight Academy, at a training camp in Thailand',
     signature: 'GÖKHAN DENİZLİ / SELF CONTROL FIGHT ACADEMY / DENİZLİ',
     disciplines: 'KICKBOXING / MUAY THAI / MMA', instagram: 'Follow on Instagram',
@@ -61,13 +55,7 @@ export const headTrainerCopy = {
       'His athletes include Yağmur Denizli, who won World Cup and Turkish championship titles in the 52 kg K-1 category in 2025. His work brings together technical instruction, regular training and competition preparation.'
     ],
     sources: 'Biography sources', roleLabel: 'Role', roleValue: 'Founder · Head coach', focusLabel: 'Training areas',
-    approachLabel: '02 / TRAINING APPROACH', approachTitle: 'FROM TECHNIQUE\nTO PRACTICE.',
-    principles: [
-      { title: 'Technical foundations', body: 'Kickboxing and Muay Thai techniques taught through private lessons and group classes.' },
-      { title: 'Rounded training', body: 'Stretching, bag work, explosive strength and endurance sessions complement technical lessons.' },
-      { title: 'Competition preparation', body: 'Ring work and sparring put technique into practice and prepare athletes for competition.' }
-    ],
-    galleryLabel: '03 / PHOTO ARCHIVE', galleryTitle: 'EVERY CAMP.\nA NEW PERSPECTIVE.',
+    galleryLabel: '02 / PHOTO ARCHIVE', galleryTitle: 'EVERY CAMP.\nA NEW PERSPECTIVE.',
     galleryBody: 'Training camps, ringside moments and the people along the way. Nine photographs from Gökhan Denizli’s own archive.',
     photoLabels: ['Venum Training Camp', 'The Self Control MMA team', 'At ringside', 'Training at Venum', 'Muay Thai camp', 'From MMA camp', 'Training together', 'After training', 'A moment in Thailand'],
     photoAlts: ['Gökhan Denizli with a coach in a Venum Training Camp ring', 'Gökhan Denizli and his team holding a Self Control MMA flag', 'Gökhan Denizli holding a Turkish flag at a fight event', 'Gökhan Denizli at the Venum Training Camp gym', 'Gökhan Denizli and a coach holding a Turkish flag in a Muay Thai gym', 'Gökhan Denizli with two training partners at an MMA gym', 'Gökhan Denizli wearing a Self Control shirt with training partners', 'Gökhan Denizli with a training partner after a session', 'Gökhan Denizli with a coach in a training gym in Thailand'],

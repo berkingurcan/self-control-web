@@ -56,7 +56,9 @@ Each identity's build is copied to `builds/{identity}/cloudflare`, with its serv
 
 ### Contact configuration
 
-Copy `.env.example` to `.env` locally or set equivalent **public build-time** environment variables in Cloudflare. Redeploy after changing them.
+Contact details can be set in Cloudflare Workers → **self-control-web → Settings → Variables and Secrets** as runtime variables. The `/api/config` endpoint exposes only the four public contact fields below; the page and enquiry links refresh them on load, when returning to the tab, and every five minutes. A Sheets failure does not prevent contact details from loading. Publish the variable changes in Cloudflare; subsequent changes do not require rebuilding the frontend. `keep_vars` preserves dashboard variables during Wrangler deployments.
+
+For local development, copy `.env.example` to `.env`. Build-time contact values remain a fallback if a runtime binding is absent. `PUBLIC_SITE_ID`, `PUBLIC_ENABLE_PREVIEWS` and `PUBLIC_INDEXABLE` still require build-time variables and a rebuild. A `workers.dev` URL belongs to a Worker: variables on a separate Pages project will not reach it.
 
 - `PUBLIC_CONTACT_EMAIL`: actual public academy email.
 - `PUBLIC_WHATSAPP`: country code and number, digits only; no plus sign required.
@@ -150,7 +152,7 @@ The longer plans display their full upfront price, monthly equivalent and rounde
 
 ## Dedicated head trainer profile
 
-The head portrait, role title and “View profile” link all open `/gokhandenizli` (Turkish) or `/en/gokhandenizli` (English), on the academy, preserving its preview prefix. Discipline sites do not show trainers or expose head trainer profiles. The main academy and discipline homepages remain one-page layouts. The profile has a hero with an original portrait, biography, coaching principles and nine-photo responsive bento grid. Gallery photographs open in a native lightbox with previous/next controls, keyboard arrows and touch swipe. Profile photographs come from the supplied coach archive. The bilingual biography is based on the academy’s official site, public Instagram @gokhandennizli, MMA Federation coach registration and reporting about Yağmur Denizli’s 2025 titles. Source links are available on the profile. Legacy `/bas-antrenor` and `/en/head-trainer` URLs redirect permanently to the corresponding new profile route.
+The head portrait, role title and “View profile” link all open `/gokhandenizli` (Turkish) or `/en/gokhandenizli` (English), on the academy, preserving its preview prefix. Discipline sites do not show trainers or expose head trainer profiles. The main academy and discipline homepages remain one-page layouts. The profile has a hero with an original portrait, biography and nine-photo responsive bento grid. Gallery photographs open in a native lightbox with previous/next controls, keyboard arrows and touch swipe. Profile photographs come from the supplied coach archive. The bilingual biography is based on the academy’s official site, public Instagram @gokhandennizli, MMA Federation coach registration and reporting about Yağmur Denizli’s 2025 titles. Source links are available on the profile. Legacy `/bas-antrenor` and `/en/head-trainer` URLs redirect permanently to the corresponding new profile route.
 
 `src/lib/head-trainer.ts` contains bilingual profile copy and the nine-image gallery mapping. `HeadTrainer.svelte` contains the profile design. Only the academy sitemap, language alternates, canonical URLs and offline precaching include both profile languages.
 

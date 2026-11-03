@@ -11,5 +11,6 @@
   "build": {
     "command": "npm run build"
   },
+  "keep_vars": true,
   "send_metrics": false
 }

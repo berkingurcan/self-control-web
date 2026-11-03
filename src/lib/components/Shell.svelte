@@ -2,6 +2,7 @@
   import { siteOrder } from '#lib/discipline-order.ts';
   import { onMount, setContext, untrack } from 'svelte';
   import { afterNavigate } from '$app/navigation';
+  import { contactKey, contactConfig, loadContact, type ContactConfig } from '#lib/contact-config.ts';
   import { config as env } from '#lib/config.ts';
   import { siteName, copy, href, siteHref, sites, type Lang, type PageId, type SiteId } from '#lib/site.ts';
   import { editorial } from '#lib/editorial.ts';
@@ -19,6 +20,8 @@
   setContext(experienceKey, experience);
   const content = $state<ContentState>({ data: demoContent, phase: 'loading' });
   setContext(contentKey, content);
+  const contact = $state<ContactConfig>(contactConfig({}, env));
+  setContext(contactKey, contact);
   const catalog = $derived(content.data.catalog);
   $effect(() => {
     if (content.data.source !== 'sheets' || !content.data.checkedAt) return;
@@ -65,10 +68,17 @@
       }
       refreshing = false;
     }
-    const visible = () => { if (document.visibilityState === 'visible') void refreshContent(); };
+    async function refreshContact() {
+      try {
+        const result = await loadContact(fetch);
+        if (!stopped) Object.assign(contact, result);
+      } catch { /* Keep the last known or build-time contact details when offline. */ }
+    }
+    const visible = () => { if (document.visibilityState === 'visible') { void refreshContent(); void refreshContact(); } };
     const contentTimer = setInterval(visible, FRESH_MS);
     document.addEventListener('visibilitychange', visible); window.addEventListener('online', visible);
     void refreshContent();
+    void refreshContact();
     const network = () => { offline = !navigator.onLine; }; network();
     const prompt = (event: Event) => { event.preventDefault(); installEvent = event as InstallPrompt; };
     const complete = () => { installed = true; installEvent = null; };
@@ -116,7 +126,7 @@
   <main id="main" tabindex="-1" inert={menuOpen}>{@render children()}</main>
   <footer class="site-footer" inert={menuOpen}>
     <div class="footer-statement"><img src="/brand/mark.svg" width="90" height="66" alt=""/><div><p>{e.footer}</p><span>{e.footerSub}</span></div><a href="#top" class="back-top" aria-label={t.nav.home}><Icon name="diagonal" size={25}/></a></div>
-    <div class="footer-grid"><div><h3>{t.exploreLabel}</h3>{#each nav as id}<a href={anchor(id)}>{id === 'membership' ? ux.plans : id === 'training' && site !== 'academy' ? ux.training : e.nav[id]}</a>{/each}</div><div><h3>{t.identities}</h3>{#each siteOrder as id}<a href={siteHref(id as SiteId, lang, preview)} aria-current={site === id ? 'page' : undefined}>{siteName(id as SiteId, lang)}<Icon name="diagonal" size={14}/></a>{/each}</div><div class="footer-note"><span class="eyebrow">{t.designPreview}</span><p>{catalog.status === 'sample' ? t.previewNote : lang === 'tr' ? 'İletişim ayrıntıları eklenecektir.' : 'Contact details will be added.'}</p>{#if site === 'academy'}<p>{lang === 'tr' ? 'Baş antrenör: Gökhan Denizli. Profil fotoğrafları antrenörün kendi arşivindendir.' : 'Head coach: Gökhan Denizli. Profile photographs are from the coach’s own archive.'}</p>{/if}{#if page !== 'coach'}<p>{e.stockNote}</p><details><summary>{t.photoCredits}</summary><a href="https://www.pexels.com/photo/two-men-practicing-martial-arts-2628210/" target="_blank" rel="noreferrer">Gleb Krasnoborov / Pexels</a><a href="https://www.pexels.com/photo/woman-doing-muay-thai-training-12121709/" target="_blank" rel="noreferrer">Juliia Abramova / Pexels</a><a href="https://www.pexels.com/photo/female-fighter-training-with-kickboxing-techniques-34990409/" target="_blank" rel="noreferrer">Daniel Lee / Pexels</a><a href="https://www.pexels.com/photo/two-men-wrestling-11391987/" target="_blank" rel="noreferrer">Duren Williams / Pexels</a></details>{/if}<button class="install-link" onclick={() => installDialog.showModal()}><Icon name="phone" size={17}/>{t.install}<Icon name="plus" size={14}/></button></div></div>
+    <div class="footer-grid"><div><h3>{t.exploreLabel}</h3>{#each nav as id}<a href={anchor(id)}>{id === 'membership' ? ux.plans : id === 'training' && site !== 'academy' ? ux.training : e.nav[id]}</a>{/each}</div><div><h3>{t.identities}</h3>{#each siteOrder as id}<a href={siteHref(id as SiteId, lang, preview)} aria-current={site === id ? 'page' : undefined}>{siteName(id as SiteId, lang)}<Icon name="diagonal" size={14}/></a>{/each}</div><div class="footer-note">{#if page !== 'coach'}<p>{e.stockNote}</p><details><summary>{t.photoCredits}</summary><a href="https://www.pexels.com/photo/two-men-practicing-martial-arts-2628210/" target="_blank" rel="noreferrer">Gleb Krasnoborov / Pexels</a><a href="https://www.pexels.com/photo/woman-doing-muay-thai-training-12121709/" target="_blank" rel="noreferrer">Juliia Abramova / Pexels</a><a href="https://www.pexels.com/photo/female-fighter-training-with-kickboxing-techniques-34990409/" target="_blank" rel="noreferrer">Daniel Lee / Pexels</a><a href="https://www.pexels.com/photo/two-men-wrestling-11391987/" target="_blank" rel="noreferrer">Duren Williams / Pexels</a></details>{/if}<button class="install-link" onclick={() => installDialog.showModal()}><Icon name="phone" size={17}/>{t.install}<Icon name="plus" size={14}/></button></div></div>
     <div class="footer-bottom"><span>© 2026 Self Control Fight Academy</span><button onclick={() => privacyDialog.showModal()}>{t.nav.privacy}</button><span>DENİZLİ / {identity.number}</span></div>
   </footer>
   <div class="mobile-dock" inert={menuOpen}>

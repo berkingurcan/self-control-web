@@ -1,6 +1,7 @@
 <script lang="ts">
   import { disciplineOrder } from '#lib/discipline-order.ts';
   import { getContext } from 'svelte';
+  import { contactKey, type ContactConfig } from '#lib/contact-config.ts';
   import { contentKey, type ContentState } from '#lib/content-schema.ts';
   import { config as env } from '#lib/config.ts';
   import { siteName, copy, href, siteHref, sites, type SiteId, type Lang } from '#lib/site.ts';
@@ -17,6 +18,7 @@
   import { coaches, demoCopy } from '#lib/demo.ts';
   let { site, lang }: { site: SiteId; lang: Lang } = $props();
   const t = $derived(copy[lang]), e = $derived(editorial[lang]), identity = $derived(sites[site]);
+  const contact = getContext<ContactConfig>(contactKey);
   const content = getContext<ContentState>(contentKey);
   const ux = $derived(experienceCopy[lang]);
   const academy = $derived(site === 'academy');
@@ -24,8 +26,10 @@
   const headProfile = $derived(href('coach', lang, preview ? `/preview/${site}` : ''));
   const ids = disciplineOrder;
   const d = $derived(demoCopy[lang]);
-  const email = env.PUBLIC_CONTACT_EMAIL || '', address = env.PUBLIC_ADDRESS || '', instagram = env.PUBLIC_INSTAGRAM || '';
-  const whatsapp = (env.PUBLIC_WHATSAPP || '').replace(/\D/g, '');
+  const email = $derived(contact.PUBLIC_CONTACT_EMAIL);
+  const address = $derived(contact.PUBLIC_ADDRESS);
+  const instagram = $derived(contact.PUBLIC_INSTAGRAM);
+  const whatsapp = $derived(contact.PUBLIC_WHATSAPP.replace(/\D/g, ''));
   function sectionLabel(label: string) { return academy ? label : label.replace(/^0([3-6])/, (_, number) => `0${Number(number) - (Number(number) >= 5 ? 2 : 1)}`); }
 </script>
 
