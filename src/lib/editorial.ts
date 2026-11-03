@@ -31,14 +31,14 @@ export const editorial = {
     "approachBody": "Self Control Fight Academy, Denizli’de Kick boks, MMA ve Muay Thai branşlarını bir araya getirir. Teknik gelişimi, disiplini ve karşılıklı saygıyı önemsiyoruz.",
     "spaceLabel": "03 / SALON",
     "spaceTitle": "ANTRENMAN\nALANLARI",
-    "spaceBody": "Salon ve antrenman alanlarına ait fotoğraflar bu bölümde yer alacaktır.",
+    "spaceBody": "Üç katta farklı çalışma alanları: ana salon, üst katta grappling, alt katta kum torbaları ve CrossFit alanı.",
     "spaceCaption": [
       "Antrenman salonu",
       "Ring ve çalışma alanı",
       "Antrenör eşliğinde çalışma"
     ],
     "stock": "TEMSİLİ FOTOĞRAF",
-    "stockNote": "Salon ve branş bölümlerindeki fotoğraflar temsilidir; akademinin salonunu veya ekibini göstermemektedir.",
+    "stockNote": "Salon fotoğrafları Self Control Fight Academy’ye aittir. Branş tanıtımlarında temsili antrenman fotoğrafları kullanılmaktadır.",
     "openPhoto": "Fotoğrafı büyüt",
     "previous": "Önceki fotoğraf",
     "next": "Sonraki fotoğraf",
@@ -111,14 +111,14 @@ export const editorial = {
     "approachBody": "Self Control Fight Academy brings together Kickboxing, MMA and Muay Thai in Denizli. We value technical development, discipline and mutual respect.",
     "spaceLabel": "03 / FACILITIES",
     "spaceTitle": "TRAINING\nFACILITIES",
-    "spaceBody": "Photos of the gym and training areas will be added to this section.",
+    "spaceBody": "Training across three floors: the main hall, an upper-floor grappling area, and heavy bags and CrossFit on the lower floor.",
     "spaceCaption": [
       "Training floor",
       "Ring and practice area",
       "Training with a coach"
     ],
     "stock": "ILLUSTRATIVE PHOTO",
-    "stockNote": "The illustrative photos in the facilities and discipline sections do not show the academy’s facilities or team.",
+    "stockNote": "Facility photographs show Self Control Fight Academy. Discipline introductions use illustrative training photographs.",
     "openPhoto": "Enlarge photo",
     "previous": "Previous photo",
     "next": "Next photo",

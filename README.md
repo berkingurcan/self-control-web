@@ -116,11 +116,13 @@ The dependency lockfile pins the Cloudflare adapter and Wrangler alongside the e
 
 ## Before the public business launch
 
-Replace stock photography with licensed academy photos when available. Add verified address, contact channels, coach biographies, training groups, schedule, prices and participation rules. Review the business's legal identity and KVKK/privacy text alongside actual data collection. Then set `PUBLIC_INDEXABLE=true` and redeploy. Canonicals, Turkish/English alternate links, social images and sitemap are generated for the configured domain. Confirm the final domains and real devices before announcing the site.
+Discipline introductions still use illustrative stock photography; replace these with licensed academy training photos when available. Add verified address, contact channels, coach biographies, training groups, schedule, prices and participation rules. Review the business's legal identity and KVKK/privacy text alongside actual data collection. Then set `PUBLIC_INDEXABLE=true` and redeploy. Canonicals, Turkish/English alternate links, social images and sitemap are generated for the configured domain. Confirm the final domains and real devices before announcing the site.
 
 ## Photography
 
-Temporary Pexels images are self-hosted as responsive WebP files. They illustrate the discipline and do not portray academy premises, members or coaches. Credits are also visible in the footer.
+The facilities gallery uses all five supplied originals from `../salon/`, exported as responsive 640px and 1280px WebP files under `static/images/salon/` (under 1 MB total). The photographs retain their original colour and aspect ratios; the lightbox shows each full frame. `Facilities.svelte` presents the main hall, upper-floor grappling area and lower-floor heavy bags/CrossFit area, plus the MMA cage and conditioning equipment, in Turkish and English.
+
+Pexels photographs remain in discipline introductions. They illustrate training and do not portray academy members. Credits are visible in the footer.
 
 - Gleb Krasnoborov — https://www.pexels.com/photo/two-men-practicing-martial-arts-2628210/
 - Juliia Abramova — https://www.pexels.com/photo/woman-doing-muay-thai-training-12121709/
@@ -129,13 +131,7 @@ Temporary Pexels images are self-hosted as responsive WebP files. They illustrat
 
 The grappling photograph illustrates the ground component of MMA. No UFC, ONE, supplier or federation affiliation is implied.
 
-New gym and coaching references (also credited in the footer):
-
-- RDNE Stock project — https://www.pexels.com/photo/empty-boxing-gym-8611244/
-- Ron Lach — https://www.pexels.com/photo/empty-boxing-ring-8744796/
-- Mikhail Nilov — https://www.pexels.com/photo/man-training-a-woman-in-boxing-6740346/
-
-The academy head trainer feature presents Gökhan Denizli with original photos supplied in the sibling `gökhandenizli` folder. The responsive WebP assets in `static/images/gokhan` have two widths (640 and 1280), with metadata removed. Other gym and discipline photographs remain illustrative.
+The academy head trainer feature presents Gökhan Denizli with original photos supplied in the sibling `gökhandenizli` folder. The responsive WebP assets in `static/images/gokhan` have two widths (640 and 1280), with metadata removed. Discipline photographs remain illustrative; facilities photography is from the supplied academy archive.
 
 
 ## Sample timetable and pricing
@@ -151,14 +147,10 @@ The current design intentionally includes demo business content requested for re
 
 The longer plans display their full upfront price, monthly equivalent and rounded saving against monthly payments. These are sample prices, not researched market rates or a real sales offer. Kick Box uses the supplied 1/3/6-month reference prices (₺5,000 / ₺12,000 / ₺18,000), with no annual plan in that reference. Package CTAs open a prepared enquiry containing the selected package; they do not take payments or reserve classes. All-access memberships cover all three disciplines, single-discipline memberships cover the selected branch. Private lessons and equipment are excluded from the sample plans.
 
-Self-hosted head trainer stock portrait:
-
-- RDNE Stock project — https://www.pexels.com/photo/a-man-with-clenched-fists-8611936/
-
 
 ## Dedicated head trainer profile
 
-The head portrait, role title and “View profile” link all open `/gokhandenizli` (Turkish) or `/en/gokhandenizli` (English), on the academy, preserving its preview prefix. Discipline sites do not show trainers or expose head trainer profiles. The main academy and discipline homepages remain one-page layouts. The profile has a bento hero with an original portrait and career milestones, biography, coaching principles and nine-photo responsive bento grid. Gallery photographs open in a native lightbox with previous/next controls, keyboard arrows and touch swipe. Profile photographs come from the supplied coach archive. The bilingual biography is based on the academy’s official site, public Instagram @gokhandennizli, MMA Federation coach registration and reporting about Yağmur Denizli’s 2025 titles. Source links are available on the profile. Legacy `/bas-antrenor` and `/en/head-trainer` URLs redirect permanently to the corresponding new profile route.
+The head portrait, role title and “View profile” link all open `/gokhandenizli` (Turkish) or `/en/gokhandenizli` (English), on the academy, preserving its preview prefix. Discipline sites do not show trainers or expose head trainer profiles. The main academy and discipline homepages remain one-page layouts. The profile has a hero with an original portrait, biography, coaching principles and nine-photo responsive bento grid. Gallery photographs open in a native lightbox with previous/next controls, keyboard arrows and touch swipe. Profile photographs come from the supplied coach archive. The bilingual biography is based on the academy’s official site, public Instagram @gokhandennizli, MMA Federation coach registration and reporting about Yağmur Denizli’s 2025 titles. Source links are available on the profile. Legacy `/bas-antrenor` and `/en/head-trainer` URLs redirect permanently to the corresponding new profile route.
 
 `src/lib/head-trainer.ts` contains bilingual profile copy and the nine-image gallery mapping. `HeadTrainer.svelte` contains the profile design. Only the academy sitemap, language alternates, canonical URLs and offline precaching include both profile languages.
 

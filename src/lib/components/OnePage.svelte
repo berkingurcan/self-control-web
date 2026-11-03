@@ -6,8 +6,9 @@
   import { siteName, copy, href, siteHref, sites, type SiteId, type Lang } from '#lib/site.ts';
   import { experienceCopy } from '#lib/experience-copy.ts';
   import { editorial } from '#lib/editorial.ts';
-  import { reveal, tilt, swipe, modalFocus } from '#lib/effects.ts';
+  import { reveal, tilt } from '#lib/effects.ts';
   import Photo from './Photo.svelte';
+  import Facilities from './Facilities.svelte';
   import Icon from './Icon.svelte';
   import AcademyHero from './AcademyHero.svelte';
   import DisciplineHero from './DisciplineHero.svelte';
@@ -22,15 +23,10 @@
   const preview = env.PUBLIC_ENABLE_PREVIEWS === 'true';
   const headProfile = $derived(href('coach', lang, preview ? `/preview/${site}` : ''));
   const ids = disciplineOrder;
-  let galleryIndex = $state(0);
-  let galleryDialog: HTMLDialogElement;
-  const gallery = ['gym', 'ring', 'coach'];
   const d = $derived(demoCopy[lang]);
   const email = env.PUBLIC_CONTACT_EMAIL || '', address = env.PUBLIC_ADDRESS || '', instagram = env.PUBLIC_INSTAGRAM || '';
   const whatsapp = (env.PUBLIC_WHATSAPP || '').replace(/\D/g, '');
   function sectionLabel(label: string) { return academy ? label : label.replace(/^0([3-6])/, (_, number) => `0${Number(number) - (Number(number) >= 5 ? 2 : 1)}`); }
-  function openGallery(index: number) { galleryIndex = index; galleryDialog.showModal(); }
-  function changePhoto(step: number) { galleryIndex = (galleryIndex + step + gallery.length) % gallery.length; }
 </script>
 
 <section id="top" class:academy-hero={academy} class:branch-hero={!academy} class="landing-hero">
@@ -60,12 +56,7 @@
 </section>
 {/if}
 
-<section id="space" class="section space-section" use:reveal>
-  <div class="section-top"><span class="eyebrow">{sectionLabel(e.spaceLabel)}</span><span class="eyebrow">03 / {e.imageCount}</span></div>
-  <div class="section-heading"><h2 class="display">{e.spaceTitle}</h2><p>{e.spaceBody}</p></div>
-  <div class="gallery-grid" aria-label={e.gallery}>{#each gallery as image, i}<button class="gallery-item gallery-item-{i}" onclick={() => openGallery(i)} aria-label={`${e.openPhoto}: ${e.spaceCaption[i]}`}><Photo name={image} alt={e.spaceCaption[i]}/><span class="gallery-caption"><span><small>0{i + 1} / {e.stock}</small>{e.spaceCaption[i]}</span><span class="circle-arrow"><Icon name="plus"/></span></span></button>{/each}</div>
-  <p class="photo-note">{e.stockNote}</p>
-</section>
+<Facilities {lang} label={sectionLabel(e.spaceLabel)}/>
 
 {#if academy}
 <section id="trainers" class="trainers-section">
@@ -83,5 +74,3 @@
 <section class="section faq-section" use:reveal><div class="faq-grid"><div><span class="eyebrow">{e.faqLabel}</span><h2 class="display">{t.faqTitle}</h2></div><div>{#each t.faqs as faq, faqIndex}<details><summary>{faq.q}<Icon name="plus" size={18}/></summary><p>{faqIndex === 3 && content.data.catalog.status === 'published' ? lang === 'tr' ? 'Program bölümünden haftalık ders saatlerine, Üyelik bölümünden grup ve özel ders paketlerine ulaşabilirsiniz. Güncel bilgileri katılmadan önce akademiden teyit edin.' : 'The Timetable section lists weekly classes, and Memberships covers group and private lesson packages. Confirm current details with the academy before attending.' : faq.a}</p></details>{/each}</div></div></section>
 
 <section id="start" class="section start-section contact-only" use:reveal><div class="start-intro"><div class="contact-heading"><span class="eyebrow">{sectionLabel(e.contactLabel)}</span><h2 class="display">{e.contactTitle}</h2><p class="large-body">{e.contactBody}</p></div><div class="contact-list"><div><Icon name="pin"/><div><span>{t.address}</span>{#if address}<a target="_blank" rel="noopener noreferrer" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`}>{address}<Icon name="diagonal" size={16}/></a>{:else}<p>{t.addressPending}</p>{/if}</div></div><div><Icon name="mail"/><div><span>{t.contact}</span>{#if email}<a href={`mailto:${email}`}>{email}</a>{/if}{#if whatsapp}<a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer">WhatsApp<Icon name="diagonal" size={16}/></a>{/if}{#if !email && !whatsapp}<p>{t.contactPending}</p>{/if}</div></div><div><Icon name="globe"/><div><span>Instagram</span>{#if instagram}<a href={`https://www.instagram.com/${instagram.replace(/^@/, '')}/`} target="_blank" rel="noopener noreferrer">@{instagram.replace(/^@/, '')}<Icon name="diagonal" size={16}/></a>{:else}<p>{t.instagramPending}</p>{/if}</div></div></div></div></section>
-
-<dialog use:modalFocus class="gallery-dialog" use:swipe={changePhoto} bind:this={galleryDialog} aria-label={e.gallery} onclick={(event) => { if (event.target === galleryDialog) galleryDialog.close(); }} onkeydown={(event) => { if (event.key === 'ArrowRight') changePhoto(1); if (event.key === 'ArrowLeft') changePhoto(-1); }}><div class="gallery-dialog-top"><span class="eyebrow">SELF CONTROL / {e.stock}</span><button aria-label={e.close} class="dialog-close" onclick={() => galleryDialog.close()}><Icon name="close"/></button></div><Photo name={gallery[galleryIndex]} alt={e.spaceCaption[galleryIndex]} eager/><div class="gallery-dialog-bottom"><button aria-label={e.previous} onclick={() => changePhoto(-1)}><Icon name="arrow-left" size={24}/></button><span>0{galleryIndex + 1} / 03 — {e.spaceCaption[galleryIndex]}</span><button aria-label={e.next} onclick={() => changePhoto(1)}><Icon name="arrow" size={24}/></button></div><p class="photo-note">{e.stockNote}</p></dialog>
