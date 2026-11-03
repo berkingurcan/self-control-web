@@ -70,9 +70,10 @@
   .facility-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:240px 240px 280px;gap:20px}
   .facility-photo{position:relative;overflow:hidden;background:#171717;text-align:left;padding:0;color:#fff;min-width:0}
   .main-photo{grid-row:span 2}
-  .facility-photo>img{width:100%;height:100%;object-fit:cover;transition:transform .75s}
+  .facility-photo>img{width:100%;height:100%;object-fit:cover;filter:grayscale(1);transition:transform .75s,filter .45s}
   .facility-photo:after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,#000b,transparent 55%);pointer-events:none}
-  .facility-photo:hover>img{transform:scale(1.04)}
+  .facility-photo:hover>img{transform:scale(1.04);filter:grayscale(0)}
+  .facility-photo:focus-visible>img{filter:grayscale(0)}
   .facility-photo:hover .circle-arrow{background:white;color:black}
   .gallery-dialog>img{display:block;width:100%;height:auto;max-height:65svh;object-fit:contain;background:#080808;filter:none}
   @media(max-width:1000px) and (min-width:701px){.floor-overview{gap:22px}.facility-grid{grid-template-rows:200px 200px 240px}.gallery-caption{inset:auto 18px 18px}.gallery-caption>span:first-child{font-size:13px}}
