@@ -2,7 +2,6 @@
   import { disciplineOrder } from '#lib/discipline-order.ts';
   import { getContext } from 'svelte';
   import { contactKey, type ContactConfig } from '#lib/contact-config.ts';
-  import { contentKey, type ContentState } from '#lib/content-schema.ts';
   import { config as env } from '#lib/config.ts';
   import { siteName, copy, href, siteHref, sites, type SiteId, type Lang } from '#lib/site.ts';
   import { experienceCopy } from '#lib/experience-copy.ts';
@@ -15,17 +14,15 @@
   import DisciplineHero from './DisciplineHero.svelte';
   import DisciplineTraining from './DisciplineTraining.svelte';
   import TrainingSchedule from './TrainingSchedule.svelte';
-  import { coaches, demoCopy } from '#lib/demo.ts';
+  import { coaches } from '#lib/demo.ts';
   let { site, lang }: { site: SiteId; lang: Lang } = $props();
-  const t = $derived(copy[lang]), e = $derived(editorial[lang]), identity = $derived(sites[site]);
+  const t = $derived(copy[lang]), e = $derived(editorial[lang]);
   const contact = getContext<ContactConfig>(contactKey);
-  const content = getContext<ContentState>(contentKey);
   const ux = $derived(experienceCopy[lang]);
   const academy = $derived(site === 'academy');
   const preview = env.PUBLIC_ENABLE_PREVIEWS === 'true';
   const headProfile = $derived(href('coach', lang, preview ? `/preview/${site}` : ''));
   const ids = disciplineOrder;
-  const d = $derived(demoCopy[lang]);
   const email = $derived(contact.PUBLIC_CONTACT_EMAIL);
   const address = $derived(contact.PUBLIC_ADDRESS);
   const instagram = $derived(contact.PUBLIC_INSTAGRAM);
@@ -56,7 +53,6 @@
 <section id="academy" class="section approach-section" use:reveal>
   <div class="section-top"><span class="eyebrow">{e.approachLabel}</span><img src="/brand/mark.svg" width="34" height="25" alt=""/></div>
   <div class="approach-grid"><h2 class="display">{e.approachTitle}</h2><div class="approach-copy"><p class="large-body">{e.approachBody}</p><p>{t.introBody}</p><div class="values-list">{#each t.values as value, i}<details open={i === 0}><summary><span>0{i + 1}</span>{value.title}<Icon name="plus" size={18}/></summary><p>{value.body}</p></details>{/each}</div></div></div>
-  <div class="type-ribbon" aria-hidden="true"><span>{e.ribbon}</span><span><Icon name="diagonal" size="1em"/></span></div>
 </section>
 {/if}
 
@@ -75,6 +71,20 @@
   <ol class="first-steps">{#each ux.firstSteps as step, i}<li><span class="first-step-number">0{i + 1}</span><div><h3>{step.title}</h3><p>{step.body}</p></div><Icon name={i === 0 ? 'training' : i === 1 ? 'calendar' : 'check'} size={22}/></li>{/each}</ol>
 </section>
 
-<section class="section faq-section" use:reveal><div class="faq-grid"><div><span class="eyebrow">{e.faqLabel}</span><h2 class="display">{t.faqTitle}</h2></div><div>{#each t.faqs as faq, faqIndex}<details><summary>{faq.q}<Icon name="plus" size={18}/></summary><p>{faqIndex === 3 && content.data.catalog.status === 'published' ? lang === 'tr' ? 'Program bölümünden haftalık ders saatlerine, Üyelik bölümünden grup ve özel ders paketlerine ulaşabilirsiniz. Güncel bilgileri katılmadan önce akademiden teyit edin.' : 'The Timetable section lists weekly classes, and Memberships covers group and private lesson packages. Confirm current details with the academy before attending.' : faq.a}</p></details>{/each}</div></div></section>
 
-<section id="start" class="section start-section contact-only" use:reveal><div class="start-intro"><div class="contact-heading"><span class="eyebrow">{sectionLabel(e.contactLabel)}</span><h2 class="display">{e.contactTitle}</h2><p class="large-body">{e.contactBody}</p></div><div class="contact-list"><div><Icon name="pin"/><div><span>{t.address}</span>{#if address}<a target="_blank" rel="noopener noreferrer" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`}>{address}<Icon name="diagonal" size={16}/></a>{:else}<p>{t.addressPending}</p>{/if}</div></div><div><Icon name="mail"/><div><span>{t.contact}</span>{#if email}<a href={`mailto:${email}`}>{email}</a>{/if}{#if whatsapp}<a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer">WhatsApp<Icon name="diagonal" size={16}/></a>{/if}{#if !email && !whatsapp}<p>{t.contactPending}</p>{/if}</div></div><div><Icon name="globe"/><div><span>Instagram</span>{#if instagram}<a href={`https://www.instagram.com/${instagram.replace(/^@/, '')}/`} target="_blank" rel="noopener noreferrer">@{instagram.replace(/^@/, '')}<Icon name="diagonal" size={16}/></a>{:else}<p>{t.instagramPending}</p>{/if}</div></div></div></div></section>
+
+<section id="start" class="section start-section contact-only" use:reveal>
+  <div class="start-intro">
+    <div class="contact-heading"><span class="eyebrow">{sectionLabel(e.contactLabel)}</span><h2 class="display">{e.contactTitle}</h2><p class="large-body">{e.contactBody}</p></div>
+    <div class="contact-list">
+      {#if whatsapp}
+        <div><Icon name="chat"/><div><span>WhatsApp</span><a href={`https://wa.me/${whatsapp}`} target="_blank" rel="noopener noreferrer">{lang === 'tr' ? 'WhatsApp’tan yazın' : 'Message us on WhatsApp'}<Icon name="diagonal" size={16}/></a></div></div>
+        <div><Icon name="call"/><div><span>{lang === 'tr' ? 'Telefon' : 'Phone'}</span><a href={`tel:+${whatsapp}`}>{whatsapp === '905348589765' ? '+90 534 858 97 65' : `+${whatsapp}`}</a></div></div>
+      {/if}
+      {#if email}<div><Icon name="mail"/><div><span>{lang === 'tr' ? 'E-posta' : 'Email'}</span><a href={`mailto:${email}`}>{email}</a></div></div>{/if}
+      {#if address}<div><Icon name="pin"/><div><span>{t.address}</span><a target="_blank" rel="noopener noreferrer" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`}>{address}<Icon name="diagonal" size={16}/></a></div></div>{/if}
+      {#if instagram}<div><Icon name="globe"/><div><span>Instagram</span><a href={`https://www.instagram.com/${instagram.replace(/^@/, '')}/`} target="_blank" rel="noopener noreferrer">@{instagram.replace(/^@/, '')}<Icon name="diagonal" size={16}/></a></div></div>{/if}
+      {#if !whatsapp && !email && !address && !instagram}<p>{t.contactPending}</p>{/if}
+    </div>
+  </div>
+</section>

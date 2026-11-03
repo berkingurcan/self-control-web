@@ -65,7 +65,7 @@ For local development, copy `.env.example` to `.env`. Build-time contact values 
 - `PUBLIC_INSTAGRAM`: username only, without a URL or `@`.
 - `PUBLIC_ADDRESS`: verified public address.
 
-Without these values, the site displays intentional placeholders. The site has no enquiry form. Once real contact destinations are configured, visitors can use direct email, WhatsApp and Instagram links. There is no contact database, paid API, newsletter service or booking backend in this version.
+The supplied business number +90 534 858 97 65 is the default WhatsApp and telephone destination. Unconfigured email, address and Instagram rows are omitted. The site has no enquiry form. Once real contact destinations are configured, visitors can use direct email, WhatsApp and Instagram links. There is no contact database, paid API, newsletter service or booking backend in this version.
 
 ## One-page structure and navigation
 
@@ -77,7 +77,7 @@ Each identity has one complete homepage per language: `/` (Turkish) and `/en` (E
 - `#space`: gym photography with a native gallery dialog, touch swipe, arrows and keyboard controls.
 - `#trainers`: academy-only head trainer feature linking to a separate profile page. Other coach cards and profile dialogs are omitted across all identities.
 - `#schedule`: interactive sample weekly timetable with discipline and day filters; monthly, 6-month and annual sample membership plans (`#membership`).
-- FAQ disclosures and `#start`: direct contact details, with no enquiry form.
+- `#start`: WhatsApp messaging and telephone links, plus email, address and Instagram when configured. No enquiry form or FAQ section.
 - Privacy and PWA installation open in native dialogs without leaving the page.
 
 Legacy routes such as `/antrenmanlar`, `/akademi`, `/program`, `/basla` and English equivalents redirect to their new sections. `/gizlilik` and `/en/privacy` open the privacy dialog through `#privacy`. The academy build prerenders four HTML pages: two homepages and two head trainer profiles. Each discipline build prerenders only its two localized homepages; trainer profile URLs return 404.
@@ -112,7 +112,7 @@ npm run build:all
 npm test
 ```
 
-Tests verify all four build identities, four localized academy documents and two per discipline, academy-only head trainer routing and six-image bento galleries, all required section anchors and dialogs, local navigation targets, manifests/icons, noindex defaults and offline cache/fallback behavior. Browser review covers Turkish and English layouts at phone, tablet and desktop widths, plus language switching, menu section navigation, gym gallery, contact layouts, timetable selection, FAQ and installation instructions. Real-device installation and touch gestures should be checked after deployment.
+Tests verify all four build identities, four localized academy documents and two per discipline, academy-only head trainer routing and six-image bento galleries, all required section anchors and dialogs, local navigation targets, manifests/icons, noindex defaults and offline cache/fallback behavior. Browser review covers Turkish and English layouts at phone, tablet and desktop widths, plus language switching, menu section navigation, gym gallery, contact layouts, timetable selection and installation instructions. Real-device installation and touch gestures should be checked after deployment.
 
 The dependency lockfile pins the Cloudflare adapter and Wrangler alongside the existing framework versions. Use Node 24 and `npm ci` for repeatable installs.
 
