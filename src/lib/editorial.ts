@@ -38,7 +38,7 @@ export const editorial = {
       "Antrenör eşliğinde çalışma"
     ],
     "stock": "TEMSİLİ FOTOĞRAF",
-    "stockNote": "Bu fotoğraflar temsili olarak kullanılmıştır; akademinin salonunu veya ekibini göstermemektedir.",
+    "stockNote": "Salon ve branş bölümlerindeki fotoğraflar temsilidir; akademinin salonunu veya ekibini göstermemektedir.",
     "openPhoto": "Fotoğrafı büyüt",
     "previous": "Önceki fotoğraf",
     "next": "Sonraki fotoğraf",
@@ -118,7 +118,7 @@ export const editorial = {
       "Training with a coach"
     ],
     "stock": "ILLUSTRATIVE PHOTO",
-    "stockNote": "These illustrative photographs do not show the academy’s facilities or team.",
+    "stockNote": "The illustrative photos in the facilities and discipline sections do not show the academy’s facilities or team.",
     "openPhoto": "Enlarge photo",
     "previous": "Previous photo",
     "next": "Next photo",

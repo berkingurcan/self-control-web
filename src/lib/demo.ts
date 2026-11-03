@@ -27,29 +27,29 @@ export const sessions: Session[] = [
 
 export const coaches = {
   "head": {
-    "image": "trainer-head",
-    "position": "50% 29%",
+    "image": "gokhan/gokhan-denizli",
+    "position": "50% 10%",
     "tags": {
       "tr": [
-        "TEKNİK ÇALIŞMALAR",
-        "ANTRENÖR KOORDİNASYONU"
+        "KİCK BOKS · MUAY THAI",
+        "MMA"
       ],
       "en": [
-        "TECHNICAL TRAINING",
-        "COACH COORDINATION"
+        "KICKBOXING · MUAY THAI",
+        "MMA"
       ]
     },
     "title": {
-      "tr": "Baş Antrenör",
-      "en": "Head Coach"
+      "tr": "Gökhan Denizli",
+      "en": "Gökhan Denizli"
     },
     "subtitle": {
       "tr": "Teknik çalışmalar ve antrenör koordinasyonu",
       "en": "Technical training and coach coordination"
     },
     "body": {
-      "tr": "Baş antrenörün çalışma alanları, antrenman yaklaşımı ve akademideki görevleri hakkında bilgi edinin. İsim ve özgeçmiş bilgileri henüz eklenmedi.",
-      "en": "Read about the head coach’s training areas, approach and role at the academy. The coach’s name and background have not been added yet."
+      "tr": "2015’ten bu yana antrenörlük. Denizli’den Tayland’a uzanan bir eğitim yolculuğu; kick boks, Muay Thai ve MMA ile şekillenen birikim. Gökhan Denizli’yi yakından tanıyın.",
+      "en": "Coaching since 2015. A training journey from Denizli to Thailand, shaped by kickboxing, Muay Thai and MMA. Meet Gökhan Denizli."
     }
   }
 };

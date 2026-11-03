@@ -1,177 +1,79 @@
-export const headTrainerGallery = [
-  { image: 'trainer-head', position: '50% 29%' },
-  { image: 'coach', position: '40% 42%' },
-  { image: 'ring', position: '50% 50%' },
-  { image: 'training', position: '50% 45%' },
-  { image: 'muay-thai', position: '50% 36%' },
-  { image: 'grappling', position: '55% 42%' }
+export const headTrainerInstagram = 'https://www.instagram.com/gokhandennizli/';
+export const headTrainerSources = [
+  { label: 'Self Control Kickbox', url: 'https://www.selfcontrolkickbox.com/' },
+  { label: 'MMA Federasyonu', url: 'https://mmafederasyonu.org.tr/Mma-Data/antrenorler/antrenor-Detay/gokhan-denizli-/590' },
+  { label: '2025 / Yağmur Denizli', url: 'https://www.hizmetgazetesi.com.tr/yagmur-denizliden-kick-boksta-tarihi-zafer' }
 ];
-
+export const headTrainerGallery = [
+  { image: 'gokhan/venum-krai', position: '50% 38%' },
+  { image: 'gokhan/mma-team', position: '50% 15%' },
+  { image: 'gokhan/ringside', position: '50% 70%' },
+  { image: 'gokhan/venum-sak', position: '50% 45%' },
+  { image: 'gokhan/evo', position: '50% 20%' },
+  { image: 'gokhan/mma-camp', position: '50% 15%' },
+  { image: 'gokhan/training-team', position: '50% 45%' },
+  { image: 'gokhan/training-partner', position: '50% 38%' },
+  { image: 'gokhan/muay-thai-camp', position: '50% 35%' }
+];
 export const headTrainerCopy = {
-  "tr": {
-    "role": "Baş Antrenör",
-    "title": [
-      "BAŞ",
-      "ANTRENÖR"
+  tr: {
+    role: 'Baş Antrenör', title: ['GÖKHAN', 'DENİZLİ'], back: 'Akademiye dön',
+    description: 'Self Control Fight Academy baş antrenörü Gökhan Denizli. 2015’ten bu yana antrenörlük, Tayland’da Muay Thai eğitimi ve Denizli’de kick boks, Muay Thai ve MMA.',
+    intro: 'Denizli’den Tayland’a uzanan bir antrenman yolculuğu. Ringde edinilen deneyim, salonda paylaşılan birikim.',
+    bioLink: 'Hikâyesini keşfet', galleryLink: 'Fotoğraf arşivi', approachLink: 'Antrenman yaklaşımı',
+    portrait: 'Self Control Fight Academy baş antrenörü Gökhan Denizli’nin Tayland antrenman kampındaki portresi',
+    signature: 'GÖKHAN DENİZLİ / SELF CONTROL FIGHT ACADEMY / DENİZLİ',
+    since: 'ANTRENÖRLÜĞE BAŞLANGIÇ', campLabel: 'TAYLAND KAMPLARI', campNames: 'Venum Training Camp · EVO 360',
+    disciplines: 'KİCK BOKS / MUAY THAI / MMA', instagram: 'Instagram’da takip et',
+    bioLabel: '01 / GÖKHAN DENİZLİ', bioTitle: 'BİRİKİMİNİ\nPAYLAŞAN\nBİR ANTRENÖR.',
+    bioLead: '2015’te başlayan antrenörlük yolculuğu, bugün Self Control Fight Academy’de devam ediyor.',
+    bio: [
+      'Gökhan Denizli, Denizli’de kick boks ve Muay Thai alanlarında birebir ve grup dersleri veren, sporcularını müsabakalara hazırlayan bir antrenördür. Self Control Fight Academy’nin kurucusu ve baş antrenörü olarak farklı seviyelerdeki sporcularla çalışır.',
+      '2022’de Tayland’da Venum Training Camp ve EVO 360 Muay Thai kamplarında eğitim aldı. Uluslararası antrenman ortamlarında geliştirdiği birikimini Denizli’deki çalışmalarına taşır. MMA Federasyonu’nun antrenör kayıtlarında Self Control MMA / Gökhan Denizli Spor Kulübü ile yer alır.',
+      'Yetiştirdiği sporcular arasında 2025’te 52 kg K-1 kategorisinde Dünya Kupası ve Türkiye şampiyonluğu elde eden Yağmur Denizli de bulunur. Çalışmalarını teknik eğitim, düzenli antrenman ve müsabakaya hazırlık etrafında sürdürür.'
     ],
-    "back": "Akademiye dönün",
-    "description": "Self Control Fight Academy, Denizli. Baş antrenör profili, çalışma alanları ve antrenman yaklaşımı. Profil bilgileri henüz tamamlanmamıştır.",
-    "intro": "Baş antrenörün özgeçmişi, çalışma alanları ve akademideki görevleri bu sayfada paylaşılacaktır.",
-    "demo": "ÖRNEK PROFİL",
-    "name": "İsim ve özgeçmiş bilgileri henüz eklenmedi.",
-    "bioLink": "Profil bilgileri",
-    "galleryLink": "Fotoğraflar",
-    "approachLink": "Antrenman yaklaşımı",
-    "portrait": "Baş antrenör profili için kullanılan temsili portre fotoğrafı",
-    "signature": "SELF CONTROL FIGHT ACADEMY · DENİZLİ",
-    "bioLabel": "01 / PROFİL BİLGİLERİ",
-    "bioTitle": "ÇALIŞMA\nYAKLAŞIMI",
-    "bioLead": "Antrenmanın içeriği, sporcunun deneyimine ve çalışma hedeflerine göre değerlendirilir.",
-    "bio": [
-      "Yeni başlayan sporcular için temel duruş, denge, gard ve hareketlerin doğru uygulanması önceliklidir. Teknikler aşamalı olarak ele alınır; düzenli tekrar ve antrenör geri bildirimiyle pekiştirilir.",
-      "Deneyim arttıkça kombinasyonlar, savunma, mesafe kontrolü ve uygulama çalışmaları antrenmanın daha geniş bir bölümünü oluşturur. Çalışmaların içeriği branşa ve grubun seviyesine göre belirlenir.",
-      "Kick boks, MMA ve Muay Thai farklı teknik alanları kapsar. Her branşta kontrollü çalışma, antrenman arkadaşına saygı ve salon kurallarına uyum önemlidir."
+    sources: 'Biyografi kaynakları', roleLabel: 'Görevi', roleValue: 'Kurucu · Baş antrenör', focusLabel: 'Çalışma alanları',
+    approachLabel: '02 / ANTRENMAN YAKLAŞIMI', approachTitle: 'TEKNİKTEN\nUYGULAMAYA.',
+    principles: [
+      { title: 'Teknik temel', body: 'Kick boks ve Muay Thai teknikleri; birebir özel dersler ve grup çalışmaları.' },
+      { title: 'Çok yönlü çalışma', body: 'Teknik dersleri tamamlayan esneme, torba, patlayıcı kuvvet ve dayanıklılık antrenmanları.' },
+      { title: 'Müsabakaya hazırlık', body: 'Ring çalışmaları ve sparring ile teknik birikimin uygulamaya taşınması; sporcuların müsabaka sürecine hazırlanması.' }
     ],
-    "bioNote": "Bu metin genel antrenman yaklaşımını anlatan örnek içeriktir. Antrenörün gerçek özgeçmişi, uzmanlıkları ve belgeleri henüz eklenmedi.",
-    "roleLabel": "Görev alanı",
-    "roleValue": "Teknik çalışmalar ve antrenör koordinasyonu",
-    "focusLabel": "Branşlar",
-    "quote": "Temel teknik, düzenli çalışma ve kontrollü uygulama.",
-    "quoteLabel": "GENEL ANTRENMAN YAKLAŞIMI",
-    "approachLabel": "02 / ANTRENMAN YAKLAŞIMI",
-    "approachTitle": "TEKNİK\nÇALIŞMA ESASLARI",
-    "principles": [
-      {
-        "title": "Seviyenin belirlenmesi",
-        "body": "Sporcunun deneyimi, hedefi ve antrenman geçmişi değerlendirilerek uygun çalışma içeriği belirlenir."
-      },
-      {
-        "title": "Temel teknikler",
-        "body": "Duruş, denge, gard ve ayak hareketleri çalışılır. Yeni teknikler bu temel üzerine eklenir."
-      },
-      {
-        "title": "Uygulama ve tekrar",
-        "body": "Teknikler kontrollü alıştırmalarla pekiştirilir. Antrenör geri bildirimiyle gerekli düzeltmeler yapılır."
-      }
-    ],
-    "galleryLabel": "03 / FOTOĞRAFLAR",
-    "galleryTitle": "ANTRENMAN\nFOTOĞRAFLARI",
-    "galleryBody": "Bu bölümde kullanılan portre, salon ve antrenman fotoğrafları temsilidir.",
-    "photoLabels": [
-      "Portre",
-      "Antrenör eşliğinde çalışma",
-      "Ring",
-      "Partnerli antrenman",
-      "Muay Thai çalışması",
-      "Yerde pozisyon çalışması"
-    ],
-    "photoAlts": [
-      "Temsili antrenör portresi",
-      "Antrenman sırasında teknik gösteren antrenör; temsili fotoğraf",
-      "Boş boks ringi; temsili fotoğraf",
-      "Antrenör eşliğinde Muay Thai çalışması; temsili fotoğraf",
-      "Muay Thai darbe yastığı çalışması; temsili fotoğraf",
-      "MMA antrenmanında yerde pozisyon çalışması; temsili fotoğraf"
-    ],
-    "galleryNote": "Fotoğraflar akademinin antrenörlerini veya salonunu göstermemektedir. Gerçek fotoğraflar daha sonra eklenecektir.",
-    "open": "Fotoğrafı büyüt",
-    "close": "Kapat",
-    "previous": "Önceki fotoğraf",
-    "next": "Sonraki fotoğraf",
-    "gallery": "Antrenör ve antrenman fotoğrafları",
-    "ctaLabel": "İLETİŞİM",
-    "ctaTitle": "ANTRENMAN\nHAKKINDA BİLGİ",
-    "ctaBody": "Branş, grup ve ders saatleriyle ilgili sorularınız için bizimle iletişime geçebilirsiniz.",
-    "cta": "İletişim bilgileri",
-    "return": "Akademiye dönün",
-    "profileMarker": "ANTRENÖR PROFİLİ",
-    "stock": "TEMSİLİ FOTOĞRAF",
-    "coachMarker": "BAŞ ANTRENÖR",
-    "biographyMarker": "PROFİL BİLGİLERİ",
-    "approachMarker": "TEKNİK VE UYGULAMA",
-    "galleryMarker": "FOTOĞRAF"
+    galleryLabel: '03 / FOTOĞRAF ARŞİVİ', galleryTitle: 'HER KAMP,\nYENİ BİR BİRİKİM.',
+    galleryBody: 'Antrenman kampları, ring kenarı ve birlikte çalışılan ekipler. Gökhan Denizli’nin kendi arşivinden dokuz kare.',
+    photoLabels: ['Venum Training Camp', 'Self Control MMA ekibi', 'Ring kenarında', 'Venum’da antrenman', 'Muay Thai kampı', 'MMA kampından', 'Birlikte antrenman', 'Antrenman sonrası', 'Tayland’dan bir kare'],
+    photoAlts: ['Gökhan Denizli ve bir antrenör Venum Training Camp ringinde', 'Gökhan Denizli ve ekibi Self Control MMA bayrağıyla', 'Gökhan Denizli bir dövüş organizasyonunda Türk bayrağıyla', 'Gökhan Denizli Venum Training Camp antrenman alanında', 'Gökhan Denizli ve bir antrenör Muay Thai salonunda Türk bayrağıyla', 'Gökhan Denizli MMA antrenman alanında iki antrenman arkadaşıyla', 'Gökhan Denizli Self Control tişörtüyle antrenman ekibinin yanında', 'Gökhan Denizli ve antrenman arkadaşı çalışma sonrası', 'Gökhan Denizli Tayland antrenman salonunda bir antrenörle'],
+    galleryNote: 'Fotoğraflar: Gökhan Denizli’nin kişisel arşivi.', open: 'Fotoğrafı büyüt', close: 'Kapat', previous: 'Önceki fotoğraf', next: 'Sonraki fotoğraf', gallery: 'Gökhan Denizli fotoğraf arşivi',
+    ctaLabel: 'BİRLİKTE ÇALIŞALIM', ctaTitle: 'İLK ADIMI\nSALONDA AT.', ctaBody: 'Özel ders, grup antrenmanları ve müsabakaya hazırlık hakkında bilgi almak için bize ulaş.', cta: 'İletişime geç', return: 'Akademiyi keşfet', profileMarker: 'BAŞ ANTRENÖR', galleryMarker: 'KARE'
   },
-  "en": {
-    "role": "Head Coach",
-    "title": [
-      "HEAD",
-      "COACH"
+  en: {
+    role: 'Head Coach', title: ['GÖKHAN', 'DENİZLİ'], back: 'Back to the academy',
+    description: 'Meet Gökhan Denizli, head coach at Self Control Fight Academy. Coaching since 2015, Muay Thai training in Thailand, and kickboxing, Muay Thai and MMA in Denizli.',
+    intro: 'A training journey from Denizli to Thailand. Experience gained around the ring, knowledge shared in the gym.',
+    bioLink: 'Discover his story', galleryLink: 'Photo archive', approachLink: 'Training approach',
+    portrait: 'Portrait of Gökhan Denizli, head coach at Self Control Fight Academy, at a training camp in Thailand',
+    signature: 'GÖKHAN DENİZLİ / SELF CONTROL FIGHT ACADEMY / DENİZLİ',
+    since: 'COACHING SINCE', campLabel: 'THAILAND TRAINING CAMPS', campNames: 'Venum Training Camp · EVO 360',
+    disciplines: 'KICKBOXING / MUAY THAI / MMA', instagram: 'Follow on Instagram',
+    bioLabel: '01 / GÖKHAN DENİZLİ', bioTitle: 'EXPERIENCE\nWORTH\nSHARING.',
+    bioLead: 'A coaching journey that began in 2015 continues today at Self Control Fight Academy.',
+    bio: [
+      'Gökhan Denizli coaches kickboxing and Muay Thai in Denizli through private lessons, group classes and competition preparation. As founder and head coach of Self Control Fight Academy, he works with athletes at different levels.',
+      'In 2022, he trained at Venum Training Camp and EVO 360 Muay Thai in Thailand, bringing that international training experience back to his work in Denizli. The MMA Federation lists him as a coach with Self Control MMA / Gökhan Denizli Sports Club.',
+      'His athletes include Yağmur Denizli, who won World Cup and Turkish championship titles in the 52 kg K-1 category in 2025. His work brings together technical instruction, regular training and competition preparation.'
     ],
-    "back": "Back to the academy",
-    "description": "Self Control Fight Academy, Denizli. Head coach profile, training areas and coaching approach. Profile details are not yet complete.",
-    "intro": "The head coach’s background, areas of practice and role at the academy will be published on this page.",
-    "demo": "SAMPLE PROFILE",
-    "name": "The coach’s name and background have not been added yet.",
-    "bioLink": "Profile information",
-    "galleryLink": "Photos",
-    "approachLink": "Coaching approach",
-    "portrait": "Illustrative portrait used for the head coach profile",
-    "signature": "SELF CONTROL FIGHT ACADEMY · DENİZLİ",
-    "bioLabel": "01 / PROFILE INFORMATION",
-    "bioTitle": "COACHING\nAPPROACH",
-    "bioLead": "Training content is considered in relation to each participant’s experience and goals.",
-    "bio": [
-      "For beginners, the focus is on stance, balance, guard and correct movement. Techniques are introduced gradually and reinforced through regular practice and feedback from the coach.",
-      "As experience develops, training includes more combinations, defence, distance control and practical drills. The content depends on the discipline and the group’s level.",
-      "Kickboxing, MMA and Muay Thai cover different technical areas. Controlled practice, respect for training partners and following gym rules remain important in every discipline."
+    sources: 'Biography sources', roleLabel: 'Role', roleValue: 'Founder · Head coach', focusLabel: 'Training areas',
+    approachLabel: '02 / TRAINING APPROACH', approachTitle: 'FROM TECHNIQUE\nTO PRACTICE.',
+    principles: [
+      { title: 'Technical foundations', body: 'Kickboxing and Muay Thai techniques taught through private lessons and group classes.' },
+      { title: 'Rounded training', body: 'Stretching, bag work, explosive strength and endurance sessions complement technical lessons.' },
+      { title: 'Competition preparation', body: 'Ring work and sparring put technique into practice and prepare athletes for competition.' }
     ],
-    "bioNote": "This is sample content describing a general training approach. The coach’s actual background, qualifications and credentials have not been added yet.",
-    "roleLabel": "Area of responsibility",
-    "roleValue": "Technical training and coach coordination",
-    "focusLabel": "Disciplines",
-    "quote": "Fundamental technique, regular training and controlled practice.",
-    "quoteLabel": "GENERAL TRAINING APPROACH",
-    "approachLabel": "02 / COACHING APPROACH",
-    "approachTitle": "PRINCIPLES\nOF TRAINING",
-    "principles": [
-      {
-        "title": "Assessing experience",
-        "body": "Training content is informed by the participant’s experience, goals and training background."
-      },
-      {
-        "title": "Fundamental techniques",
-        "body": "Stance, balance, guard and footwork provide the foundation for learning new techniques."
-      },
-      {
-        "title": "Practice and feedback",
-        "body": "Controlled drills reinforce technique. Feedback from the coach helps identify and correct mistakes."
-      }
-    ],
-    "galleryLabel": "03 / PHOTOS",
-    "galleryTitle": "TRAINING\nPHOTOS",
-    "galleryBody": "The portraits, facilities and training photographs in this section are illustrative.",
-    "photoLabels": [
-      "Portrait",
-      "Coached practice",
-      "Boxing ring",
-      "Partner training",
-      "Muay Thai practice",
-      "Ground position practice"
-    ],
-    "photoAlts": [
-      "Illustrative coach portrait",
-      "Coach demonstrating technique; illustrative photo",
-      "Empty boxing ring; illustrative photo",
-      "Muay Thai training with a coach; illustrative photo",
-      "Muay Thai pad practice; illustrative photo",
-      "Ground position practice in MMA; illustrative photo"
-    ],
-    "galleryNote": "These photographs do not show the academy’s coaches or facilities. Original photography will be added later.",
-    "open": "Enlarge photo",
-    "close": "Close",
-    "previous": "Previous photo",
-    "next": "Next photo",
-    "gallery": "Coach and training photos",
-    "ctaLabel": "CONTACT",
-    "ctaTitle": "TRAINING\nENQUIRIES",
-    "ctaBody": "Contact us with questions about disciplines, groups and class times.",
-    "cta": "Contact details",
-    "return": "Back to the academy",
-    "profileMarker": "COACH PROFILE",
-    "stock": "ILLUSTRATIVE PHOTO",
-    "coachMarker": "HEAD COACH",
-    "biographyMarker": "PROFILE INFORMATION",
-    "approachMarker": "TECHNIQUE AND PRACTICE",
-    "galleryMarker": "PHOTOS"
+    galleryLabel: '03 / PHOTO ARCHIVE', galleryTitle: 'EVERY CAMP.\nA NEW PERSPECTIVE.',
+    galleryBody: 'Training camps, ringside moments and the people along the way. Nine photographs from Gökhan Denizli’s own archive.',
+    photoLabels: ['Venum Training Camp', 'The Self Control MMA team', 'At ringside', 'Training at Venum', 'Muay Thai camp', 'From MMA camp', 'Training together', 'After training', 'A moment in Thailand'],
+    photoAlts: ['Gökhan Denizli with a coach in a Venum Training Camp ring', 'Gökhan Denizli and his team holding a Self Control MMA flag', 'Gökhan Denizli holding a Turkish flag at a fight event', 'Gökhan Denizli at the Venum Training Camp gym', 'Gökhan Denizli and a coach holding a Turkish flag in a Muay Thai gym', 'Gökhan Denizli with two training partners at an MMA gym', 'Gökhan Denizli wearing a Self Control shirt with training partners', 'Gökhan Denizli with a training partner after a session', 'Gökhan Denizli with a coach in a training gym in Thailand'],
+    galleryNote: 'Photography: Gökhan Denizli’s personal archive.', open: 'Enlarge photo', close: 'Close', previous: 'Previous photo', next: 'Next photo', gallery: 'Gökhan Denizli photo archive',
+    ctaLabel: 'TRAIN WITH US', ctaTitle: 'TAKE THE\nFIRST STEP.', ctaBody: 'Get in touch about private lessons, group training and competition preparation.', cta: 'Get in touch', return: 'Explore the academy', profileMarker: 'HEAD COACH', galleryMarker: 'PHOTOGRAPHS'
   }
 };

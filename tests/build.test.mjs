@@ -38,29 +38,29 @@ for(const id of ids){
    assert(!page.includes('class="trainer-card"'));
    assert(!page.includes('class="coach-dialog"'));
    for (const discipline of ['muaythai','kickbox','mma']) assert(!page.includes(`/images/trainer-${discipline}-`));
-   assert.equal(page.includes('/images/trainer-head-'), id === 'academy');
-   assert.equal(page.includes('href="/bas-antrenor"') || page.includes('href="/en/head-trainer"'), id === 'academy');
+   assert.equal(page.includes('/images/gokhan/gokhan-denizli-'), id === 'academy');
+   assert.equal(page.includes('href="/gokhandenizli"') || page.includes('href="/en/gokhandenizli"'), id === 'academy');
   }
   const sitemap=await readFile(`${root}/sitemap.xml`,'utf8');
   const worker=await readFile(`${root}/service-worker.js`,'utf8');
-  for (const path of ['/bas-antrenor', '/en/head-trainer']) {
+  for (const path of ['/gokhandenizli', '/en/gokhandenizli']) {
    assert.equal(sitemap.includes(path), id === 'academy');
    assert.equal(worker.includes(`"${path}"`), id === 'academy');
   }
   if (id === 'academy') {
-  const trainer=await readFile(`${root}/bas-antrenor.html`,'utf8');
-  const trainerEn=await readFile(`${root}/en/head-trainer.html`,'utf8');
-  assert(home.includes('href="/bas-antrenor"'));assert(english.includes('href="/en/head-trainer"'));
+  const trainer=await readFile(`${root}/gokhandenizli.html`,'utf8');
+  const trainerEn=await readFile(`${root}/en/gokhandenizli.html`,'utf8');
+  assert(home.includes('href="/gokhandenizli"'));assert(english.includes('href="/en/gokhandenizli"'));
   for(const profile of [trainer,trainerEn]){
    for(const anchor of ['top','biography','coaching','journal'])assert(profile.includes(`id="${anchor}"`));
-   assert.equal((profile.match(/class="bento-tile /g)||[]).length,6,'six bento photographs');
+   assert.equal((profile.match(/class="bento-tile /g)||[]).length,9,'nine original bento photographs');
    assert(profile.includes('profile-lightbox'));assert(profile.includes('data-profile='));assert(!profile.includes('#team'));
   }
-  assert(trainer.includes('href="/en/head-trainer"'));assert(trainerEn.includes('href="/bas-antrenor"'));
+  assert(trainer.includes('href="/en/gokhandenizli"'));assert(trainerEn.includes('href="/gokhandenizli"'));
   assert(trainer.includes('href="/#trainers"'));assert(trainerEn.includes('href="/en#trainers"'));
   } else {
-   assert(!files.includes(`${root}/bas-antrenor.html`));
-   assert(!files.includes(`${root}/en/head-trainer.html`));
+   assert(!files.includes(`${root}/gokhandenizli.html`));
+   assert(!files.includes(`${root}/en/gokhandenizli.html`));
    assert(home.includes('03 / DERS PROGRAMI'));
    assert(home.includes('04 / İLETİŞİM'));
    assert(english.includes('03 / CLASS TIMETABLE'));

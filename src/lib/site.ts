@@ -6,8 +6,8 @@ export type PageId = 'home' | 'coach' | 'training' | 'about' | 'schedule' | 'sta
 export const ids: SiteId[] = [...siteOrder];
 export const pages: PageId[] = ['home', 'coach', 'training', 'about', 'schedule', 'start', 'privacy'];
 export const routes: Record<Lang, Record<PageId, string>> = {
-  tr: { home: '', coach: 'bas-antrenor', training: 'antrenmanlar', about: 'akademi', schedule: 'program', start: 'basla', privacy: 'gizlilik' },
-  en: { home: '', coach: 'head-trainer', training: 'training', about: 'academy', schedule: 'schedule', start: 'start', privacy: 'privacy' }
+  tr: { home: '', coach: 'gokhandenizli', training: 'antrenmanlar', about: 'akademi', schedule: 'program', start: 'basla', privacy: 'gizlilik' },
+  en: { home: '', coach: 'gokhandenizli', training: 'training', about: 'academy', schedule: 'schedule', start: 'start', privacy: 'privacy' }
 };
 export const sites = {
   academy: { name: 'Fight Academy', label: 'SELF CONTROL', accent: '#ffffff', dark: '#222222', image: 'training', domain: 'selfcontrolfightacademy.com', number: '00', position: '50% 45%', disciplines: disciplineOrder },

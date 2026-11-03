@@ -67,7 +67,7 @@ Without these values, the site displays intentional placeholders. The site has n
 
 ## One-page structure and navigation
 
-Each identity has one complete homepage per language: `/` (Turkish) and `/en` (English). The academy also has a dedicated head trainer profile at `/bas-antrenor` and `/en/head-trainer`; discipline sites have no trainer sections or profile pages. On the homepage, the header and mobile bottom bar scroll to sections. On the trainer profile, they return to the corresponding homepage section. Language switching preserves the current homepage section or stays on the translated head trainer profile. Discipline section numbers remain sequential after the approach and trainer sections are omitted.
+Each identity has one complete homepage per language: `/` (Turkish) and `/en` (English). The academy also has a dedicated head trainer profile at `/gokhandenizli` and `/en/gokhandenizli`; discipline sites have no trainer sections or profile pages. On the homepage, the header and mobile bottom bar scroll to sections. On the trainer profile, they return to the corresponding homepage section. Language switching preserves the current homepage section or stays on the translated head trainer profile. Discipline section numbers remain sequential after the approach and trainer sections are omitted.
 
 - `#top`: identity-specific hero and first action.
 - `#training`: discipline selection on the academy, technical focus on discipline sites.
@@ -135,7 +135,7 @@ New gym and coaching references (also credited in the footer):
 - Ron Lach — https://www.pexels.com/photo/empty-boxing-ring-8744796/
 - Mikhail Nilov — https://www.pexels.com/photo/man-training-a-woman-in-boxing-6740346/
 
-The academy head trainer feature uses a stock portrait and a role-based sample profile. Stock subjects are not identified as actual academy staff; a name, qualifications and achievements have not been invented. Replace `trainer-head`, `coach`, `gym`, `ring` and discipline image assets with actual material when available.
+The academy head trainer feature presents Gökhan Denizli with original photos supplied in the sibling `gökhandenizli` folder. The responsive WebP assets in `static/images/gokhan` have two widths (640 and 1280), with metadata removed. Other gym and discipline photographs remain illustrative.
 
 
 ## Sample timetable and pricing
@@ -158,9 +158,9 @@ Self-hosted head trainer stock portrait:
 
 ## Dedicated head trainer profile
 
-The head portrait, role title and “View profile” link all open `/bas-antrenor` (Turkish) or `/en/head-trainer` (English), on the academy, preserving its preview prefix. Discipline sites do not show trainers or expose head trainer profiles. The main academy and discipline homepages remain one-page layouts. The profile has a dedicated portrait hero, biography, coaching principles and six-photo responsive bento grid. Gallery photographs open in a native lightbox with previous/next controls, keyboard arrows and touch swipe. The portrait, training and gym images are explicitly illustrative stock; the gallery does not claim all subjects are the same person. The biography is sample editorial copy, with no invented name, qualification or record.
+The head portrait, role title and “View profile” link all open `/gokhandenizli` (Turkish) or `/en/gokhandenizli` (English), on the academy, preserving its preview prefix. Discipline sites do not show trainers or expose head trainer profiles. The main academy and discipline homepages remain one-page layouts. The profile has a bento hero with an original portrait and career milestones, biography, coaching principles and nine-photo responsive bento grid. Gallery photographs open in a native lightbox with previous/next controls, keyboard arrows and touch swipe. Profile photographs come from the supplied coach archive. The bilingual biography is based on the academy’s official site, public Instagram @gokhandennizli, MMA Federation coach registration and reporting about Yağmur Denizli’s 2025 titles. Source links are available on the profile. Legacy `/bas-antrenor` and `/en/head-trainer` URLs redirect permanently to the corresponding new profile route.
 
-`src/lib/head-trainer.ts` contains bilingual profile copy and the six-image gallery mapping. `HeadTrainer.svelte` contains the profile design. Only the academy sitemap, language alternates, canonical URLs and offline precaching include both profile languages.
+`src/lib/head-trainer.ts` contains bilingual profile copy and the nine-image gallery mapping. `HeadTrainer.svelte` contains the profile design. Only the academy sitemap, language alternates, canonical URLs and offline precaching include both profile languages.
 
 
 ## Membership catalogue and private lessons

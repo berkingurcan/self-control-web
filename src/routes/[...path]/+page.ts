@@ -12,6 +12,12 @@ export function entries() {
   });
 }
 export function load({ url }: { url: URL }) {
+  const legacy = url.pathname.match(/^(.*)\/(bas-antrenor|head-trainer)\/?$/);
+  if (legacy) {
+    const target = `${legacy[1]}/gokhandenizli`;
+    const profile = parsePath(target);
+    if (profile?.site === 'academy') redirect(308, `${target}${url.search}${url.hash}`);
+  }
   const result = parsePath(url.pathname);
   if (!result) error(404, 'Page not found');
   if (result.page === 'coach' && result.site !== 'academy') error(404, 'Page not found');

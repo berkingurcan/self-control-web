@@ -11,7 +11,7 @@
   const profile = $derived(data.page === 'coach');
   const description = $derived(profile ? headTrainerCopy[data.lang].description : copy[data.lang].home[data.site].sub);
   const canonical = $derived(`https://${identity.domain}${href(profile ? 'coach' : 'home', data.lang)}`);
-  const title = $derived(profile ? `${headTrainerCopy[data.lang].role} — Self Control Fight Academy` : data.site === 'academy' ? 'Self Control Fight Academy | Denizli' : `${siteName(data.site, data.lang)} | Self Control Fight Academy, Denizli`);
+  const title = $derived(profile ? `Gökhan Denizli | ${headTrainerCopy[data.lang].role} — Self Control Fight Academy` : data.site === 'academy' ? 'Self Control Fight Academy | Denizli' : `${siteName(data.site, data.lang)} | Self Control Fight Academy, Denizli`);
 </script>
 <svelte:head>
   <title>{title}</title>
