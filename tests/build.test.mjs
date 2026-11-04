@@ -55,7 +55,7 @@ for(const id of ids){
    for(const anchor of ['top','biography','journal'])assert(profile.includes(`id="${anchor}"`));
    assert(!profile.includes('id="coaching"'));
    assert(!profile.includes('href="#coaching"'));
-   assert.equal((profile.match(/class="bento-tile /g)||[]).length,10,'ten original bento photographs');
+   assert.equal((profile.match(/class="bento-tile /g)||[]).length,11,'eleven original bento photographs');
    assert(profile.includes('profile-lightbox'));assert(profile.includes('data-profile='));assert(!profile.includes('#team'));
   }
   assert(trainer.includes('href="/en/gokhandenizli"'));assert(trainerEn.includes('href="/gokhandenizli"'));
