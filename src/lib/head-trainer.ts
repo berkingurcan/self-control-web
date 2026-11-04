@@ -1,9 +1,13 @@
+export const headTrainerName = 'Gökhan Denizli';
+export const headTrainerPortrait = 'gokhan/gokhan-denizli';
 export const headTrainerInstagram = 'https://www.instagram.com/gokhandennizli/';
-export const headTrainerSources = [
-  { label: 'Self Control Kickbox', url: 'https://www.selfcontrolkickbox.com/' },
-  { label: 'MMA Federasyonu', url: 'https://mmafederasyonu.org.tr/Mma-Data/antrenorler/antrenor-Detay/gokhan-denizli-/590' },
-  { label: '2025 / Yağmur Denizli', url: 'https://www.hizmetgazetesi.com.tr/yagmur-denizliden-kick-boksta-tarihi-zafer' }
+const netherlandsGyms = ['SB Gym', 'Mike’s Gym', 'Days Gym Almere'];
+const thailandGyms = [
+  'Venum Training Camp', 'Tiger Muay Thai', 'Apollo Gym', 'Singha Muay Thai',
+  'Dobrynya MMA', 'Rattachai Muay Thai', 'Sinbi Muay Thai', 'AKA Thailand',
+  'Superbon Training Camp', 'Bangtao Muay Thai & MMA'
 ];
+
 export const headTrainerGallery = [
   { image: 'gokhan/venum-krai', position: '50% 38%' },
   { image: 'gokhan/mma-team', position: '50% 15%' },
@@ -17,44 +21,100 @@ export const headTrainerGallery = [
 ];
 export const headTrainerCopy = {
   tr: {
-    role: 'Baş Antrenör', title: ['GÖKHAN', 'DENİZLİ'], back: 'Akademiye dön',
-    description: 'Self Control Fight Academy baş antrenörü Gökhan Denizli. 2015’ten bu yana antrenörlük, Tayland’da Muay Thai eğitimi ve Denizli’de kick boks, Muay Thai ve MMA.',
-    intro: 'Denizli’den Tayland’a uzanan bir antrenman yolculuğu. Ringde edinilen deneyim, salonda paylaşılan birikim.',
-    bioLink: 'Hikâyesini keşfet', galleryLink: 'Fotoğraf arşivi',
-    portrait: 'Self Control Fight Academy baş antrenörü Gökhan Denizli’nin Tayland antrenman kampındaki portresi',
+    role: 'Başantrenör', title: ['GÖKHAN', 'DENİZLİ'], back: 'Akademiye dön',
+    description: 'Gökhan Denizli, 4. Dan siyah kuşak sahibi Kick Boks ve MMA antrenörü, Denizli MMA İl Temsilcisi ve Self Control Fight Academy’nin kurucusu ve başantrenörüdür.',
+    byline: 'Kick Boks & MMA Antrenörü | 4. Dan Siyah Kuşak | Kulüp Başkanı',
+    intro: 'Gökhan Denizli, Kick Boks ve MMA branşlarında ulusal ve uluslararası düzeyde sporcu yetiştiren, mesleki gelişimini uluslararası eğitimlerle destekleyen profesyonel bir dövüş sporları antrenörüdür.',
+    bioLink: 'Biyografiyi oku', galleryLink: 'Fotoğraf arşivi',
+    portrait: 'Self Control Fight Academy başantrenörü Gökhan Denizli’nin Tayland antrenman kampındaki portresi',
     signature: 'GÖKHAN DENİZLİ / SELF CONTROL FIGHT ACADEMY / DENİZLİ',
-    disciplines: 'KİCK BOKS / MUAY THAI / MMA', instagram: 'Instagram’da takip et',
-    bioLabel: '01 / GÖKHAN DENİZLİ', bioTitle: 'BİRİKİMİNİ\nPAYLAŞAN\nBİR ANTRENÖR.',
-    bioLead: '2015’te başlayan antrenörlük yolculuğu, bugün Self Control Fight Academy’de devam ediyor.',
-    bio: [
-      'Gökhan Denizli, Denizli’de kick boks ve Muay Thai alanlarında birebir ve grup dersleri veren, sporcularını müsabakalara hazırlayan bir antrenördür. Self Control Fight Academy’nin kurucusu ve baş antrenörü olarak farklı seviyelerdeki sporcularla çalışır.',
-      '2022’de Tayland’da Venum Training Camp ve EVO 360 Muay Thai kamplarında eğitim aldı. Uluslararası antrenman ortamlarında geliştirdiği birikimini Denizli’deki çalışmalarına taşır. MMA Federasyonu’nun antrenör kayıtlarında Self Control MMA / Gökhan Denizli Spor Kulübü ile yer alır.',
-      'Yetiştirdiği sporcular arasında 2025’te 52 kg K-1 kategorisinde Dünya Kupası ve Türkiye şampiyonluğu elde eden Yağmur Denizli de bulunur. Çalışmalarını teknik eğitim, düzenli antrenman ve müsabakaya hazırlık etrafında sürdürür.'
+    instagram: 'Instagram’da takip et',
+    bioLabel: '01 / GÖKHAN DENİZLİ', bioTitle: 'BİYOGRAFİ',
+    credentialsTitle: 'Yeterlilikler ve görevler',
+    credentials: [
+      '4. Dan Siyah Kuşak',
+      'Kick Boks 2. Kademe Antrenörü',
+      'MMA 2. Kademe Antrenörü – MMA Level 4 Yeterliliği',
+      'Denizli MMA İl Temsilcisi',
+      'Gökhan Denizli Spor Kulübü Başkanı',
+      'Self Control Fight Academy Kurucusu ve Başantrenörü'
     ],
-    sources: 'Biyografi kaynakları', roleLabel: 'Görevi', roleValue: 'Kurucu · Baş antrenör', focusLabel: 'Çalışma alanları',
+    trainingTitle: 'Uluslararası eğitim ve dövüş sporları deneyimi',
+    trainingIntro: 'Gökhan Denizli, antrenörlük kariyeri boyunca Avrupa ve Asya’nın önemli dövüş sporları merkezlerinde eğitim alarak farklı antrenman ekollerini yakından deneyimledi.',
+    countries: [
+      { name: 'Hollanda', gyms: netherlandsGyms, detail: 'Hollanda’da Avrupa’nın profesyonel Kick Boks ve K-1 antrenman sistemlerini deneyimledi ve GLORY organizasyonunda mücadele eden profesyonel dövüşçülerle antrenman yaptı.' },
+      { name: 'Tayland', gyms: thailandGyms, detail: 'Tayland’da Trainer Gae’den çok sayıda özel ders alarak bireysel tekniğini geliştirdi.' }
+    ],
+    trainingOutcome: 'Uluslararası eğitimlerde edindiği teknik ve taktiksel birikimi kendi antrenörlük sistemine aktararak sporcularının gelişimine katkı sağlıyor.',
+    campsTitle: 'Uluslararası sporcu kampları ve profesyonel dövüş sporları',
+    camps: [
+      'Gökhan Denizli, Self Control Fight Academy’de profesyonel dövüşçülerin kamp ve hazırlık çalışmalarına ev sahipliği yapıyor. Yurt dışından ve Türkiye’nin farklı şehirlerinden Denizli’ye gelen profesyonel dövüşçüler, müsabaka hazırlık kamplarını akademide gerçekleştiriyor.',
+      'Self Control Fight Academy, uluslararası antrenman deneyimlerinin paylaşıldığı ve profesyonel müsabaka hazırlıklarının yürütüldüğü bir dövüş sporları merkezi olarak faaliyet gösteriyor.'
+    ],
+    athleteTitle: 'MMA ve aktif sporcu yetiştiriciliği',
+    athletes: [
+      'Gökhan Denizli, Kick Boks, K-1 ve MMA branşlarında amatör ve profesyonel sporcular yetiştiriyor. Özellikle MMA’da farklı yaş ve müsabaka kategorilerinde aktif olarak sporcu yetiştiriyor ve sporcularını amatör ve profesyonel müsabakalara hazırlıyor.',
+      'Kulübündeki sporcuları, MMA Federasyonu’nun düzenlediği Türkiye şampiyonalarına ve resmî organizasyonlara düzenli olarak kafileler hâlinde götürerek ulusal düzeyde aktif mücadele etmelerini sağlıyor.',
+      'Antrenörlüğünü yaptığı sporcular arasında millî takım seviyesine ulaşanlar var. Sporcuları Türkiye şampiyonlukları, uluslararası turnuva dereceleri ve profesyonel müsabaka başarıları elde etti.'
+    ],
+    academyTitle: 'Self Control Fight Academy',
+    academy: [
+      'Gökhan Denizli, kurucusu ve başantrenörü olduğu Self Control Fight Academy’de Kick Boks ve MMA branşlarında profesyonel eğitim veriyor. Akademi çocuk, genç ve yetişkin sporculara eğitim programları sunuyor ve amatör ve profesyonel müsabakalara hazırlık çalışmaları yürütüyor.',
+      'Akademinin antrenman anlayışı disiplin, teknik yeterlilik, kondisyon, mücadele karakteri ve sürekli gelişime dayanıyor.',
+      'Gökhan Denizli’nin hedefi ulusal ve uluslararası arenada mücadele edebilecek, millî takım seviyesine ulaşabilecek ve profesyonel arenada şampiyonluk kazanabilecek sporcular yetiştirmek.'
+    ],
+    academyProfile: 'Hollanda ve Tayland’da edindiği uluslararası antrenman deneyimini Denizli’ye taşıyan Gökhan Denizli, Kick Boks, K-1 ve MMA’da amatör ve profesyonel sporcular yetiştiriyor. Sporcuları arasında millî takım seviyesine ulaşan, Türkiye şampiyonluğu kazanan, uluslararası turnuvalarda derece alan ve profesyonel müsabakalarda başarı gösteren isimler var.',
     galleryLabel: '02 / FOTOĞRAF ARŞİVİ', galleryTitle: 'HER KAMP,\nYENİ BİR BİRİKİM.',
     galleryBody: 'Antrenman kampları, ring kenarı ve birlikte çalışılan ekipler. Gökhan Denizli’nin kendi arşivinden dokuz kare.',
     photoLabels: ['Venum Training Camp', 'Self Control MMA ekibi', 'Ring kenarında', 'Venum’da antrenman', 'Muay Thai kampı', 'MMA kampından', 'Birlikte antrenman', 'Antrenman sonrası', 'Tayland’dan bir kare'],
     photoAlts: ['Gökhan Denizli ve bir antrenör Venum Training Camp ringinde', 'Gökhan Denizli ve ekibi Self Control MMA bayrağıyla', 'Gökhan Denizli bir dövüş organizasyonunda Türk bayrağıyla', 'Gökhan Denizli Venum Training Camp antrenman alanında', 'Gökhan Denizli ve bir antrenör Muay Thai salonunda Türk bayrağıyla', 'Gökhan Denizli MMA antrenman alanında iki antrenman arkadaşıyla', 'Gökhan Denizli Self Control tişörtüyle antrenman ekibinin yanında', 'Gökhan Denizli ve antrenman arkadaşı çalışma sonrası', 'Gökhan Denizli Tayland antrenman salonunda bir antrenörle'],
     galleryNote: 'Fotoğraflar: Gökhan Denizli’nin kişisel arşivi.', open: 'Fotoğrafı büyüt', close: 'Kapat', previous: 'Önceki fotoğraf', next: 'Sonraki fotoğraf', gallery: 'Gökhan Denizli fotoğraf arşivi',
-    ctaLabel: 'BİRLİKTE ÇALIŞALIM', ctaTitle: 'İLK ADIMI\nSALONDA AT.', ctaBody: 'Özel ders, grup antrenmanları ve müsabakaya hazırlık hakkında bilgi almak için bize ulaş.', cta: 'İletişime geç', return: 'Akademiyi keşfet', profileMarker: 'BAŞ ANTRENÖR', galleryMarker: 'KARE'
+    ctaLabel: 'BİRLİKTE ÇALIŞALIM', ctaTitle: 'İLK ADIMI\nSALONDA AT.', ctaBody: 'Özel ders, grup antrenmanları ve müsabakaya hazırlık hakkında bilgi almak için bize ulaş.', cta: 'İletişime geç', return: 'Akademiyi keşfet', profileMarker: 'BAŞANTRENÖR', galleryMarker: 'KARE'
   },
   en: {
     role: 'Head Coach', title: ['GÖKHAN', 'DENİZLİ'], back: 'Back to the academy',
-    description: 'Meet Gökhan Denizli, head coach at Self Control Fight Academy. Coaching since 2015, Muay Thai training in Thailand, and kickboxing, Muay Thai and MMA in Denizli.',
-    intro: 'A training journey from Denizli to Thailand. Experience gained around the ring, knowledge shared in the gym.',
-    bioLink: 'Discover his story', galleryLink: 'Photo archive',
-    portrait: 'Portrait of Gökhan Denizli, head coach at Self Control Fight Academy, at a training camp in Thailand',
+    description: 'Gökhan Denizli is a 4th Dan black belt, kickboxing and MMA coach, Denizli provincial MMA representative, and founder and head coach of Self Control Fight Academy.',
+    byline: 'Kickboxing & MMA Coach | 4th Dan Black Belt | Club President',
+    intro: 'Gökhan Denizli is a professional combat sports coach who develops kickboxing and MMA athletes at national and international level and continues his professional development through training abroad.',
+    bioLink: 'Read his biography', galleryLink: 'Photo archive',
+    portrait: 'Portrait of Gökhan Denizli, head coach of Self Control Fight Academy, at a training camp in Thailand',
     signature: 'GÖKHAN DENİZLİ / SELF CONTROL FIGHT ACADEMY / DENİZLİ',
-    disciplines: 'KICKBOXING / MUAY THAI / MMA', instagram: 'Follow on Instagram',
-    bioLabel: '01 / GÖKHAN DENİZLİ', bioTitle: 'EXPERIENCE\nWORTH\nSHARING.',
-    bioLead: 'A coaching journey that began in 2015 continues today at Self Control Fight Academy.',
-    bio: [
-      'Gökhan Denizli coaches kickboxing and Muay Thai in Denizli through private lessons, group classes and competition preparation. As founder and head coach of Self Control Fight Academy, he works with athletes at different levels.',
-      'In 2022, he trained at Venum Training Camp and EVO 360 Muay Thai in Thailand, bringing that international training experience back to his work in Denizli. The MMA Federation lists him as a coach with Self Control MMA / Gökhan Denizli Sports Club.',
-      'His athletes include Yağmur Denizli, who won World Cup and Turkish championship titles in the 52 kg K-1 category in 2025. His work brings together technical instruction, regular training and competition preparation.'
+    instagram: 'Follow on Instagram',
+    bioLabel: '01 / GÖKHAN DENİZLİ', bioTitle: 'BIOGRAPHY',
+    credentialsTitle: 'Qualifications and roles',
+    credentials: [
+      '4th Dan Black Belt',
+      'Grade 2 Kickboxing Coach',
+      'Grade 2 MMA Coach – MMA Level 4 Qualification',
+      'Denizli Provincial MMA Representative',
+      'President of Gökhan Denizli Sports Club',
+      'Founder and Head Coach of Self Control Fight Academy'
     ],
-    sources: 'Biography sources', roleLabel: 'Role', roleValue: 'Founder · Head coach', focusLabel: 'Training areas',
+    trainingTitle: 'International training and combat sports experience',
+    trainingIntro: 'Throughout his coaching career, Gökhan Denizli has trained at leading combat sports centres across Europe and Asia, gaining first-hand experience of different coaching traditions.',
+    countries: [
+      { name: 'The Netherlands', gyms: netherlandsGyms, detail: 'In the Netherlands, he experienced European professional kickboxing and K-1 training systems and trained with professional fighters competing in GLORY.' },
+      { name: 'Thailand', gyms: thailandGyms, detail: 'In Thailand, he also took numerous private lessons with Trainer Gae to refine his own technique.' }
+    ],
+    trainingOutcome: 'He incorporates the technical and tactical knowledge gained through international training into his coaching to support his athletes’ development.',
+    campsTitle: 'International athlete camps and professional combat sports',
+    camps: [
+      'Gökhan Denizli hosts professional fighters at Self Control Fight Academy for training camps and competition preparation. Professional fighters travel to Denizli from abroad and from across Türkiye to prepare for bouts at the academy.',
+      'Self Control Fight Academy serves as a combat sports centre where athletes share international training experience and prepare for professional competition.'
+    ],
+    athleteTitle: 'MMA and athlete development',
+    athletes: [
+      'Gökhan Denizli coaches amateur and professional athletes in kickboxing, K-1 and MMA. In MMA in particular, he actively develops athletes across age groups and competition categories and prepares them for amateur and professional bouts.',
+      'He regularly takes groups of athletes from his club to Turkish championships and official events organised by the MMA Federation so they can compete at national level.',
+      'Athletes he has coached have reached national team level, won Turkish championship titles, placed in international tournaments and achieved success in professional competition.'
+    ],
+    academyTitle: 'Self Control Fight Academy',
+    academy: [
+      'As founder and head coach of Self Control Fight Academy, Gökhan Denizli provides professional coaching in kickboxing and MMA. The academy offers programmes for children, teenagers and adults and prepares athletes for amateur and professional competition.',
+      'The academy’s approach is grounded in discipline, technical proficiency, conditioning, fighting spirit and continuous improvement.',
+      'Gökhan Denizli aims to develop athletes who can compete nationally and internationally, reach national team level and win professional titles.'
+    ],
+    academyProfile: 'Gökhan Denizli brings training experience from the Netherlands and Thailand to Denizli, where he coaches amateur and professional athletes in kickboxing, K-1 and MMA. His athletes have reached national team level, won Turkish titles, placed in international tournaments and achieved success in professional competition.',
     galleryLabel: '02 / PHOTO ARCHIVE', galleryTitle: 'EVERY CAMP.\nA NEW PERSPECTIVE.',
     galleryBody: 'Training camps, ringside moments and the people along the way. Nine photographs from Gökhan Denizli’s own archive.',
     photoLabels: ['Venum Training Camp', 'The Self Control MMA team', 'At ringside', 'Training at Venum', 'Muay Thai camp', 'From MMA camp', 'Training together', 'After training', 'A moment in Thailand'],

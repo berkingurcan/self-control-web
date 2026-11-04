@@ -25,35 +25,6 @@ export const sessions: Session[] = [
   { day: 5, time: '12:45', duration: 75, discipline: 'mma', title: { tr: 'Güreş ve yer çalışmaları', en: 'Wrestling and ground drills' }, level: 'all' }
 ];
 
-export const coaches = {
-  "head": {
-    "image": "gokhan/gokhan-denizli",
-    "position": "50% 10%",
-    "tags": {
-      "tr": [
-        "KİCK BOKS · MUAY THAI",
-        "MMA"
-      ],
-      "en": [
-        "KICKBOXING · MUAY THAI",
-        "MMA"
-      ]
-    },
-    "title": {
-      "tr": "Gökhan Denizli",
-      "en": "Gökhan Denizli"
-    },
-    "subtitle": {
-      "tr": "Teknik çalışmalar ve antrenör koordinasyonu",
-      "en": "Technical training and coach coordination"
-    },
-    "body": {
-      "tr": "2015’ten bu yana antrenörlük. Denizli’den Tayland’a uzanan bir eğitim yolculuğu; kick boks, Muay Thai ve MMA ile şekillenen birikim. Gökhan Denizli’yi yakından tanıyın.",
-      "en": "Coaching since 2015. A training journey from Denizli to Thailand, shaped by kickboxing, Muay Thai and MMA. Meet Gökhan Denizli."
-    }
-  }
-};
-
 export const demoCopy = {
   "tr": {
     "badge": "ÖRNEK DERS PROGRAMI",

@@ -14,11 +14,12 @@
   import DisciplineHero from './DisciplineHero.svelte';
   import DisciplineTraining from './DisciplineTraining.svelte';
   import TrainingSchedule from './TrainingSchedule.svelte';
-  import { coaches } from '#lib/demo.ts';
+  import { headTrainerCopy, headTrainerName, headTrainerPortrait } from '#lib/head-trainer.ts';
   let { site, lang }: { site: SiteId; lang: Lang } = $props();
   const t = $derived(copy[lang]), e = $derived(editorial[lang]);
   const contact = getContext<ContactConfig>(contactKey);
   const ux = $derived(experienceCopy[lang]);
+  const coach = $derived(headTrainerCopy[lang]);
   const academy = $derived(site === 'academy');
   const preview = env.PUBLIC_ENABLE_PREVIEWS === 'true';
   const headProfile = $derived(href('coach', lang, preview ? `/preview/${site}` : ''));
@@ -52,7 +53,17 @@
 {#if academy}
 <section id="academy" class="section approach-section" use:reveal>
   <div class="section-top"><span class="eyebrow">{e.approachLabel}</span><img src="/brand/mark.svg" width="34" height="25" alt=""/></div>
-  <div class="approach-grid"><h2 class="display">{e.approachTitle}</h2><div class="approach-copy"><p class="large-body">{e.approachBody}</p><p>{t.introBody}</p><div class="values-list">{#each t.values as value, i}<details open={i === 0}><summary><span>0{i + 1}</span>{value.title}<Icon name="plus" size={18}/></summary><p>{value.body}</p></details>{/each}</div></div></div>
+  <div class="approach-grid">
+    <h2 class="display">{e.approachTitle}</h2>
+    <div class="approach-copy">
+      <p class="large-body">{coach.academy[0]}</p>
+      {#each coach.academy.slice(1) as paragraph}<p>{paragraph}</p>{/each}
+      <h3 class="academy-camps-title">{e.campsTitle}</h3>
+      {#each coach.camps as paragraph}<p>{paragraph}</p>{/each}
+      <p>{t.introBody}</p>
+      <div class="values-list">{#each t.values as value, i}<details open={i === 0}><summary><span>0{i + 1}</span>{value.title}<Icon name="plus" size={18}/></summary><p>{value.body}</p></details>{/each}</div>
+    </div>
+  </div>
 </section>
 {/if}
 
@@ -60,7 +71,22 @@
 
 {#if academy}
 <section id="trainers" class="trainers-section">
-  <div class="head-trainer" use:reveal><a class="head-photo head-profile-link" href={headProfile} aria-label={`${coaches.head.title[lang]} — ${e.details}`}><Photo name={coaches.head.image} alt={`${coaches.head.title[lang]} — Self Control Fight Academy`} position={coaches.head.position}/><span class="head-photo-index" aria-hidden="true">SC / 01</span><span class="image-label">{lang === 'tr' ? 'GÖKHAN DENİZLİ / BAŞ ANTRENÖR' : 'GÖKHAN DENİZLİ / HEAD COACH'}</span><span class="head-profile-arrow"><Icon name="diagonal"/></span></a><div class="head-copy"><span class="eyebrow">{sectionLabel(e.headLabel)}</span><h2 class="display">{e.headTitle}</h2><div class="coach-name"><span>SELF CONTROL FIGHT ACADEMY</span><h3><a href={headProfile}>{coaches.head.title[lang]}</a></h3></div><p>{coaches.head.body[lang]}</p><div class="tag-row coach-tags">{#each coaches.head.tags[lang] as tag}<span>{tag}</span>{/each}</div><div class="head-actions"><a class="underlined-link" href={headProfile}>{e.details}<Icon name="diagonal"/></a></div></div></div>
+  <div class="head-trainer" use:reveal>
+    <a class="head-photo head-profile-link" href={headProfile} aria-label={`${headTrainerName} — ${e.details}`}>
+      <Photo name={headTrainerPortrait} alt={coach.portrait} position="50% 10%"/>
+      <span class="head-photo-index" aria-hidden="true">SC / 01</span>
+      <span class="image-label">{headTrainerName} / {coach.profileMarker}</span>
+      <span class="head-profile-arrow"><Icon name="diagonal"/></span>
+    </a>
+    <div class="head-copy">
+      <span class="eyebrow">{sectionLabel(e.headLabel)}</span>
+      <h2 class="display"><a href={headProfile}>{headTrainerName}</a></h2>
+      <p>{coach.academyProfile}</p>
+      <p>{coach.athletes[1]}</p>
+      <ul class="tag-row coach-tags">{#each coach.credentials as credential}<li>{credential}</li>{/each}</ul>
+      <div class="head-actions"><a class="underlined-link" href={headProfile}>{e.details}<Icon name="diagonal"/></a></div>
+    </div>
+  </div>
 </section>
 {/if}
 
@@ -88,3 +114,11 @@
     </div>
   </div>
 </section>
+
+<style>
+  .academy-camps-title{margin-top:28px;font-size:18px}
+  .academy-camps-title+p{margin-top:12px;font-size:13px;color:var(--muted)}
+  .head-copy h2{font-size:clamp(44px,5.8vw,90px);overflow-wrap:anywhere}
+  .coach-tags{list-style:none;margin:0;padding:0}
+  .coach-tags li{padding:8px 10px;border:1px solid #c7c7c1;font-size:11px;line-height:1.4}
+</style>
