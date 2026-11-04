@@ -15,7 +15,8 @@
     const slot = index % 6;
     const lead = index % 12 < 6 ? 0 : 1;
     const desktop = slot === lead ? '60vw' : slot < 2 ? '42vw' : '25vw';
-    return `(max-width: 800px) ${index % 3 === 0 ? '100vw' : '50vw'}, ${desktop}`;
+    const wide = index % 4 === 3 || (index % 4 === 0 && index === headTrainerGallery.length - 1);
+    return `(max-width: 800px) ${wide ? 'calc(100vw - 48px)' : '52vw'}, ${desktop}`;
   }
   function changePhoto(step: number) { photo = (photo + step + headTrainerGallery.length) % headTrainerGallery.length; }
 </script>
@@ -91,13 +92,17 @@
     <div class="section-heading"><h2 class="display">{c.galleryTitle}</h2><p>{c.galleryBody}</p></div>
     <div class="profile-bento" role="group" aria-label={c.gallery}>
       {#each headTrainerGallery as frame, index (frame.image)}
+        {@const compactCaption = c.photoTileTitles[frame.image]}
         <button class="bento-tile" onclick={() => openPhoto(index)} aria-label={`${c.open}: ${c.photoLabels[index]}`}>
           <span class="bento-image">
             <Photo name={frame.image} alt={c.photoAlts[index]} position={frame.position} sizes={galleryImageSizes(index)}/>
             <span class="bento-number" aria-hidden="true">{photoNumber(index + 1)} / {galleryCount}</span>
             <span class="bento-plus" aria-hidden="true"><Icon name="plus" size={16}/></span>
           </span>
-          <span class="bento-caption">{c.photoLabels[index]}</span>
+          <span class="bento-caption" aria-hidden="true">
+            <span class:bento-caption-full={compactCaption}>{c.photoLabels[index]}</span>
+            {#if compactCaption}<span class="bento-caption-compact">{compactCaption}</span>{/if}
+          </span>
         </button>
       {/each}
     </div>
@@ -125,6 +130,7 @@
   .bento-image> :global(img){display:block;width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
   .bento-number{position:absolute;top:12px;left:12px;padding:5px 8px;border-radius:3px;background:#101010e8;color:#fff;font-size:9px;font-variant-numeric:tabular-nums;letter-spacing:.06em}
   .bento-caption{display:block;min-height:54px;padding:12px;font-size:13px;font-weight:600;line-height:1.45;overflow-wrap:anywhere}
+  .bento-caption-compact{display:none}
   .bento-plus{position:absolute;top:12px;right:12px;display:grid;place-items:center;width:32px;height:32px;border:1px solid #deded7;border-radius:50%;background:#fffffff2;color:#101010;transition:background .2s,color .2s}
   .bento-tile:focus-visible{outline:2px solid #101010;outline-offset:3px}
   .lightbox-caption{display:grid;gap:4px;justify-items:center;text-align:center;font-size:13px;line-height:1.45}
@@ -135,17 +141,53 @@
     .profile-instagram:hover{background:var(--surface)}
   }
   @media(max-width:800px){
-    .profile-journal .section-heading{display:block;margin-bottom:26px}
+    .profile-journal .section-top{padding-bottom:18px}
+    .profile-journal .section-heading{display:block;margin-bottom:24px}
     .profile-journal .section-heading>p{margin-top:12px}
-    .profile-bento{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-    .bento-tile:nth-child(n){grid-column:span 1}
-    .bento-tile:nth-child(3n + 1){grid-column:1/-1}
-    .bento-tile:nth-child(n) .bento-image{height:auto;aspect-ratio:4/5}
-    .bento-tile:nth-child(3n + 1) .bento-image{aspect-ratio:4/3}
-    .bento-caption{min-height:50px;padding:9px 10px;font-size:12px}
-    .bento-tile:nth-child(3n + 1) .bento-caption{padding-inline:12px;font-size:13px}
-    .bento-plus{top:8px;right:8px;width:27px;height:27px}
-    .bento-number{top:8px;left:8px;font-size:8px}
+    .profile-bento{
+      grid-template-columns:minmax(0,1.12fr) minmax(0,1fr);
+      grid-auto-rows:minmax(clamp(108px,29vw,182px),auto);
+      gap:clamp(7px,2vw,12px)
+    }
+    .bento-tile:nth-child(n){
+      grid-column:auto;
+      position:relative;
+      isolation:isolate;
+      display:flex;
+      align-items:flex-end;
+      border:0;
+      border-radius:clamp(10px,3vw,16px);
+      background:#252622;
+      color:#fff;
+      box-shadow:none
+    }
+    /* Four-frame spreads alternate the side of the tall photo. */
+    .bento-tile:nth-child(8n + 1):nth-last-child(n + 3),
+    .bento-tile:nth-child(8n + 6):nth-last-child(n + 2){grid-row:span 2}
+    .bento-tile:nth-child(4n),
+    .bento-tile:nth-child(4n + 1):last-child{grid-column:1/-1;min-height:clamp(130px,34vw,215px)}
+    .bento-tile:nth-child(4n + 1):nth-last-child(2),
+    .bento-tile:nth-child(4n + 2):last-child{min-height:clamp(156px,46vw,260px)}
+    .bento-tile:nth-child(n) .bento-image{position:absolute;inset:0;height:auto}
+    .bento-caption{
+      z-index:1;
+      width:100%;
+      min-height:0;
+      padding:24px clamp(8px,2.5vw,16px) clamp(8px,2.5vw,16px);
+      background:linear-gradient(180deg,transparent,#10100ee0 58%,#10100ef5);
+      font-size:clamp(11px,3.15vw,15px);
+      line-height:1.25;
+      text-wrap:pretty;
+      text-shadow:0 1px 2px #0008
+    }
+    .bento-tile:nth-child(8n + 1):nth-last-child(n + 3) .bento-caption,
+    .bento-tile:nth-child(8n + 6):nth-last-child(n + 2) .bento-caption,
+    .bento-tile:nth-child(4n) .bento-caption{font-size:clamp(13px,3.65vw,19px)}
+    .bento-caption-full,.bento-number{display:none}
+    .bento-caption-compact{display:inline}
+    .bento-plus{top:7px;right:7px;width:26px;height:26px;border-color:#ffffff70;background:#121210c9;color:#fff}
+    .bento-plus> :global(svg){width:13px;height:13px}
+    .bento-tile:active .bento-plus{background:#fff;color:#101010}
     .lightbox-caption{font-size:12px}
   }
   @media(max-width:1000px){.profile-hero-copy{padding:30px}.profile-hero-copy h1{font-size:9vw}.profile-poster{min-height:530px}.profile-bio-grid{gap:6vw}.profile-index>a{padding:16px;gap:10px;font-size:10px}.profile-contact>div{gap:5vw}}
