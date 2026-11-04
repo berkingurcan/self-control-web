@@ -112,7 +112,7 @@ npm run build:all
 npm test
 ```
 
-Tests verify all four build identities, four localized academy documents and two per discipline, academy-only head trainer routing and fifteen-photo profile galleries, all required section anchors and dialogs, local navigation targets, manifests/icons, noindex defaults and offline cache/fallback behavior. Browser review covers Turkish and English layouts at phone, tablet and desktop widths, plus language switching, menu section navigation, gym gallery, contact layouts, timetable selection and installation instructions. Real-device installation and touch gestures should be checked after deployment.
+Tests verify all four build identities, four localized academy documents and two per discipline, academy-only head trainer routing and sixteen-photo profile galleries, all required section anchors and dialogs, local navigation targets, manifests/icons, noindex defaults and offline cache/fallback behavior. Browser review covers Turkish and English layouts at phone, tablet and desktop widths, plus language switching, menu section navigation, gym gallery, contact layouts, timetable selection and installation instructions. Real-device installation and touch gestures should be checked after deployment.
 
 The dependency lockfile pins the Cloudflare adapter and Wrangler alongside the existing framework versions. Use Node 24 and `npm ci` for repeatable installs.
 
@@ -152,9 +152,9 @@ The longer plans display their full upfront price, monthly equivalent and rounde
 
 ## Dedicated head trainer profile
 
-The head portrait, role title and “View profile” link all open `/gokhandenizli` (Turkish) or `/en/gokhandenizli` (English), on the academy, preserving its preview prefix. Discipline sites do not show trainers or expose head trainer profiles. The main academy and discipline homepages remain one-page layouts. The profile has a hero with an original portrait, biography and fifteen-photo responsive bento grid. Gallery photographs open in a native lightbox with previous/next controls, keyboard arrows and touch swipe. Profile photographs come from the supplied coach archive. The bilingual biography follows the supplied profile text and covers qualifications, training in the Netherlands and Thailand, professional camps, athlete development and the academy. Legacy `/bas-antrenor` and `/en/head-trainer` URLs redirect permanently to the corresponding new profile route.
+The head portrait, role title and “View profile” link all open `/gokhandenizli` (Turkish) or `/en/gokhandenizli` (English), on the academy, preserving its preview prefix. Discipline sites do not show trainers or expose head trainer profiles. The main academy and discipline homepages remain one-page layouts. The profile has a hero with an original portrait, biography and sixteen-photo responsive bento grid. Gallery photographs open in a native lightbox with previous/next controls, keyboard arrows and touch swipe. Profile photographs come from the supplied coach archive. The bilingual biography follows the supplied profile text and covers qualifications, training in the Netherlands and Thailand, professional camps, athlete development and the academy. Legacy `/bas-antrenor` and `/en/head-trainer` URLs redirect permanently to the corresponding new profile route.
 
-`src/lib/head-trainer.ts` contains bilingual profile copy and the fifteen-image gallery mapping. `HeadTrainer.svelte` contains the profile design. Only the academy sitemap, language alternates, canonical URLs and offline precaching include both profile languages.
+`src/lib/head-trainer.ts` contains bilingual profile copy and the sixteen-image gallery mapping. `HeadTrainer.svelte` contains the profile design. Only the academy sitemap, language alternates, canonical URLs and offline precaching include both profile languages.
 
 
 ## Membership catalogue and private lessons
