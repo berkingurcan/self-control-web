@@ -1,5 +1,6 @@
 export const headTrainerName = 'Gökhan Denizli';
-export const headTrainerPortrait = 'gokhan/gokhan-denizli';
+export const headTrainerPortrait = 'gokhan/gokhan-denizli-profile';
+export const headTrainerAcademyPhoto = 'gokhan/gokhan-denizli-ringside';
 export const headTrainerInstagram = 'https://www.instagram.com/gokhandennizli/';
 const netherlandsGyms = ['SB Gym', 'Mike’s Gym', 'Days Gym Almere'];
 const thailandGyms = [
@@ -26,7 +27,8 @@ export const headTrainerCopy = {
     byline: 'Kick Boks & MMA Antrenörü | 4. Dan Siyah Kuşak | Kulüp Başkanı',
     intro: 'Gökhan Denizli, Kick Boks ve MMA branşlarında ulusal ve uluslararası düzeyde sporcu yetiştiren, mesleki gelişimini uluslararası eğitimlerle destekleyen profesyonel bir dövüş sporları antrenörüdür.',
     bioLink: 'Biyografiyi oku', galleryLink: 'Fotoğraf arşivi',
-    portrait: 'Self Control Fight Academy başantrenörü Gökhan Denizli’nin Tayland antrenman kampındaki portresi',
+    portrait: 'Self Control Fight Academy tişörtüyle kafesin yanında Gökhan Denizli',
+    academyPhotoAlt: 'Gökhan Denizli müsabaka alanının kenarında',
     signature: 'GÖKHAN DENİZLİ / SELF CONTROL FIGHT ACADEMY / DENİZLİ',
     instagram: 'Instagram’da takip et',
     bioLabel: '01 / GÖKHAN DENİZLİ', bioTitle: 'BİYOGRAFİ',
@@ -77,7 +79,8 @@ export const headTrainerCopy = {
     byline: 'Kickboxing & MMA Coach | 4th Dan Black Belt | Club President',
     intro: 'Gökhan Denizli is a professional combat sports coach who develops kickboxing and MMA athletes at national and international level and continues his professional development through training abroad.',
     bioLink: 'Read his biography', galleryLink: 'Photo archive',
-    portrait: 'Portrait of Gökhan Denizli, head coach of Self Control Fight Academy, at a training camp in Thailand',
+    portrait: 'Gökhan Denizli beside the cage wearing a Self Control Fight Academy shirt',
+    academyPhotoAlt: 'Gökhan Denizli watching from the edge of the competition area',
     signature: 'GÖKHAN DENİZLİ / SELF CONTROL FIGHT ACADEMY / DENİZLİ',
     instagram: 'Follow on Instagram',
     bioLabel: '01 / GÖKHAN DENİZLİ', bioTitle: 'BIOGRAPHY',

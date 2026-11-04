@@ -14,7 +14,7 @@
   import DisciplineHero from './DisciplineHero.svelte';
   import DisciplineTraining from './DisciplineTraining.svelte';
   import TrainingSchedule from './TrainingSchedule.svelte';
-  import { headTrainerCopy, headTrainerName, headTrainerPortrait } from '#lib/head-trainer.ts';
+  import { headTrainerAcademyPhoto, headTrainerCopy, headTrainerName } from '#lib/head-trainer.ts';
   let { site, lang }: { site: SiteId; lang: Lang } = $props();
   const t = $derived(copy[lang]), e = $derived(editorial[lang]);
   const contact = getContext<ContactConfig>(contactKey);
@@ -73,7 +73,7 @@
 <section id="trainers" class="trainers-section">
   <div class="head-trainer" use:reveal>
     <a class="head-photo head-profile-link" href={headProfile} aria-label={`${headTrainerName} — ${e.details}`}>
-      <Photo name={headTrainerPortrait} alt={coach.portrait} position="50% 10%"/>
+      <Photo name={headTrainerAcademyPhoto} alt={coach.academyPhotoAlt} position="50% 72%" sizes="(max-width: 700px) 100vw, 50vw"/>
       <span class="head-photo-index" aria-hidden="true">SC / 01</span>
       <span class="image-label">{headTrainerName} / {coach.profileMarker}</span>
       <span class="head-profile-arrow"><Icon name="diagonal"/></span>

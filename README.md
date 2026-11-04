@@ -133,7 +133,7 @@ Pexels photographs remain in discipline introductions. They illustrate training 
 
 The grappling photograph illustrates the ground component of MMA. No UFC, ONE, supplier or federation affiliation is implied.
 
-The academy head trainer feature presents Gökhan Denizli with original photos supplied in the sibling `gökhandenizli` folder. The responsive WebP assets in `static/images/gokhan` have two widths (640 and 1280), with metadata removed. Discipline photographs remain illustrative; facilities photography is from the supplied academy archive.
+The academy head trainer feature presents Gökhan Denizli with original photos supplied in the sibling `gökhandenizli` folder and the workspace files `gokhan1.JPG` (profile hero) and `gokhan2.JPG` (academy introduction). The responsive WebP assets in `static/images/gokhan` have two widths (640 and 1280), with metadata removed. Discipline photographs remain illustrative; facilities photography is from the supplied academy archive.
 
 
 ## Sample timetable and pricing
@@ -152,7 +152,7 @@ The longer plans display their full upfront price, monthly equivalent and rounde
 
 ## Dedicated head trainer profile
 
-The head portrait, role title and “View profile” link all open `/gokhandenizli` (Turkish) or `/en/gokhandenizli` (English), on the academy, preserving its preview prefix. Discipline sites do not show trainers or expose head trainer profiles. The main academy and discipline homepages remain one-page layouts. The profile has a hero with an original portrait, biography and nine-photo responsive bento grid. Gallery photographs open in a native lightbox with previous/next controls, keyboard arrows and touch swipe. Profile photographs come from the supplied coach archive. The bilingual biography is based on the academy’s official site, public Instagram @gokhandennizli, MMA Federation coach registration and reporting about Yağmur Denizli’s 2025 titles. Source links are available on the profile. Legacy `/bas-antrenor` and `/en/head-trainer` URLs redirect permanently to the corresponding new profile route.
+The head portrait, role title and “View profile” link all open `/gokhandenizli` (Turkish) or `/en/gokhandenizli` (English), on the academy, preserving its preview prefix. Discipline sites do not show trainers or expose head trainer profiles. The main academy and discipline homepages remain one-page layouts. The profile has a hero with an original portrait, biography and nine-photo responsive bento grid. Gallery photographs open in a native lightbox with previous/next controls, keyboard arrows and touch swipe. Profile photographs come from the supplied coach archive. The bilingual biography follows the supplied profile text and covers qualifications, training in the Netherlands and Thailand, professional camps, athlete development and the academy. Legacy `/bas-antrenor` and `/en/head-trainer` URLs redirect permanently to the corresponding new profile route.
 
 `src/lib/head-trainer.ts` contains bilingual profile copy and the nine-image gallery mapping. `HeadTrainer.svelte` contains the profile design. Only the academy sitemap, language alternates, canonical URLs and offline precaching include both profile languages.
 
