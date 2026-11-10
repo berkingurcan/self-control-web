@@ -12,11 +12,10 @@ async function walk(path, prefix = '') {
   return files;
 }
 const files = await walk(output);
-const publicPages = files.filter(file => file.endsWith('.html') && !['offline.html', '404.html'].includes(file)).map(file => file === 'index.html' ? '/' : `/${file.replace(/\.html$/, '')}`);
 const assetFiles = files.filter(file => file.startsWith('_app/immutable/') && /\.(js|css)$/.test(file) || file.startsWith('fonts/') || file.startsWith('images/'));
-const shell = ['/offline.html', '/brand/mark.svg', '/brand/wordmark.svg', '/brand/wordmark-team.svg', '/icons/icon-192.png', ...publicPages, ...assetFiles.map(file => `/${file}`)];
+const shell = ['/offline.html', '/brand/mark.svg', '/brand/wordmark.svg', '/brand/wordmark-team.svg', '/icons/icon-192.png', ...assetFiles.map(file => `/${file}`)];
 const original = await readFile('static/service-worker.js', 'utf8');
 const worker = original.replace(/const SHELL=\[[^;]+;/, `const SHELL=${JSON.stringify(shell)};`);
 await writeFile(`${output}/service-worker.js`, worker);
 await writeFile('static/service-worker.js', worker);
-console.log(`Offline shell prepared: ${publicPages.length} public pages, ${assetFiles.length} assets.`);
+console.log(`Offline shell prepared: hostname-specific pages and ${assetFiles.length} assets.`);

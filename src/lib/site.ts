@@ -1,6 +1,7 @@
 import { disciplineOrder, siteOrder } from './discipline-order.ts';
 import { config as env } from '#lib/config.ts';
-export type SiteId = 'academy' | 'muaythai' | 'kickbox' | 'mma';
+import { siteDomains, sitesByHostname, type SiteId } from '#lib/site-domains.ts';
+export type { SiteId } from '#lib/site-domains.ts';
 export type Lang = 'tr' | 'en';
 export type PageId = 'home' | 'coach' | 'training' | 'about' | 'schedule' | 'start' | 'privacy';
 export const ids: SiteId[] = [...siteOrder];
@@ -10,10 +11,10 @@ export const routes: Record<Lang, Record<PageId, string>> = {
   en: { home: '', coach: 'gokhandenizli', training: 'training', about: 'academy', schedule: 'schedule', start: 'start', privacy: 'privacy' }
 };
 export const sites = {
-  academy: { name: 'Fight Academy', label: 'SELF CONTROL', accent: '#ffffff', dark: '#222222', domain: 'selfcontrolfightacademy.com', number: '00', disciplines: disciplineOrder },
-  muaythai: { name: 'Muay Thai', label: 'MUAY THAI', accent: '#B7D19C', dark: '#263D2D', image: 'training/muay-thai', imageHeight: 1000, domain: 'muaythai.selfcontrolfightacademy.com', number: '03', position: '53% 46%', disciplines: ['muaythai'] },
-  kickbox: { name: 'Kick Boks', label: 'KİCK BOKS', accent: '#AAC6E6', dark: '#253B55', image: 'training/kickbox', imageHeight: 1164, domain: 'kickbox.selfcontrolfightacademy.com', number: '01', position: '53% 26%', disciplines: ['kickbox'] },
-  mma: { name: 'MMA', label: 'MMA', accent: '#E0A097', dark: '#4B2729', image: 'training/mma', imageHeight: 1396, domain: 'mma.selfcontrolfightacademy.com', number: '02', position: '50% 50%', disciplines: ['mma'] }
+  academy: { name: 'Fight Academy', label: 'SELF CONTROL', accent: '#ffffff', dark: '#222222', domain: siteDomains.academy, number: '00', disciplines: disciplineOrder },
+  muaythai: { name: 'Muay Thai', label: 'MUAY THAI', accent: '#B7D19C', dark: '#263D2D', image: 'training/muay-thai', imageHeight: 1000, domain: siteDomains.muaythai, number: '03', position: '53% 46%', disciplines: ['muaythai'] },
+  kickbox: { name: 'Kick Boks', label: 'KİCK BOKS', accent: '#AAC6E6', dark: '#253B55', image: 'training/kickbox', imageHeight: 1164, domain: siteDomains.kickbox, number: '01', position: '53% 26%', disciplines: ['kickbox'] },
+  mma: { name: 'MMA', label: 'MMA', accent: '#E0A097', dark: '#4B2729', image: 'training/mma', imageHeight: 1396, domain: siteDomains.mma, number: '02', position: '50% 50%', disciplines: ['mma'] }
 } as const;
 
 export function siteName(id: SiteId, lang: Lang) {
@@ -23,15 +24,17 @@ export function siteName(id: SiteId, lang: Lang) {
 }
 
 export const selectedSite: SiteId = ids.includes(env.PUBLIC_SITE_ID as SiteId) ? env.PUBLIC_SITE_ID as SiteId : 'academy';
+export function siteForHostname(hostname: string): SiteId {
+  return sitesByHostname.get(hostname.toLowerCase().replace(/\.$/, '')) ?? selectedSite;
+}
 export function href(page: PageId, lang: Lang, prefix = '') {
   const root = `${prefix}${lang === 'en' ? '/en' : ''}` || '/';
   if (page === 'coach') return `${root === '/' ? '' : root}/${routes[lang].coach}`;
   const anchors: Record<Exclude<PageId, 'coach'>, string> = { home: '', training: 'training', about: 'academy', schedule: 'schedule', start: 'start', privacy: 'privacy' };
   return `${root}${anchors[page] ? `#${anchors[page]}` : ''}`;
 }
-export function parsePath(pathname: string) {
+export function parsePath(pathname: string, site: SiteId) {
   const parts = pathname.split('/').filter(Boolean);
-  let site = selectedSite;
   let prefix = '';
   if (parts[0] === 'preview' && env.PUBLIC_ENABLE_PREVIEWS === 'true') {
     parts.shift(); const candidate = parts.shift();

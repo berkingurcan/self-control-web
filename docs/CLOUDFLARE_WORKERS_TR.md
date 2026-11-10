@@ -35,7 +35,7 @@ PUBLIC_INSTAGRAM=
 PUBLIC_ADDRESS=
 ```
 
-`PUBLIC_*` değerleri build sırasında kullanılır. Ayrı branş dağıtımlarında `PUBLIC_SITE_ID` değerini `muaythai`, `kickbox` veya `mma` yapın ve her dağıtıma ayrı Worker adı verin. Domain bağlantıları tamamlanmadan tek adreste bütün tasarımları incelemek için `PUBLIC_ENABLE_PREVIEWS=true` kullanılabilir.
+`PUBLIC_*` değerleri build sırasında kullanılır. Özel alan adlarında Worker kimliği gelen alan adına göre seçer. `PUBLIC_SITE_ID`, yerel adreslerde ve `workers.dev` gibi adreslerde kullanılacak varsayılan kimliği belirler. Domain bağlantıları tamamlanmadan tek adreste bütün tasarımları incelemek için `PUBLIC_ENABLE_PREVIEWS=true` kullanılabilir.
 
 ## Canlı program ve fiyatlar
 
