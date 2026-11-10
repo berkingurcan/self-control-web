@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { academyHomeCopy } from '#lib/academy-home-copy.ts';
   import { siteOrder } from '#lib/discipline-order.ts';
-  import { onMount, setContext, tick, untrack } from 'svelte';
+  import { onMount, setContext, untrack } from 'svelte';
   import { afterNavigate } from '$app/navigation';
   import { contactKey, contactConfig, loadContact, type ContactConfig } from '#lib/contact-config.ts';
   import { config as env } from '#lib/config.ts';
@@ -30,7 +29,6 @@
     const expiry = setTimeout(() => { content.phase = 'unavailable'; experience.enquiryOpen = false; }, Math.max(0,remaining));
     return () => clearTimeout(expiry);
   });
-  const home = $derived(academyHomeCopy[lang]);
   const ux = $derived(experienceCopy[lang]);
   const offer = $derived(selectedOffer(experience.selection, catalog));
   let menuOpen = $state(false), offline = $state(false), installed = $state(false);
@@ -40,11 +38,10 @@
   let installEvent = $state<InstallPrompt | null>(null);
   const t = $derived(copy[lang]), e = $derived(editorial[lang]), identity = $derived(sites[site]);
   const preview = env.PUBLIC_ENABLE_PREVIEWS === 'true';
-  const nav = $derived(site === 'academy' ? ['training', 'schedule', 'membership', 'academy', 'space', 'trainers'] as const : ['training', 'space', 'schedule', 'membership'] as const);
-  const scrollSections = $derived(site === 'academy' ? ['training', 'first-session', ...nav.slice(1), 'start'] : [...nav, 'start']);
+  const nav = $derived(site === 'academy' ? ['training', 'academy', 'space', 'trainers', 'schedule', 'membership'] as const : ['training', 'space', 'schedule', 'membership'] as const);
   const quick = [{ id: 'training', icon: 'training' }, { id: 'schedule', icon: 'calendar' }, { id: 'membership', icon: 'plans' }, { id: 'start', icon: 'diagonal' }];
   const anchor = (id: string) => `${page === 'coach' ? href('home', lang, prefix) : ''}#${id}`;
-  const languageHref = $derived(page === 'coach' ? href('coach', lang === 'tr' ? 'en' : 'tr', prefix) : `${href('home', lang === 'tr' ? 'en' : 'tr', prefix)}${experience.explicit ? '?' + selectionQuery(experience.selection) : ''}${active === 'top' ? '' : `#${active}`}`);
+  const languageHref = $derived(page === 'coach' ? href('coach', lang === 'tr' ? 'en' : 'tr', prefix) : `${href('home', lang === 'tr' ? 'en' : 'tr', prefix)}?${selectionQuery(experience.selection)}${active === 'top' ? '' : `#${active}`}`);
   afterNavigate(() => { menuOpen = false; });
   $effect(() => { document.documentElement.lang = lang; });
   $effect(() => { if (menuDialog) { if (menuOpen && !menuDialog.open) menuDialog.showModal(); else if (!menuOpen && menuDialog.open) menuDialog.close(); } });
@@ -52,16 +49,8 @@
   async function install() { if (installEvent) { await installEvent.prompt(); await installEvent.userChoice; installEvent = null; } }
   onMount(() => {
     const initialParams = new URLSearchParams(window.location.search);
-    const initialHash = window.location.hash;
-    const initialAnchor = page === 'home' ? document.getElementById(initialHash.slice(1)) : null;
-    const anchorInputs = ['wheel', 'touchstart', 'pointerdown', 'keydown'] as const;
-    let anchorPending = !!initialAnchor;
-    const cancelAnchor = () => {
-      anchorPending = false;
-      for (const event of anchorInputs) window.removeEventListener(event, cancelAnchor);
-    };
-    if (anchorPending) for (const event of anchorInputs) window.addEventListener(event, cancelAnchor, { passive: true });
     let selectionInitialized = false;
+    experience.explicit = new URLSearchParams(window.location.search).has('plan');
     let stopped = false, refreshing = false;
     async function refreshContent() {
       if (refreshing || page !== 'home') return;
@@ -72,26 +61,10 @@
       if (!stopped) {
         content.data = result.data; content.phase = result.phase;
         if (result.phase === 'ready' || result.phase === 'stale') {
-          const params = selectionInitialized ? new URLSearchParams(selectionQuery(experience.selection)) : initialParams;
-          const restored = restoreSelection(params, site, result.data.catalog);
-          const keepsChoice = params.get('plan') === restored.type
-            && (site !== 'academy' || params.get('discipline') === restored.discipline)
-            && (restored.type === 'group'
-              ? Number(params.get('months')) === restored.months
-              : Number(params.get('people')) === restored.participants && Number(params.get('lessons')) === restored.lessons)
-            && !!selectedOffer(restored, result.data.catalog);
-          if (site === 'academy' && experience.explicit && !keepsChoice) experience.enquiryOpen = false;
-          experience.explicit = (!selectionInitialized || experience.explicit) && keepsChoice;
-          experience.selection = restored;
+          experience.selection = restoreSelection(selectionInitialized ? new URLSearchParams(selectionQuery(experience.selection)) : initialParams, site, result.data.catalog);
           selectionInitialized = true;
         }
         if (result.phase === 'unavailable' || !selectedOffer(experience.selection, result.data.catalog)) experience.enquiryOpen = false;
-        if (anchorPending) {
-          // The timetable expands on hydration and can move a deep-linked section.
-          await tick();
-          if (anchorPending && !stopped && window.location.hash === initialHash) initialAnchor?.scrollIntoView({ behavior: 'instant' });
-          cancelAnchor();
-        }
       }
       refreshing = false;
     }
@@ -115,7 +88,7 @@
       const max = document.documentElement.scrollHeight - window.innerHeight;
       progress = max > 0 ? Math.min(100, Math.max(0, window.scrollY / max * 100)) : 0;
       let current = page === 'coach' ? 'trainers' : 'top';
-      for (const id of scrollSections) { const section = document.getElementById(id); if (section && section.getBoundingClientRect().top <= window.innerHeight * .36) current = id; }
+      for (const id of [...nav, 'start']) { const section = document.getElementById(id); if (section && section.getBoundingClientRect().top <= window.innerHeight * .36) current = id; }
       active = current;
     };
     const scroll = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(update); };
@@ -126,7 +99,7 @@
     window.addEventListener('online', network); window.addEventListener('offline', network);
     window.addEventListener('beforeinstallprompt', prompt); window.addEventListener('appinstalled', complete);
     if ('serviceWorker' in navigator && !import.meta.env.DEV) navigator.serviceWorker.register('/service-worker.js').catch(() => {});
-    return () => { stopped = true; cancelAnchor(); clearInterval(contentTimer); document.removeEventListener('visibilitychange', visible); window.removeEventListener('online', visible); cancelAnimationFrame(firstFrame); cancelAnimationFrame(frame); window.removeEventListener('scroll', scroll); window.removeEventListener('resize', scroll); window.removeEventListener('hashchange', hash); window.removeEventListener('online', network); window.removeEventListener('offline', network); window.removeEventListener('beforeinstallprompt', prompt); window.removeEventListener('appinstalled', complete); };
+    return () => { stopped = true; clearInterval(contentTimer); document.removeEventListener('visibilitychange', visible); window.removeEventListener('online', visible); cancelAnimationFrame(firstFrame); cancelAnimationFrame(frame); window.removeEventListener('scroll', scroll); window.removeEventListener('resize', scroll); window.removeEventListener('hashchange', hash); window.removeEventListener('online', network); window.removeEventListener('offline', network); window.removeEventListener('beforeinstallprompt', prompt); window.removeEventListener('appinstalled', complete); };
   });
 </script>
 <svelte:window onkeydown={(event) => { if (event.key === 'Escape') menuOpen = false; }}/>
@@ -157,10 +130,10 @@
     <div class="footer-bottom"><span>© 2026 Self Control Fight Academy</span><button onclick={() => privacyDialog.showModal()}>{t.nav.privacy}</button><span>DENİZLİ / {identity.number}</span></div>
   </footer>
   <div class="mobile-dock" inert={menuOpen}>
-    {#if experience.inMembership && page !== 'coach' && offer && (site !== 'academy' || experience.explicit) && ['ready','stale'].includes(content.phase)}
+    {#if experience.inMembership && page !== 'coach' && offer && ['ready','stale'].includes(content.phase)}
       <div class="selection-dock" aria-label={ux.selected}>
         <button class="dock-menu" aria-label={ux.menu} onclick={() => menuOpen = true}><Icon name="menu"/></button>
-        <a href="#membership" class="dock-selection"><span>{packageLabel(experience.selection, lang, catalog)}</span><strong>{formatMoney(offer.price, lang, catalog.currency)} <small>/ {lang === 'tr' ? 'kişi' : 'person'}</small>{#if catalog.status === 'sample'}<span class="dock-sample">{home.sample}</span>{/if}</strong></a>
+        <a href="#membership" class="dock-selection"><span>{packageLabel(experience.selection, lang, catalog)}</span><strong>{formatMoney(offer.price, lang, catalog.currency)} <small>/ {lang === 'tr' ? 'kişi' : 'person'}</small></strong></a>
         <button class="dock-enquire" onclick={() => experience.enquiryOpen = true}>{ux.ask}<Icon name="diagonal" size={18}/></button>
       </div>
     {:else}
@@ -172,7 +145,3 @@
   <dialog use:modalFocus class="install-dialog" bind:this={installDialog} onclick={(event) => { if (event.target === installDialog) installDialog.close(); }} onkeydown={(event) => { if (event.key === 'Escape') installDialog.close(); }} aria-labelledby="install-title"><div class="dialog-inner"><button class="dialog-close" aria-label={t.close} onclick={() => installDialog.close()}><Icon name="close"/></button><img src="/brand/mark.svg" width="65" height="48" alt=""/><h2 id="install-title">{t.installTitle}</h2><p>{t.installBody}</p>{#if installed}<p class="install-ready"><Icon name="check"/>{t.installed}</p>{:else}{#if installEvent}<button class="button solid wide" onclick={install}>{t.installNative}<Icon name="download"/></button>{/if}<div class="install-instructions"><h3>{t.ios}</h3><p>{t.iosInstructions}</p><h3>{t.android}</h3><p>{t.androidInstructions}</p></div>{/if}</div></dialog>
   <dialog use:modalFocus class="privacy-dialog" bind:this={privacyDialog} onclick={(event) => { if (event.target === privacyDialog) privacyDialog.close(); }} onkeydown={(event) => { if (event.key === 'Escape') privacyDialog.close(); }} aria-labelledby="privacy-title"><div class="dialog-inner"><button class="dialog-close" aria-label={t.close} onclick={() => privacyDialog.close()}><Icon name="close"/></button><span class="eyebrow">SELF CONTROL</span><h2 id="privacy-title">{t.privacyTitle}</h2><p>{t.privacyBody}</p><p class="muted">{t.privacyPending}</p></div></dialog>
 </div>
-
-<style>
-  .dock-sample { padding: 2px 5px; border: 1px solid var(--line); color: var(--fg); font: 500 10px/1.2 Poppins,Arial,sans-serif; }
-</style>

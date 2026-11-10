@@ -5,23 +5,14 @@
   import { contentKey, privateGroups, type ContentState } from '#lib/content-schema.ts';
   import type { Lang } from '#lib/site.ts';
   import Icon from './Icon.svelte';
-  let { lang, requireSelection = false }: { lang: Lang; requireSelection?: boolean } = $props();
+  let { lang }: { lang: Lang } = $props();
   const c = $derived(membershipCopy[lang]);
   const experience = getContext<Experience>(experienceKey);
   const content = getContext<ContentState>(contentKey);
   const catalog = $derived(content.data.catalog);
   const options = $derived(privateGroups(catalog, experience.selection.discipline));
   const participants = $derived(experience.selection.participants), lessons = $derived(experience.selection.lessons);
-  function choosePeople(value: number) {
-    const packages = options.find(group => group.participants === value)?.packages ?? [];
-    experience.selection.participants = value;
-    if (!packages.some(pack => pack.lessons === lessons)) experience.selection.lessons = packages[0]?.lessons ?? 8;
-    experience.explicit = !requireSelection;
-  }
-  function choosePackage(value: number) {
-    experience.selection.lessons = value;
-    experience.explicit = true;
-  }
+  function choosePeople(value: number) { experience.selection.participants = value; if (!options.find(group => group.participants === value)?.packages.some(pack => pack.lessons === lessons)) experience.selection.lessons = options.find(group => group.participants === value)?.packages[0]?.lessons ?? 8; experience.explicit = true; }
   const group = $derived(options.find(group => group.participants === participants) ?? options[0]);
   const chosen = $derived(group?.packages.find(pack => pack.lessons === lessons) ?? group?.packages[0]);
   const money = (amount: number, decimals = 0) => formatMoney(amount, lang, catalog.currency, decimals);
@@ -33,8 +24,8 @@
 {#if group && chosen}
   <fieldset class="private-people" style={`--people-count:${Math.max(options.length,1)}`}><legend>{c.people}</legend>{#each options as option}<label class:active={participants === option.participants}><input type="radio" name="private-people" value={option.participants} checked={participants === option.participants} onchange={() => choosePeople(option.participants)}/><span>{option.participants} {lang === 'en' && option.participants === 1 ? 'person' : c.person}</span></label>{/each}</fieldset>
   <div class="private-layout"><div class="private-intro"><span class="eyebrow">SELF CONTROL / {c.marker}</span><h4>{participants === 1 ? c.individual : c.together}</h4><p>{c.intro}</p><div class="private-facts"><span><Icon name="clock" size={17}/>{group.sessionMinutes} {c.minute}</span><span><Icon name="training" size={17}/>{participants} {lang === 'en' && participants === 1 ? 'person' : c.person}</span></div><p class="private-price-note">{c.priceNote}</p></div>
-  <div class="private-offers"><fieldset class="private-package-list"><legend class="sr-only">{c.packages}</legend>{#each group.packages as pack}<label class="private-package" class:chosen={(!requireSelection || experience.explicit) && chosen.lessons === pack.lessons}><input type="radio" name="private-package" value={pack.lessons} checked={(!requireSelection || experience.explicit) && chosen.lessons === pack.lessons} onchange={() => choosePackage(pack.lessons)}/><span class="private-package-name"><strong>{pack.lessons} {lessonWord(pack.lessons)}</strong><small>{pack.validityMonths ? `${c.validity}: ${duration(pack.validityMonths)}` : pack.lessons === 1 ? c.single : `${c.validity}: ${lang === 'tr' ? 'belirtilmedi' : 'not specified'}`}</small></span><span class="private-package-price"><strong>{money(pack.price)}</strong><small>{c.perPerson}</small></span></label>{/each}</fieldset>
-  <div class="private-summary" aria-live="polite"><span class="eyebrow">{requireSelection && !experience.explicit ? (lang === 'tr' ? 'PAKET ÖNİZLEMESİ' : 'PACKAGE PREVIEW') : c.selected} / {chosen.lessons} {lessonWord(chosen.lessons)}</span><div class="private-summary-total"><span>{c.total}</span>{#key chosen.price}<strong class="price-update">{money(chosen.price)}</strong>{/key}</div><p>{money(chosen.price / chosen.lessons, 2)} {c.lesson} · {group.sessionMinutes} {c.minute}</p><button class="button solid" onclick={() => { choosePackage(chosen.lessons); experience.enquiryOpen = true; }}>{c.ask}<Icon name="diagonal" size={19}/></button></div></div></div>
+  <div class="private-offers"><fieldset class="private-package-list"><legend class="sr-only">{c.packages}</legend>{#each group.packages as pack}<label class="private-package" class:chosen={chosen.lessons === pack.lessons}><input type="radio" name="private-package" value={pack.lessons} checked={chosen.lessons === pack.lessons} onchange={() => { experience.selection.lessons = pack.lessons; experience.explicit = true; }}/><span class="private-package-name"><strong>{pack.lessons} {lessonWord(pack.lessons)}</strong><small>{pack.validityMonths ? `${c.validity}: ${duration(pack.validityMonths)}` : pack.lessons === 1 ? c.single : `${c.validity}: ${lang === 'tr' ? 'belirtilmedi' : 'not specified'}`}</small></span><span class="private-package-price"><strong>{money(pack.price)}</strong><small>{c.perPerson}</small></span></label>{/each}</fieldset>
+  <div class="private-summary" aria-live="polite"><span class="eyebrow">{c.selected} / {chosen.lessons} {lessonWord(chosen.lessons)}</span><div class="private-summary-total"><span>{c.total}</span>{#key chosen.price}<strong class="price-update">{money(chosen.price)}</strong>{/key}</div><p>{money(chosen.price / chosen.lessons, 2)} {c.lesson} · {group.sessionMinutes} {c.minute}</p><button class="button solid" onclick={() => experience.enquiryOpen = true}>{c.ask}<Icon name="diagonal" size={19}/></button></div></div></div>
   <p class="pricing-note">{catalog.status === 'sample' ? c.note : lang === 'tr' ? 'Özel ders saatleri antrenörle belirlenir. Gösterilen ücret, kişi başı paket toplamıdır.' : 'Session times are agreed with the trainer. Prices are the package total per person.'}</p>
 {:else}<p class="pricing-note">{lang === 'tr' ? 'Seçilen branş için özel ders paketleri henüz yayımlanmadı.' : 'Private lesson packages have not been published for the selected discipline.'}</p>{/if}
 </div>
