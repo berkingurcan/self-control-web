@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { academyHomeCopy } from '#lib/academy-home-copy.ts';
   import { getContext, onMount, untrack, tick } from 'svelte';
   import { siteName, sites, type SiteId, type Lang } from '#lib/site.ts';
   import { editorial } from '#lib/editorial.ts';
@@ -15,6 +16,7 @@
   let { site, lang, label }: { site: SiteId; lang: Lang; label: string } = $props();
   const experience = getContext<Experience>(experienceKey);
   const content = getContext<ContentState>(contentKey);
+  const home = $derived(academyHomeCopy[lang]);
   const catalog = $derived(content.data.catalog);
   const sessions = $derived(content.data.sessions);
   const available = $derived(content.phase === 'ready' || content.phase === 'stale');
@@ -42,7 +44,17 @@
     dayHeading?.focus({ preventScroll: true });
     weeklyPlanner?.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
   }
-  function chooseDiscipline(id: SiteId) { experience.selection.discipline = id; experience.selection = restoreSelection(new URLSearchParams(selectionQuery(experience.selection)),site,catalog); }
+  function chooseDiscipline(id: SiteId) {
+    if (experience.selection.discipline === id) return;
+    if (site === 'academy') experience.explicit = false;
+    experience.selection.discipline = id;
+    experience.selection = restoreSelection(new URLSearchParams(selectionQuery(experience.selection)),site,catalog);
+  }
+  function chooseType(type: 'group' | 'private') {
+    if (experience.selection.type === type) return;
+    if (site === 'academy') experience.explicit = false;
+    experience.selection.type = type;
+  }
   function choosePlan(months: number, enquire = false) { experience.selection.months = months; experience.explicit = true; if (enquire) experience.enquiryOpen = true; }
   onMount(() => {
     now = new Date();
@@ -58,7 +70,7 @@
   <div class="section-heading"><h2 class="display">{e.scheduleTitle}</h2><p>{e.scheduleBody}</p></div>
   <ContentStatus {lang}/>
   {#if available}
-  {#if catalog.status === 'sample'}<div class="demo-notice"><span class="demo-badge">{d.badge}</span><p>{d.note}</p></div>{/if}
+  {#if catalog.status === 'sample'}<div class="demo-notice"><span class="demo-badge">{d.badge}</span><div><p>{d.note}</p>{#if site === 'academy'}<a class="current-details" href="#start">{home.confirmSchedule}<Icon name="arrow-down" size={16}/></a>{/if}</div></div>{/if}
   {#if site === 'academy'}<div class="routine-filters" role="group" aria-label={d.disciplineSelect}>{#each ['academy', ...disciplines] as id}<button class:active={scheduleDiscipline === id} aria-pressed={scheduleDiscipline === id} onclick={() => scheduleDiscipline = id as SiteId}>{id === 'academy' ? d.allAccess : siteName(id as SiteId, lang)}</button>{/each}</div>{/if}
   {#if next}
     <button class="next-session" type="button" aria-controls="weekly-planner" aria-label={`${ux.showDay}: ${d.days[next.session.day]}, ${next.session.time}, ${siteName(next.session.discipline, lang)}`} onclick={showNextSession}>
@@ -79,12 +91,13 @@
   <div class="membership-heading"><div><span class="eyebrow">{d.membershipLabel}{available && catalog.status === 'sample' ? (lang === 'tr' ? ' / ÖRNEK' : ' / SAMPLE') : ''}</span><h2 class="display">{d.membershipTitle}</h2></div><div><p>{d.membershipIntro}</p><span class="membership-scope"><small>{d.scope}</small><strong>{experience.selection.discipline === 'academy' ? d.allAccessBody : siteName(experience.selection.discipline, lang)}</strong></span></div></div>
   <ContentStatus {lang}/>
   {#if available}
+  {#if site === 'academy' && catalog.status === 'sample'}<a class="current-details membership-details" href="#start">{home.confirmPrices}<Icon name="arrow-down" size={16}/></a>{/if}
   {#if site === 'academy'}<div class="routine-filters" role="group" aria-label={lang === 'tr' ? 'Üyelik branşı' : 'Membership discipline'}>{#each ['academy', ...disciplines] as id}<button class:active={experience.selection.discipline === id} aria-pressed={experience.selection.discipline === id} onclick={() => chooseDiscipline(id as SiteId)}>{id === 'academy' ? d.allAccess : siteName(id as SiteId, lang)}</button>{/each}</div>{/if}
-  <div class="membership-types" role="group" aria-label={c.type}><button class:active={experience.selection.type === 'group'} aria-pressed={experience.selection.type === 'group'} onclick={() => experience.selection.type = 'group'}><Icon name="training" size={18}/>{c.group}</button><button class:active={experience.selection.type === 'private'} aria-pressed={experience.selection.type === 'private'} onclick={() => experience.selection.type = 'private'}><Icon name="diagonal" size={18}/>{c.private}</button></div>
-  {#if experience.selection.type === 'private'}<PrivateLessons {lang}/>{:else}
+  <div class="membership-types" role="group" aria-label={c.type}><button class:active={experience.selection.type === 'group'} aria-pressed={experience.selection.type === 'group'} onclick={() => chooseType('group')}><Icon name="training" size={18}/>{c.group}</button><button class:active={experience.selection.type === 'private'} aria-pressed={experience.selection.type === 'private'} onclick={() => chooseType('private')}><Icon name="diagonal" size={18}/>{c.private}</button></div>
+  {#if experience.selection.type === 'private'}<PrivateLessons {lang} requireSelection={site === 'academy'}/>{:else}
     {#if plans.length}<div class="pricing-grid">
-      {#each plans as plan}<article class="price-card" class:featured={plan.months === 6} class:plan-chosen={experience.selection.months === plan.months}>
-        <button class="plan-select" aria-pressed={experience.selection.months === plan.months} onclick={() => choosePlan(plan.months)}><span>{periodName(plan.months)}</span><span class="plan-check"><Icon name={experience.selection.months === plan.months ? 'check' : 'plus'} size={20}/></span></button>
+      {#each plans as plan}<article class="price-card" class:featured={plan.months === 6} class:plan-chosen={(site !== 'academy' || experience.explicit) && experience.selection.months === plan.months}>
+        <button class="plan-select" aria-pressed={(site !== 'academy' || experience.explicit) && experience.selection.months === plan.months} onclick={() => choosePlan(plan.months)}><span>{periodName(plan.months)}</span><span class="plan-check"><Icon name={experience.selection.months === plan.months ? 'check' : 'plus'} size={20}/></span></button>
         <p class="price-description">{plan.months === 1 ? c.oneMonth : plan.months < 12 ? c.shortTerm : c.longTerm}</p>
         <div class="plan-price"><strong>{money(plan.price)}</strong></div><p class="price-total-label">{ux.upfront}</p><p class="price-payment">{money(plan.price / plan.months)} <span>{ux.monthly}</span></p>
         <div class="price-saving">{#if plan.months > 1 && monthlyPlan && plan.price < monthlyPlan.price * plan.months}<span>{d.save}</span><strong>{percent(1 - plan.price / (monthlyPlan.price * plan.months))} {d.saving}</strong>{:else}<span>{experience.selection.discipline === 'academy' ? d.allAccess : d.singleAccess}</span><Icon name="training" size={17}/>{/if}</div>
@@ -99,6 +112,9 @@
 </section>
 
 <style>
+.current-details { display:inline-flex; align-items:center; gap:8px; min-height:44px; color:var(--fg); font-size:13px; text-decoration:underline; text-underline-offset:4px; }
+.membership-details { margin:-12px 0 12px; }
+
 .membership-types{display:flex;gap:8px;border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:25px}.membership-types button{display:flex;align-items:center;justify-content:center;gap:12px;min-height:54px;padding:15px 24px;background:transparent;color:var(--fg);border:1px solid var(--line);font-size:14px;transition:background .2s,color .2s}.membership-types button.active{background:var(--signal);color:var(--button-fg);border-color:var(--signal)}.membership-section{background:var(--bg);border-top:1px solid var(--line)}.membership-heading h2{margin-top:24px}.schedule-footnote{font-size:12px;color:var(--muted);margin-top:18px}.day-selector .today i{width:5px;height:5px;opacity:1;background:var(--accent)}.plan-select{display:flex;align-items:center;justify-content:space-between;gap:15px;background:transparent;padding:0;text-align:left;min-height:52px;width:100%;color:inherit}.plan-select>span:first-child{font:800 38px/1 Barlow;text-transform:uppercase}.plan-check{display:grid;place-items:center;width:36px;height:36px;border:1px solid currentColor;border-radius:50%;opacity:.5}.plan-chosen .plan-check{opacity:1}.price-card.plan-chosen{outline:2px solid var(--signal);outline-offset:4px}.price-total-label{font-size:12px;opacity:.8;margin-top:8px}.plan-inclusions{border-block:1px solid var(--line);margin-top:28px}.plan-inclusions summary{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:64px;font-size:14px}.plan-inclusions ul{list-style:none;padding:0;display:grid;gap:15px;margin:8px 0 24px}.plan-inclusions li{display:flex;align-items:center;gap:12px;font-size:13px}.plan-inclusions p{color:var(--muted);font-size:13px;max-width:680px;margin-bottom:25px}
 @media(max-width:700px){.membership-types button{flex:1;padding:14px 10px;gap:8px;font-size:13px}.membership-heading h2{font-size:clamp(44px,12vw,68px)}.plan-select>span:first-child{font-size:34px}.plan-select{margin-bottom:8px}.plan-inclusions summary{font-size:14px}.schedule-footnote{font-size:12px}}
 

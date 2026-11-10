@@ -73,6 +73,7 @@ Each identity has one complete homepage per language: `/` (Turkish) and `/en` (E
 
 - `#top`: identity-specific hero and first action.
 - `#training`: discipline selection on the academy, technical focus on discipline sites.
+- `#first-session`: first class guidance, with a WhatsApp draft when configured. On the academy, it follows the discipline cards and includes links to the coach and facilities.
 - `#academy`: philosophy and expandable values, only on the main academy site. Discipline pages omit this section and its navigation links.
 - `#space`: gym photography with a native gallery dialog, touch swipe, arrows and keyboard controls.
 - `#trainers`: academy-only head trainer feature linking to a separate profile page. Other coach cards and profile dialogs are omitted across all identities.
@@ -91,7 +92,7 @@ Legacy routes such as `/antrenmanlar`, `/akademi`, `/program`, `/basla` and Engl
 - Display typography: locally hosted Barlow Condensed ExtraBold, with solid Turkish headings.
 - UI typography: locally hosted Poppins Medium.
 - Supplied original emblem and wordmark paths retained in SVG. Team headers use only the SELF CONTROL line plus a colour-coded, title-case discipline descriptor. The academy retains its full signature.
-- White editorial academy hero with oversized overlapping type, monochrome photography, an emblem seal and a three-discipline photo selector; full-image dark discipline heroes with one metal accent. The academy hero uses brief entrance choreography, pointer-only photographic depth and matching localized discipline links. Native buttons support keyboard selection; decorative movement respects reduced-motion preferences. Progressive scroll reveals, section-aware navigation, reading progress, desktop-only restrained tilt, image zoom and native gallery dialogs. Editorial content remains visible without JavaScript; live schedules and prices require JavaScript.
+- The academy hero uses an original monochrome training photo and overlapping display type on desktop, with a separate title and photo on phones. It leads to first class guidance and the timetable; the three discipline cards link to the respective team homepages. Discipline heroes use their own photos and accent colors. Decorative movement respects reduced-motion preferences. Progressive scroll reveals, section-aware navigation, reading progress, desktop-only restrained tilt, image zoom and native gallery dialogs. Editorial content remains visible without JavaScript; live schedules and prices require JavaScript.
 - Phone-first heroes with the action in the initial viewport, mobile bottom navigation, safe-area spacing, 44px+ primary controls, touch gallery navigation and a seven-day timetable selector.
 
 `src/lib/site.ts` contains base localized copy, routing and identity tokens. `src/lib/editorial.ts` contains the one-page editorial copy. `src/lib/demo.ts` contains explicitly labelled sample sessions, bilingual head coach copy and portrait mapping; pricing lives in `src/lib/data/memberships.json`; `TrainingSchedule.svelte` renders the timetable and plans. `src/lib/effects.ts` contains progressive motion/touch enhancements. `src/lib/config.ts` reads explicitly public build settings. Components are under `src/lib/components`; page composition is in `src/lib/components/OnePage.svelte`; shared styles are in `src/app.css`.
@@ -124,7 +125,7 @@ Add verified address, contact channels, coach biographies, training groups, sche
 
 The facilities gallery uses all five supplied originals from `../salon/`, exported as responsive 640px and 1280px WebP files under `static/images/salon/` (under 1 MB total). The photographs retain their original colour and aspect ratios; the lightbox shows each full frame. `Facilities.svelte` presents the main hall, upper-floor grappling area and lower-floor heavy bags/CrossFit area, plus the MMA cage and conditioning equipment, in Turkish and English.
 
-The academy hero selector, discipline cards and discipline heroes use academy training photos supplied in `../new/`. Responsive 640px and 1280px WebP files live in `static/images/training/`. The site applies monochrome styling and sets separate desktop and mobile hero crop positions.
+The academy hero, discipline cards and discipline heroes use academy training photos supplied in `../new/`. Responsive 640px and 1280px WebP files live in `static/images/training/`. The site applies monochrome styling and sets separate desktop and mobile hero crop positions.
 
 The academy head trainer feature presents Gökhan Denizli with original photos supplied in the sibling `gökhandenizli` folder and the workspace files `gokhan1.JPG` (profile hero) and `gokhan2.JPG` (academy introduction). The responsive WebP assets in `static/images/gokhan` have two widths (640 and 1280), with metadata removed.
 
@@ -173,7 +174,7 @@ The membership section switches between group classes and private lessons. Parti
 
 ## Mobile experience and enquiries
 
-The mobile dock links directly to training, timetable, memberships and contact. While the membership section is on screen, it becomes a compact selected-package summary with a navigation button and enquiry action. Only one fixed dock is shown; it respects the device safe area. The price, package cards and enquiry share per-page Svelte context, avoiding cross-request state on the server.
+The mobile dock links directly to training, timetable, memberships and contact. While the membership section is on screen, it can become a compact package summary with a navigation button and enquiry action. On the academy, the summary appears only after an explicit package choice or when restoring a valid selection from a language link. Sample prices are labeled in the summary. Only one fixed dock is shown; it respects the device safe area. The price, package cards and enquiry share per-page Svelte context, avoiding cross-request state on the server.
 
 Group cards show the full per-person package price, monthly equivalent and a shared expandable benefits section. Private options use native radio controls. TR/EN links carry validated numeric package selections in query parameters. No personal information is stored. `selection.ts` validates these values against the catalogue and locks team pages to their own discipline.
 
@@ -181,7 +182,7 @@ The enquiry modal displays the exact selection and a prepared message. Set `PUBL
 
 The timetable opens on the current day in the configured gym timezone, shows all classes for the selected day and discipline, and highlights the next sample weekly session. The next-class clock refreshes every minute. All timetable content remains illustrative. Calendar export is deferred until actual dated sessions and the gym timezone are confirmed.
 
-Heroes offer timetable and pricing shortcuts. A bilingual first-session guide covers level, scheduling and equipment confirmation. Native modal navigation and enquiries support Escape, focus containment and focus return. New price animation respects reduced motion. Essential pricing details are at least 12px, with touch-sized label controls. Real trainer photography and verified credentials still require academy content.
+The academy hero links to the first class guide and timetable. The bilingual guide covers group selection, scheduling and equipment. Native modal navigation and enquiries support Escape, focus containment and focus return. New price animation respects reduced motion. Essential pricing details are at least 12px, with touch-sized label controls. Real trainer photography and verified credentials still require academy content.
 
 ## Google Sheets content source
 
