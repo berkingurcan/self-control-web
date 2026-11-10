@@ -39,8 +39,7 @@ export const editorial = {
       "Ring ve çalışma alanı",
       "Antrenör eşliğinde çalışma"
     ],
-    "stock": "TEMSİLİ FOTOĞRAF",
-    "stockNote": "Salon fotoğrafları Self Control Fight Academy’ye aittir. Branş tanıtımlarında temsili antrenman fotoğrafları kullanılmaktadır.",
+    "photoNote": "Salon ve antrenman fotoğrafları Self Control Fight Academy arşivinden.",
     "openPhoto": "Fotoğrafı büyüt",
     "previous": "Önceki fotoğraf",
     "next": "Sonraki fotoğraf",
@@ -111,8 +110,7 @@ export const editorial = {
       "Ring and practice area",
       "Training with a coach"
     ],
-    "stock": "ILLUSTRATIVE PHOTO",
-    "stockNote": "Facility photographs show Self Control Fight Academy. Discipline introductions use illustrative training photographs.",
+    "photoNote": "Training and facility photos are from the Self Control Fight Academy archive.",
     "openPhoto": "Enlarge photo",
     "previous": "Previous photo",
     "next": "Next photo",

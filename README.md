@@ -98,7 +98,7 @@ Legacy routes such as `/antrenmanlar`, `/akademi`, `/program`, `/basla` and Engl
 
 ## PWA and offline behavior
 
-Every production build generates an identity-specific manifest, app name, icon and maskable icon. It includes an Apple touch icon and home-screen shortcuts. A service worker precaches public localized pages, compiled JS/CSS, fonts and stock imagery. Navigations use network-first responses; cached public pages and a bilingual offline fallback are available when the network fails. Request bodies, query-string requests, external URLs and API endpoints are not cached. Offline pages display a connectivity notice and may be out of date.
+Every production build generates an identity-specific manifest, app name, icon and maskable icon. It includes an Apple touch icon and home-screen shortcuts. A service worker precaches public localized pages, compiled JS/CSS, fonts and photography. Navigations use network-first responses; cached public pages and a bilingual offline fallback are available when the network fails. Request bodies, query-string requests, external URLs and API endpoints are not cached. Offline pages display a connectivity notice and may be out of date.
 
 Installation is available only in supported browsers over HTTPS (or localhost). Android/Chromium can show the native install prompt when eligible; iOS uses Safari → Share → Add to Home Screen. The design-review paths share the academy installation identity. Separately deployed discipline origins each get their own installation identity and browser storage. Native iOS/Android device installation still needs a real-device check after production deployment; browser layout checks do not substitute for that.
 
@@ -118,22 +118,15 @@ The dependency lockfile pins the Cloudflare adapter and Wrangler alongside the e
 
 ## Before the public business launch
 
-Discipline introductions still use illustrative stock photography; replace these with licensed academy training photos when available. Add verified address, contact channels, coach biographies, training groups, schedule, prices and participation rules. Review the business's legal identity and KVKK/privacy text alongside actual data collection. Then set `PUBLIC_INDEXABLE=true` and redeploy. Canonicals, Turkish/English alternate links, social images and sitemap are generated for the configured domain. Confirm the final domains and real devices before announcing the site.
+Add verified address, contact channels, coach biographies, training groups, schedule, prices and participation rules. Review the business's legal identity and KVKK/privacy text alongside actual data collection. Then set `PUBLIC_INDEXABLE=true` and redeploy. Canonicals, Turkish/English alternate links, social images and sitemap are generated for the configured domain. Confirm the final domains and real devices before announcing the site.
 
 ## Photography
 
 The facilities gallery uses all five supplied originals from `../salon/`, exported as responsive 640px and 1280px WebP files under `static/images/salon/` (under 1 MB total). The photographs retain their original colour and aspect ratios; the lightbox shows each full frame. `Facilities.svelte` presents the main hall, upper-floor grappling area and lower-floor heavy bags/CrossFit area, plus the MMA cage and conditioning equipment, in Turkish and English.
 
-Pexels photographs remain in discipline introductions. They illustrate training and do not portray academy members. Credits are visible in the footer.
+The academy hero selector, discipline cards and discipline heroes use academy training photos supplied in `../new/`. Responsive 640px and 1280px WebP files live in `static/images/training/`. The site applies monochrome styling and sets separate desktop and mobile hero crop positions.
 
-- Gleb Krasnoborov — https://www.pexels.com/photo/two-men-practicing-martial-arts-2628210/
-- Juliia Abramova — https://www.pexels.com/photo/woman-doing-muay-thai-training-12121709/
-- Daniel Lee — https://www.pexels.com/photo/female-fighter-training-with-kickboxing-techniques-34990409/
-- Duren Williams — https://www.pexels.com/photo/two-men-wrestling-11391987/
-
-The grappling photograph illustrates the ground component of MMA. No UFC, ONE, supplier or federation affiliation is implied.
-
-The academy head trainer feature presents Gökhan Denizli with original photos supplied in the sibling `gökhandenizli` folder and the workspace files `gokhan1.JPG` (profile hero) and `gokhan2.JPG` (academy introduction). The responsive WebP assets in `static/images/gokhan` have two widths (640 and 1280), with metadata removed. Discipline photographs remain illustrative; facilities photography is from the supplied academy archive.
+The academy head trainer feature presents Gökhan Denizli with original photos supplied in the sibling `gökhandenizli` folder and the workspace files `gokhan1.JPG` (profile hero) and `gokhan2.JPG` (academy introduction). The responsive WebP assets in `static/images/gokhan` have two widths (640 and 1280), with metadata removed.
 
 
 ## Sample timetable and pricing
@@ -198,7 +191,7 @@ The Turkish upload workbook is supplied separately. Full owner instructions, col
 
 Private pricing can vary by scope through `privateLessonsBySite`. Legacy bundled JSON retains its shared private catalogue. The live importer supports inactive/empty catalogues, per-person pricing, optional English labels and the configured gym timezone. A native SvelteKit server function validates all four tabs together, limits responses, restricts upstream hosts and caches successful reads. Successful responses advertise a five-minute shared-cache lifetime; Cloudflare Worker responses are not assumed to enter a shared CDN cache automatically. The warm Worker instance reuses successful reads for five minutes; last-confirmed data can be shown with an explicit stale notice for up to one hour. The server's warm cache is not durable storage; a cold-start failure returns unavailable. Browser storage is optional and checked before use.
 
-Prices, timetable, mobile summary and prepared enquiry all read the same page-local content context. Only the dynamic API reads the private configuration. Static home/profile pages remain prerendered, while timetable and price content loads after hydration and refreshes without redeployment. With a live `Yayında` status, sample schedule/price labels are replaced; trainer stock content remains marked as illustrative.
+Prices, timetable, mobile summary and prepared enquiry all read the same page-local content context. Only the dynamic API reads the private configuration. Static home/profile pages remain prerendered, while timetable and price content loads after hydration and refreshes without redeployment. With a live `Yayında` status, sample schedule/price labels are replaced.
 
 Source references: [Google spreadsheet query parameters](https://developers.google.com/chart/interactive/docs/spreadsheets), [CSV response protocol](https://developers.google.com/chart/interactive/docs/dev/implementing_data_source), [Cloudflare SvelteKit deployment](https://developers.cloudflare.com/workers/framework-guides/web-apps/sveltekit/), [SvelteKit environment variables](https://svelte.dev/docs/kit/environment-variables).
 
@@ -206,4 +199,4 @@ Source references: [Google spreadsheet query parameters](https://developers.goog
 
 The discipline homepages share a split hero with a clear separation between typography and photography, their existing sage/blue/clay accents and direct links between branches. `DisciplineHero.svelte` and `DisciplineTraining.svelte` contain the responsive layouts; `src/lib/discipline-copy.ts` contains the branch-specific Turkish and English introductions and expandable training areas. Pointer depth is shared with the academy through `heroDepth` in `effects.ts` and respects reduced-motion preferences.
 
-Turkish visitor copy uses a consistent, polite tone suited to the academy in Denizli. Headings describe training, classes and memberships directly. English copy is written naturally rather than translated word for word. `siteName(id, lang)` localizes discipline names, including Kick Boks / Kickboxing. The hero, discipline pages, coach profiles, schedule, memberships, enquiries, navigation, accessibility labels, metadata and offline messages follow the same wording. Sample schedules, prices, profiles and photography remain identified as illustrative. No contact details, qualifications or achievements have been invented.
+Turkish visitor copy uses a consistent, polite tone suited to the academy in Denizli. Headings describe training, classes and memberships directly. English copy is written naturally rather than translated word for word. `siteName(id, lang)` localizes discipline names, including Kick Boks / Kickboxing. The hero, discipline pages, coach profiles, schedule, memberships, enquiries, navigation, accessibility labels, metadata and offline messages follow the same wording. Sample schedules and prices remain identified as illustrative. No contact details, qualifications or achievements have been invented.

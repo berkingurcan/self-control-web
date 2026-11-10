@@ -10,15 +10,20 @@
   const identity = $derived(sites[site]);
   const content = $derived(disciplineCopy[lang][site]);
   const ids = disciplineOrder;
+  const positions = {
+    kickbox: { desktop: '50% 22%', mobile: '50% 20%' },
+    mma: { desktop: '50% 50%', mobile: '50% 49%' },
+    muaythai: { desktop: '50% 48%', mobile: '50% 46%' }
+  };
   const text = $derived(lang === 'tr' ? {
     academy: 'Akademi', location: 'FIGHT ACADEMY · DENİZLİ',
     training: 'Antrenman içeriği', schedule: 'Ders programı', prices: 'Üyelik ve ücretler',
-    disciplines: 'Branşlar', stock: 'TEMSİLİ FOTOĞRAF', group: 'Grup ve özel ders',
+    disciplines: 'Branşlar', group: 'Grup ve özel ders',
     mixed: 'Karma dövüş sanatları'
   } : {
     academy: 'Academy home', location: 'FIGHT ACADEMY · DENİZLİ',
     training: 'Explore training', schedule: 'Class timetable', prices: 'Memberships and prices',
-    disciplines: 'Disciplines', stock: 'ILLUSTRATIVE PHOTO', group: 'Group and private lessons',
+    disciplines: 'Disciplines', group: 'Group and private lessons',
     mixed: 'Mixed martial arts'
   });
 </script>
@@ -45,12 +50,12 @@
     </div>
     <a class="branch-membership" href="#membership">{text.prices}<Icon name="diagonal" size={15}/></a>
   </div>
-  <figure class="branch-visual" style={`--desktop-position:${site === 'muaythai' ? '50% 18%' : identity.position};--mobile-position:${site === 'muaythai' ? '50% 5%' : site === 'kickbox' ? '50% 18%' : '50% 0%'}`}>
+  <figure class="branch-visual" class:muay-thai={site === 'muaythai'} style:--desktop-position={positions[site].desktop} style:--mobile-position={positions[site].mobile}>
     <div class="branch-photo">
-      <Photo name={identity.image} alt={copy[lang].home[site].image} eager position="var(--photo-position)"/>
+      <Photo name={identity.image} height={identity.imageHeight} alt={copy[lang].home[site].image} eager position="var(--photo-position)"/>
       <span class="photo-accent" aria-hidden="true"></span>
     </div>
-    <figcaption><span>SELF CONTROL / {identity.number}</span><small>{text.stock}</small></figcaption>
+    <figcaption>SELF CONTROL / {identity.number}</figcaption>
   </figure>
 </div>
 
@@ -90,10 +95,11 @@
   .branch-membership:hover{color:var(--accent)}
   .branch-visual{display:flex;flex-direction:column;min-width:0;margin:0}
   .branch-photo{position:relative;overflow:hidden;flex:1;min-height:490px;background:#252621;--photo-position:var(--desktop-position)}
-  .branch-photo :global(img){position:absolute;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(1.08) brightness(.9);transform:translate(var(--drift-x),var(--drift-y)) scale(1.045);transition:transform .9s cubic-bezier(.2,.7,.3,1)}
+  .branch-photo :global(img){position:absolute;width:100%;height:100%;object-fit:cover;filter:grayscale(1) contrast(var(--photo-contrast,1.05)) brightness(var(--photo-brightness,.98));transform:translate(var(--drift-x),var(--drift-y)) scale(1.045);transition:transform .9s cubic-bezier(.2,.7,.3,1)}
+  .mixed .branch-photo{--photo-contrast:1.02;--photo-brightness:1.13}
+  .muay-thai .branch-photo{--photo-contrast:1.02}
   .photo-accent{position:absolute;left:0;bottom:0;width:50px;height:3px;background:var(--accent)}
-  figcaption{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:13px;min-height:30px;font-size:8px;letter-spacing:.07em;color:#93968b}
-  figcaption small{font-size:8px;line-height:1.6;text-align:right}
+  figcaption{padding-top:13px;min-height:30px;font-size:8px;letter-spacing:.07em;color:#93968b}
   .branch-navigation{display:grid;grid-template-columns:1fr repeat(3,1.1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line);min-height:71px}
   .nav-label{display:flex;align-items:center;font-size:9px;text-transform:uppercase;letter-spacing:.12em;color:#96998d}
   .branch-navigation>a{display:flex;position:relative;align-items:center;gap:18px;padding:0 23px;color:#a5a59c;font-size:13px;border-left:1px solid var(--line);transition:background .2s,color .2s}
@@ -122,8 +128,9 @@
     .branch-description{order:1;max-width:550px;font-size:13px;line-height:1.8;margin:0 0 22px}
     .branch-visual{order:2}
     .branch-photo{flex:auto;min-height:0;height:clamp(180px,48vw,285px);--photo-position:var(--mobile-position)}
-    .branch-photo :global(img){filter:grayscale(1) contrast(1.05) brightness(.94)}
-    figcaption{padding-top:10px;min-height:25px;font-size:7px}figcaption small{font-size:7px}
+    .mixed .branch-photo{height:auto;aspect-ratio:1.28}
+    .muay-thai .branch-photo{height:clamp(216px,58vw,330px)}
+    figcaption{padding-top:10px;min-height:25px;font-size:7px}
     .branch-actions{order:3;display:grid;grid-template-columns:1.2fr 1fr;gap:18px;margin-top:22px;width:100%}
     .branch-primary{font-size:12px;padding:15px;min-height:52px;gap:12px}
     .branch-secondary{font-size:11px;gap:10px;min-height:52px}

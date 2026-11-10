@@ -10,10 +10,10 @@ export const routes: Record<Lang, Record<PageId, string>> = {
   en: { home: '', coach: 'gokhandenizli', training: 'training', about: 'academy', schedule: 'schedule', start: 'start', privacy: 'privacy' }
 };
 export const sites = {
-  academy: { name: 'Fight Academy', label: 'SELF CONTROL', accent: '#ffffff', dark: '#222222', image: 'training', domain: 'selfcontrolfightacademy.com', number: '00', position: '50% 45%', disciplines: disciplineOrder },
-  muaythai: { name: 'Muay Thai', label: 'MUAY THAI', accent: '#B7D19C', dark: '#263D2D', image: 'muay-thai', domain: 'muaythai.selfcontrolfightacademy.com', number: '03', position: '50% 36%', disciplines: ['muaythai'] },
-  kickbox: { name: 'Kick Boks', label: 'KİCK BOKS', accent: '#AAC6E6', dark: '#253B55', image: 'kickbox', domain: 'kickbox.selfcontrolfightacademy.com', number: '01', position: '50% 42%', disciplines: ['kickbox'] },
-  mma: { name: 'MMA', label: 'MMA', accent: '#E0A097', dark: '#4B2729', image: 'grappling', domain: 'mma.selfcontrolfightacademy.com', number: '02', position: '55% 42%', disciplines: ['mma'] }
+  academy: { name: 'Fight Academy', label: 'SELF CONTROL', accent: '#ffffff', dark: '#222222', domain: 'selfcontrolfightacademy.com', number: '00', disciplines: disciplineOrder },
+  muaythai: { name: 'Muay Thai', label: 'MUAY THAI', accent: '#B7D19C', dark: '#263D2D', image: 'training/muay-thai', imageHeight: 1000, domain: 'muaythai.selfcontrolfightacademy.com', number: '03', position: '53% 46%', disciplines: ['muaythai'] },
+  kickbox: { name: 'Kick Boks', label: 'KİCK BOKS', accent: '#AAC6E6', dark: '#253B55', image: 'training/kickbox', imageHeight: 1164, domain: 'kickbox.selfcontrolfightacademy.com', number: '01', position: '53% 26%', disciplines: ['kickbox'] },
+  mma: { name: 'MMA', label: 'MMA', accent: '#E0A097', dark: '#4B2729', image: 'training/mma', imageHeight: 1396, domain: 'mma.selfcontrolfightacademy.com', number: '02', position: '50% 50%', disciplines: ['mma'] }
 } as const;
 
 export function siteName(id: SiteId, lang: Lang) {
@@ -73,7 +73,7 @@ export const copy = {
         ],
         "sub": "Denizli’de Kick boks, MMA ve Muay Thai. Antrenman içeriklerini, ders programını ve üyelik seçeneklerini inceleyin.",
         "tag": "KİCK BOKS · MMA · MUAY THAI",
-        "image": "Antrenör eşliğinde Muay Thai çalışması"
+        "image": "Self Control Fight Academy’de antrenman"
       },
       "muaythai": {
         "title": [
@@ -83,7 +83,7 @@ export const copy = {
         ],
         "sub": "Denizli’de Muay Thai antrenmanları. Temel duruş, savunma, yumruk, tekme, diz ve dirsek tekniklerine odaklanan çalışmalar.",
         "tag": "MUAY THAI / TEKNİK VE KONDİSYON",
-        "image": "Muay Thai antrenmanında darbe yastığı çalışması"
+        "image": "Kafes içinde antrenörle Muay Thai pad çalışması"
       },
       "kickbox": {
         "title": [
@@ -93,7 +93,7 @@ export const copy = {
         ],
         "sub": "Denizli’de kick boks antrenmanları. Yumruk ve tekme kombinasyonları, savunma, ayak hareketleri ve kondisyon çalışmaları.",
         "tag": "KİCK BOKS / TEKNİK VE KONDİSYON",
-        "image": "Kum torbasında kick boks antrenmanı"
+        "image": "Kick boks sporcusu ve sarı lapalar tutan antrenörü"
       },
       "mma": {
         "title": [
@@ -103,7 +103,7 @@ export const copy = {
         ],
         "sub": "Denizli’de MMA antrenmanları. Ayakta vuruş tekniklerini, güreşi ve yer çalışmalarını bir araya getiren antrenman içeriği.",
         "tag": "MMA / KARMA DÖVÜŞ SANATLARI",
-        "image": "MMA antrenmanında yerde pozisyon kontrolü"
+        "image": "MMA dersinde sporculara minder üzerinde yer tekniği gösteriliyor"
       }
     },
     "introLabel": "01 / AKADEMİ",
@@ -255,8 +255,6 @@ export const copy = {
     "installed": "Site ana ekranınıza eklenmiş.",
     "offline": "İnternet bağlantısı yok. Kaydedilmiş sayfalar gösteriliyor; bilgiler güncel olmayabilir.",
     "footerLine": "SELF CONTROL FIGHT ACADEMY",
-    "footerNote": "Temsili fotoğraflar akademinin salonunu, antrenörlerini veya üyelerini göstermemektedir.",
-    "photoCredits": "Fotoğraf kaynakları",
     "designPreview": "ÖRNEK İÇERİK",
     "previewNote": "Ders programı ve ücretler örnektir. Güncel bilgiler ve iletişim ayrıntıları eklenecektir.",
     "identities": "BRANŞLAR",
@@ -294,7 +292,7 @@ export const copy = {
         ],
         "sub": "Kickboxing, MMA and Muay Thai in Denizli. Explore training, class timetables and membership options at Self Control Fight Academy.",
         "tag": "KICKBOXING · MMA · MUAY THAI",
-        "image": "Muay Thai training with a coach"
+        "image": "Training at Self Control Fight Academy"
       },
       "muaythai": {
         "title": [
@@ -304,7 +302,7 @@ export const copy = {
         ],
         "sub": "Muay Thai training in Denizli, covering stance, defence, punches, kicks, knees and elbows.",
         "tag": "MUAY THAI / TECHNIQUE AND CONDITIONING",
-        "image": "Muay Thai pad training"
+        "image": "Muay Thai pad drill with a coach inside the cage"
       },
       "kickbox": {
         "title": [
@@ -314,7 +312,7 @@ export const copy = {
         ],
         "sub": "Kickboxing training in Denizli, with punch and kick combinations, defence, footwork and conditioning.",
         "tag": "KICKBOXING / TECHNIQUE AND CONDITIONING",
-        "image": "Kickboxing bag training"
+        "image": "Kickboxer facing a coach holding yellow focus mitts"
       },
       "mma": {
         "title": [
@@ -324,7 +322,7 @@ export const copy = {
         ],
         "sub": "MMA training in Denizli, bringing together striking, wrestling and ground techniques.",
         "tag": "MMA / MIXED MARTIAL ARTS",
-        "image": "Ground position practice in MMA training"
+        "image": "Athletes watch a ground technique demonstration during an MMA class"
       }
     },
     "introLabel": "01 / THE ACADEMY",
@@ -476,8 +474,6 @@ export const copy = {
     "installed": "The site is already added to your home screen.",
     "offline": "No internet connection. Saved pages are being displayed and may be out of date.",
     "footerLine": "SELF CONTROL FIGHT ACADEMY",
-    "footerNote": "Illustrative photographs do not show the academy’s premises, coaches or members.",
-    "photoCredits": "Photo credits",
     "designPreview": "SAMPLE CONTENT",
     "previewNote": "Class times and prices are examples. Current information and contact details will be added.",
     "identities": "DISCIPLINES",
