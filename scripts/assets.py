@@ -15,9 +15,13 @@ def mark(draw,box,color):
  for poly in polys:draw.polygon([(x+(a-300)*w/400,y+(b-355)*h/290) for a,b in poly],fill=color)
 for id,color in colors.items():
  out=static/'icons'/id;out.mkdir(parents=True,exist_ok=True)
- logo.set('viewBox', '300 300 400 400')
- logo.set('fill', '#000000' if id == 'academy' else color)
- (out/'favicon.svg').write_text(ET.tostring(logo, encoding='unicode') + '\n', encoding='utf-8')
+ favicon = ET.Element(logo.tag, {'viewBox': '300 300 400 400', 'fill': '#000000' if id == 'academy' else color})
+ if id != 'academy':
+  ET.SubElement(favicon, '{http://www.w3.org/2000/svg}rect', {
+   'x': '300', 'y': '300', 'width': '400', 'height': '400', 'rx': '76', 'fill': '#080808'
+  })
+ favicon.extend(logo)
+ (out/'favicon.svg').write_text(ET.tostring(favicon, encoding='unicode') + '\n', encoding='utf-8')
  for name,size in [('icon-192',192),('icon-512',512),('maskable-512',512),('apple-touch-icon',180)]:
   k=3;im=Image.new('RGB',(size*k,size*k),'#080808');d=ImageDraw.Draw(im)
   mark(d,(size*k*.2,size*k*.28,size*k*.6,size*k*.435),color)

@@ -55,7 +55,7 @@ for(const [index, id] of ids.entries()){
    assert(!page.includes('href="#team"'));
    assert(!page.includes('class="trainer-card"'));
    assert(!page.includes('class="coach-dialog"'));
-   assert(page.includes(`href="/icons/${id}/favicon.svg"`));
+   assert(page.includes(`href="/icons/${id}/favicon.svg${id === 'academy' ? '' : '?v=2'}"`));
    assert(page.includes(`rel="canonical" href="https://${siteDomains[id]}/`));
    for (const discipline of ['muaythai','kickbox','mma']) assert(!page.includes(`/images/trainer-${discipline}-`));
    assert.equal(page.includes('/images/gokhan/gokhan-denizli-'), id === 'academy');
