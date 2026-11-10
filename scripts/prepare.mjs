@@ -1,15 +1,12 @@
-import { mkdir, readFile, writeFile, copyFile } from 'node:fs/promises';
+import { mkdir, writeFile, copyFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 const ids = ['academy', 'muaythai', 'kickbox', 'mma'];
 const id = process.env.PUBLIC_SITE_ID || 'academy';
 if (!ids.includes(id)) throw new Error(`Unknown PUBLIC_SITE_ID: ${id}`);
 const names = { academy: 'Self Control Fight Academy', muaythai: 'Self Control Muay Thai', kickbox: 'Self Control Kick Boks', mma: 'Self Control MMA' };
-const colors = { academy: '#ffffff', muaythai: '#B7D19C', kickbox: '#AAC6E6', mma: '#E0A097' };
 await mkdir('static/icons', { recursive: true });
 for (const name of ['icon-192', 'icon-512', 'maskable-512', 'apple-touch-icon']) await copyFile(`static/icons/${id}/${name}.png`, `static/icons/${name}.png`);
-const mark = await readFile('static/brand/mark.svg', 'utf8');
-const inner = mark.replace(/<svg[^>]*>/, '').replace('</svg>', '');
-await writeFile('static/icon.svg', `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect width="512" height="512" rx="96" fill="#080808"/><g transform="translate(86 132) scale(.85) translate(-300 -355)" fill="${colors[id]}">${inner}</g></svg>`);
+await copyFile(`static/icons/${id}/favicon.svg`, 'static/icon.svg');
 await writeFile('static/manifest.webmanifest', JSON.stringify({
   id: '/', name: names[id], short_name: id === 'academy' ? 'Self Control' : names[id].replace('Self Control ', 'SC '), lang: 'tr', description: 'Denizli’de kick boks, MMA ve Muay Thai antrenmanları — Self Control Fight Academy',
   start_url: '/', scope: '/', display: 'standalone', background_color: id === 'academy' ? '#ffffff' : '#080808', theme_color: id === 'academy' ? '#ffffff' : '#080808', orientation: 'any',
