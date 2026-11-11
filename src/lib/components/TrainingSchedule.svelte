@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { getContext, onMount, untrack, tick } from 'svelte';
+  import { getContext, onMount, tick } from 'svelte';
   import { siteName, sites, type SiteId, type Lang } from '#lib/site.ts';
   import { editorial } from '#lib/editorial.ts';
-  import { demoCopy, disciplines } from '#lib/demo.ts';
+  import { demoCopy, disciplines, type Session } from '#lib/demo.ts';
   import { reveal } from '#lib/effects.ts';
   import { membershipCopy } from '#lib/memberships.ts';
   import { experienceCopy } from '#lib/experience-copy.ts';
@@ -19,7 +19,7 @@
   const sessions = $derived(content.data.sessions);
   const available = $derived(content.phase === 'ready' || content.phase === 'stale');
   const d = $derived(demoCopy[lang]), e = $derived(editorial[lang]), c = $derived(membershipCopy[lang]), ux = $derived(experienceCopy[lang]);
-  let scheduleDiscipline = $state<SiteId>(untrack(() => site)), day = $state(0), now = $state<Date | null>(null);
+  let day = $state(0), now = $state<Date | null>(null);
   let membership: HTMLElement;
   let weeklyPlanner = $state<HTMLDivElement>(), dayHeading = $state<HTMLHeadingElement>();
   const nextLabel = $derived(catalog.status === 'sample' ? ux.next : lang === 'tr' ? 'SIRADAKİ DERS' : 'NEXT CLASS');
@@ -27,8 +27,13 @@
   let dayChosen = $state(false);
   $effect(() => { if (!dayChosen && gymNow) day = mondayIndex(gymNow); });
   const today = $derived(gymNow ? mondayIndex(gymNow) : -1);
-  const classes = $derived(sessions.filter(session => session.day === day && (scheduleDiscipline === 'academy' || session.discipline === scheduleDiscipline)).sort((a,b) => a.time.localeCompare(b.time)));
-  const next = $derived(gymNow ? nextSession(sessions, gymNow, scheduleDiscipline) : null);
+  const scheduleByDay = $derived(d.days.map((name, index) => ({
+    name,
+    classes: sessions.filter(session => session.day === index && (site === 'academy' || session.discipline === site))
+      .sort((a, b) => a.time.localeCompare(b.time))
+  })));
+  const selectedDay = $derived(scheduleByDay[day]);
+  const next = $derived(gymNow ? nextSession(sessions, gymNow, site) : null);
   const plans = $derived(catalog.groupLessons[experience.selection.discipline]);
   const monthlyPlan = $derived(plans.find(plan => plan.months === 1));
   const periodName = (months: number) => months === 1 ? c.monthly : months === 12 ? c.year : `${months} ${c.months}`;
@@ -37,10 +42,17 @@
   const endTime = (time: string, minutes: number) => { const [hours, mins] = time.split(':').map(Number); const end = hours * 60 + mins + minutes; return `${String(Math.floor(end / 60)).padStart(2, '0')}:${String(end % 60).padStart(2, '0')}`; };
   async function showNextSession() {
     if (!next) return;
+    const scroll = { block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' } as const;
+    if (site === 'academy') {
+      const heading = document.getElementById(`schedule-day-${next.session.day}`);
+      heading?.focus({ preventScroll: true });
+      heading?.scrollIntoView(scroll);
+      return;
+    }
     dayChosen = true; day = next.session.day;
     await tick();
     dayHeading?.focus({ preventScroll: true });
-    weeklyPlanner?.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+    weeklyPlanner?.scrollIntoView(scroll);
   }
   function chooseDiscipline(id: SiteId) { experience.selection.discipline = id; experience.selection = restoreSelection(new URLSearchParams(selectionQuery(experience.selection)),site,catalog); }
   function choosePlan(months: number, enquire = false) { experience.selection.months = months; experience.explicit = true; if (enquire) experience.enquiryOpen = true; }
@@ -53,25 +65,54 @@
   });
 </script>
 
+{#snippet sessionRow(session: Session)}
+  <article class="session-row" style={`--session-accent:${sites[session.discipline].accent}`}>
+    <div class="session-time"><time>{session.time}</time><span>{endTime(session.time, session.duration)}</span></div>
+    <div class="session-info">
+      <span class="session-discipline" lang={lang}>{siteName(session.discipline, lang)}</span>
+      <h4>{session.title[lang]}</h4>
+      <div class="session-meta"><span>{d.levels[session.level]}</span><span>{session.duration} {d.minutes}</span></div>
+    </div>
+    <span class="session-arrow" aria-hidden="true"><Icon name="diagonal" size="1em"/></span>
+  </article>
+{/snippet}
+
 <section id="schedule" class="section schedule-section" use:reveal>
   <div class="section-top"><span class="eyebrow">{label}</span><a class="quiet-link" href="#membership">{ux.memberships}<Icon name="diagonal" size={18}/></a></div>
-  <div class="section-heading"><h2 class="display">{e.scheduleTitle}</h2><p>{e.scheduleBody}</p></div>
+  <div class="section-heading"><h2 class="display">{e.scheduleTitle}</h2><p>{site === 'academy' ? e.academyScheduleBody : e.scheduleBody}</p></div>
   <ContentStatus {lang}/>
   {#if available}
   {#if catalog.status === 'sample'}<div class="demo-notice"><span class="demo-badge">{d.badge}</span><p>{d.note}</p></div>{/if}
-  {#if site === 'academy'}<div class="routine-filters" role="group" aria-label={d.disciplineSelect}>{#each ['academy', ...disciplines] as id}<button class:active={scheduleDiscipline === id} aria-pressed={scheduleDiscipline === id} onclick={() => scheduleDiscipline = id as SiteId}>{id === 'academy' ? d.allAccess : siteName(id as SiteId, lang)}</button>{/each}</div>{/if}
   {#if next}
     <button class="next-session" type="button" aria-controls="weekly-planner" aria-label={`${ux.showDay}: ${d.days[next.session.day]}, ${next.session.time}, ${siteName(next.session.discipline, lang)}`} onclick={showNextSession}>
       <span class="next-session-top"><span class="next-session-label"><i aria-hidden="true"></i>{nextLabel}</span><span class="next-session-action">{ux.showDay}<Icon name="arrow" size={17}/></span></span>
       <span class="next-session-main"><time datetime={next.session.time}>{next.session.time}</time><span class="next-session-details"><strong>{siteName(next.session.discipline, lang)}</strong><span>{`${next.dayOffset === 0 ? ux.today : d.days[next.session.day]} · ${next.session.duration} ${d.minutes}`}</span></span></span>
     </button>
   {/if}
-  <div id="weekly-planner" class="weekly-planner" bind:this={weeklyPlanner}>
-    <div class="planner-sidebar"><span class="eyebrow">{d.weekly}</span><h3 class="selected-day-heading" tabindex="-1" bind:this={dayHeading}>{d.days[day]}<span aria-hidden="true"><Icon name="diagonal" size="1em"/></span></h3><p>{day === today ? ux.today : scheduleDiscipline === 'academy' ? 'SELF CONTROL FIGHT ACADEMY' : siteName(scheduleDiscipline, lang)}</p><span class="class-count">{String(classes.length).padStart(2, '0')} <small>{lang === 'en' && classes.length === 1 ? 'class' : d.sessions}</small></span></div>
-    <div class="planner-main"><div class="day-selector" role="group" aria-label={d.daySelect}>{#each d.shortDays as name, index}<button class:active={day === index} class:today={today === index} aria-pressed={day === index} aria-label={`${d.days[index]}${index === today ? ` / ${ux.today}` : ''}`} onclick={() => { dayChosen = true; day = index; }}><span>{name}</span><i aria-hidden="true"></i></button>{/each}</div>
-      <div class="session-list" aria-live="polite" aria-atomic="true">{#each classes as session}<article class="session-row" style={`--session-accent:${sites[session.discipline].accent}`}><div class="session-time"><time>{session.time}</time><span>{endTime(session.time, session.duration)}</span></div><div class="session-info"><span class="session-discipline" lang={lang}>{siteName(session.discipline, lang)}</span><h4>{session.title[lang]}</h4><div class="session-meta"><span>{d.levels[session.level]}</span><span>{session.duration} {d.minutes}</span></div></div><span class="session-arrow" aria-hidden="true"><Icon name="diagonal" size="1em"/></span></article>{:else}<div class="rest-day"><Icon name="calendar" size={28}/><h4>{ux.noClass}</h4><p>{ux.noClassBody}</p>{#if next}<button class="underlined-link" onclick={showNextSession}>{ux.showDay}<Icon name="arrow" size={17}/></button>{/if}</div>{/each}</div>
+  {#if site === 'academy'}
+    <div id="weekly-planner" class="academy-week">
+      {#each scheduleByDay as { name, classes }, index (name)}
+        <section class="academy-day" aria-labelledby={`schedule-day-${index}`}>
+          <h3 id={`schedule-day-${index}`} tabindex="-1">{name}{#if today === index}<small>{ux.today}</small>{/if}</h3>
+          <div class="session-list">
+            {#each classes as session}
+              {@render sessionRow(session)}
+            {:else}
+              <p class="academy-rest-day">{lang === 'tr' ? 'Planlı ders yok.' : 'No scheduled classes.'}</p>
+            {/each}
+          </div>
+        </section>
+      {/each}
     </div>
-  </div><p class="schedule-footnote">{catalog.status === 'sample' ? ux.timetableNote : lang === 'tr' ? `Saat dilimi: ${content.data.timezone}. Güncel ders bilgilerini katılımdan önce teyit edin.` : `Class times: ${content.data.timezone}. Confirm details before attending.`}</p>
+  {:else}
+  <div id="weekly-planner" class="weekly-planner" bind:this={weeklyPlanner}>
+    <div class="planner-sidebar"><span class="eyebrow">{d.weekly}</span><h3 class="selected-day-heading" tabindex="-1" bind:this={dayHeading}>{selectedDay.name}<span aria-hidden="true"><Icon name="diagonal" size="1em"/></span></h3><p>{day === today ? ux.today : siteName(site, lang)}</p><span class="class-count">{String(selectedDay.classes.length).padStart(2, '0')} <small>{lang === 'en' && selectedDay.classes.length === 1 ? 'class' : d.sessions}</small></span></div>
+    <div class="planner-main"><div class="day-selector" role="group" aria-label={d.daySelect}>{#each d.shortDays as name, index}<button class:active={day === index} class:today={today === index} aria-pressed={day === index} aria-label={`${d.days[index]}${index === today ? ` / ${ux.today}` : ''}`} onclick={() => { dayChosen = true; day = index; }}><span>{name}</span><i aria-hidden="true"></i></button>{/each}</div>
+      <div class="session-list" aria-live="polite" aria-atomic="true">{#each selectedDay.classes as session}{@render sessionRow(session)}{:else}<div class="rest-day"><Icon name="calendar" size={28}/><h4>{ux.noClass}</h4><p>{ux.noClassBody}</p>{#if next}<button class="underlined-link" onclick={showNextSession}>{ux.showDay}<Icon name="arrow" size={17}/></button>{/if}</div>{/each}</div>
+    </div>
+  </div>
+  {/if}
+  <p class="schedule-footnote">{catalog.status === 'sample' ? ux.timetableNote : lang === 'tr' ? `Saat dilimi: ${content.data.timezone}. Güncel ders bilgilerini katılımdan önce teyit edin.` : `Class times: ${content.data.timezone}. Confirm details before attending.`}</p>
   {/if}
 </section>
 
@@ -99,6 +140,13 @@
 </section>
 
 <style>
+  .academy-week{border:1px solid var(--line);background:var(--bg)}
+  .academy-day+.academy-day{border-top:1px solid var(--line)}
+  .academy-day h3{display:flex;align-items:center;gap:14px;padding:16px clamp(15px,3vw,30px);background:var(--surface);border-bottom:1px solid var(--line);font:800 24px/1.2 Barlow,Impact,sans-serif}
+  .academy-day h3:focus-visible{outline:2px solid var(--signal);outline-offset:-2px}
+  .academy-day h3 small{font:500 12px/1.2 sans-serif;color:var(--muted)}
+  .academy-day .session-list{min-height:0}
+  .academy-rest-day{padding:18px 0;color:var(--muted);font-size:13px}
 .membership-types{display:flex;gap:8px;border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:25px}.membership-types button{display:flex;align-items:center;justify-content:center;gap:12px;min-height:54px;padding:15px 24px;background:transparent;color:var(--fg);border:1px solid var(--line);font-size:14px;transition:background .2s,color .2s}.membership-types button.active{background:var(--signal);color:var(--button-fg);border-color:var(--signal)}.membership-section{background:var(--bg);border-top:1px solid var(--line)}.membership-heading h2{margin-top:24px}.schedule-footnote{font-size:12px;color:var(--muted);margin-top:18px}.day-selector .today i{width:5px;height:5px;opacity:1;background:var(--accent)}.plan-select{display:flex;align-items:center;justify-content:space-between;gap:15px;background:transparent;padding:0;text-align:left;min-height:52px;width:100%;color:inherit}.plan-select>span:first-child{font:800 38px/1 Barlow;text-transform:uppercase}.plan-check{display:grid;place-items:center;width:36px;height:36px;border:1px solid currentColor;border-radius:50%;opacity:.5}.plan-chosen .plan-check{opacity:1}.price-card.plan-chosen{outline:2px solid var(--signal);outline-offset:4px}.price-total-label{font-size:12px;opacity:.8;margin-top:8px}.plan-inclusions{border-block:1px solid var(--line);margin-top:28px}.plan-inclusions summary{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:64px;font-size:14px}.plan-inclusions ul{list-style:none;padding:0;display:grid;gap:15px;margin:8px 0 24px}.plan-inclusions li{display:flex;align-items:center;gap:12px;font-size:13px}.plan-inclusions p{color:var(--muted);font-size:13px;max-width:680px;margin-bottom:25px}
 @media(max-width:700px){.membership-types button{flex:1;padding:14px 10px;gap:8px;font-size:13px}.membership-heading h2{font-size:clamp(44px,12vw,68px)}.plan-select>span:first-child{font-size:34px}.plan-select{margin-bottom:8px}.plan-inclusions summary{font-size:14px}.schedule-footnote{font-size:12px}}
 
