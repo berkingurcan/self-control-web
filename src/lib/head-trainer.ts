@@ -9,25 +9,25 @@ const thailandGyms = [
   'Superbon Training Camp', 'Bangtao Muay Thai & MMA'
 ];
 
-export const headTrainerGallery = [
+export const headTrainerGallery: ReadonlyArray<{ image: string; position: string; mobilePosition?: string }> = [
   { image: 'gokhan/trainer-gae', position: '50% 53%' },
-  { image: 'gokhan/venum-krai', position: '50% 38%' },
+  { image: 'gokhan/venum-krai', position: '50% 38%', mobilePosition: '50% 24%' },
   { image: 'gokhan/mma-team', position: '50% 15%' },
-  { image: 'gokhan/ringside', position: '50% 70%' },
+  { image: 'gokhan/ringside', position: '50% 70%', mobilePosition: '50% 53%' },
   { image: 'gokhan/venum-sak', position: '50% 45%' },
   { image: 'gokhan/evo', position: '50% 20%' },
   { image: 'gokhan/mma-camp', position: '50% 15%' },
-  { image: 'gokhan/training-team', position: '50% 45%' },
+  { image: 'gokhan/training-team', position: '50% 45%', mobilePosition: '50% 26%' },
   { image: 'gokhan/training-partner', position: '50% 8%' },
-  { image: 'gokhan/muay-thai-camp', position: '50% 35%' },
+  { image: 'gokhan/muay-thai-camp', position: '50% 35%', mobilePosition: '50% 6%' },
   { image: 'gokhan/serkan-ozcaglayan', position: '50% 27%' },
-  { image: 'gokhan/bahram-rajabzadeh', position: '50% 40%' },
-  { image: 'gokhan/frank-hickman', position: '50% 45%' },
+  { image: 'gokhan/bahram-rajabzadeh', position: '50% 40%', mobilePosition: '50% 17%' },
+  { image: 'gokhan/frank-hickman', position: '50% 45%', mobilePosition: '50% 37%' },
   { image: 'gokhan/alex-schild', position: '50% 40%' },
-  { image: 'gokhan/bangtao', position: '50% 49%' },
-  { image: 'gokhan/one-lumpinee', position: '50% 50%' },
+  { image: 'gokhan/bangtao', position: '50% 49%', mobilePosition: '50% 36%' },
+  { image: 'gokhan/one-lumpinee', position: '50% 50%', mobilePosition: '50% 43%' },
   { image: 'gokhan/dayon-mungra', position: '50% 37%' },
-  { image: 'gokhan/ayoub-bourass', position: '50% 29%' }
+  { image: 'gokhan/ayoub-bourass', position: '50% 29%', mobilePosition: '50% 12%' }
 ];
 // Short overlays for long captions; the desktop cards and lightbox use the full labels.
 const photoTileTitles: Partial<Record<string, string>> = {

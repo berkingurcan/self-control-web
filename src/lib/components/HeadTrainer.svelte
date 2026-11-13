@@ -94,8 +94,8 @@
       {#each headTrainerGallery as frame, index (frame.image)}
         {@const compactCaption = c.photoTileTitles[frame.image]}
         <button class="bento-tile" onclick={() => openPhoto(index)} aria-label={`${c.open}: ${c.photoLabels[index]}`}>
-          <span class="bento-image">
-            <Photo name={frame.image} alt={c.photoAlts[index]} position={frame.position} sizes={galleryImageSizes(index)}/>
+          <span class="bento-image" style:--desktop-position={frame.position} style:--mobile-position={frame.mobilePosition}>
+            <Photo name={frame.image} alt={c.photoAlts[index]} position="var(--tile-position)" sizes={galleryImageSizes(index)}/>
             <span class="bento-number" aria-hidden="true">{photoNumber(index + 1)} / {galleryCount}</span>
             <span class="bento-plus" aria-hidden="true"><Icon name="plus" size={16}/></span>
           </span>
@@ -126,7 +126,7 @@
   .bento-tile:nth-child(6n + 2),.bento-tile:nth-child(12n + 7){grid-column:span 5}
   .bento-tile:nth-child(12n + 8){grid-column:span 7}
   .bento-tile:nth-child(6n + 1) .bento-image,.bento-tile:nth-child(6n + 2) .bento-image{height:clamp(230px,28vw,460px)}
-  .bento-image{display:block;position:relative;overflow:hidden;height:clamp(200px,23vw,420px);background:#252622}
+  .bento-image{display:block;position:relative;overflow:hidden;height:clamp(200px,23vw,420px);background:#252622;--tile-position:var(--desktop-position)}
   .bento-image> :global(img){display:block;width:100%;height:100%;object-fit:cover;transition:transform .4s ease}
   .bento-number{position:absolute;top:12px;left:12px;padding:5px 8px;border-radius:3px;background:#101010e8;color:#fff;font-size:9px;font-variant-numeric:tabular-nums;letter-spacing:.06em}
   .bento-caption{display:block;min-height:54px;padding:12px;font-size:13px;font-weight:600;line-height:1.45;overflow-wrap:anywhere}
@@ -165,10 +165,14 @@
     .bento-tile:nth-child(8n + 1):nth-last-child(n + 3),
     .bento-tile:nth-child(8n + 6):nth-last-child(n + 2){grid-row:span 2}
     .bento-tile:nth-child(4n),
-    .bento-tile:nth-child(4n + 1):last-child{grid-column:1/-1;min-height:clamp(130px,34vw,215px)}
+    .bento-tile:nth-child(4n + 1):last-child{
+      grid-column:1/-1;
+      aspect-ratio:2.25;
+      min-height:130px
+    }
     .bento-tile:nth-child(4n + 1):nth-last-child(2),
     .bento-tile:nth-child(4n + 2):last-child{min-height:clamp(156px,46vw,260px)}
-    .bento-tile:nth-child(n) .bento-image{position:absolute;inset:0;height:auto}
+    .bento-tile:nth-child(n) .bento-image{position:absolute;inset:0;height:auto;--tile-position:var(--mobile-position,var(--desktop-position))}
     .bento-caption{
       z-index:1;
       width:100%;
