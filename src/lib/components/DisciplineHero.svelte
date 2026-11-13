@@ -11,7 +11,7 @@
   const content = $derived(disciplineCopy[lang][site]);
   const ids = disciplineOrder;
   const positions = {
-    kickbox: { desktop: '50% 22%', mobile: '50% 20%' },
+    kickbox: { desktop: '50% 56%', mobile: '50% 56%' },
     mma: { desktop: '50% 50%', mobile: '50% 49%' },
     muaythai: { desktop: '50% 48%', mobile: '50% 46%' }
   };

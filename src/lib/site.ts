@@ -13,8 +13,28 @@ export const routes: Record<Lang, Record<PageId, string>> = {
 export const sites = {
   academy: { name: 'Fight Academy', label: 'SELF CONTROL', accent: '#ffffff', dark: '#222222', domain: siteDomains.academy, number: '00', disciplines: disciplineOrder },
   muaythai: { name: 'Muay Thai', label: 'MUAY THAI', accent: '#B7D19C', dark: '#263D2D', image: 'training/muay-thai', imageHeight: 1000, domain: siteDomains.muaythai, number: '03', position: '53% 46%', disciplines: ['muaythai'] },
-  kickbox: { name: 'Kick Boks', label: 'KİCK BOKS', accent: '#AAC6E6', dark: '#253B55', image: 'training/kickbox', imageHeight: 1164, domain: siteDomains.kickbox, number: '01', position: '53% 26%', disciplines: ['kickbox'] },
+  kickbox: { name: 'Kick Boks', label: 'KİCK BOKS', accent: '#AAC6E6', dark: '#253B55', image: 'training/kickbox-kick-drill', imageHeight: 1707, domain: siteDomains.kickbox, number: '01', disciplines: ['kickbox'] },
   mma: { name: 'MMA', label: 'MMA', accent: '#E0A097', dark: '#4B2729', image: 'training/mma', imageHeight: 1396, domain: siteDomains.mma, number: '02', position: '50% 50%', disciplines: ['mma'] }
+} as const;
+
+export const academyKickboxPhotos = {
+  hero: {
+    image: 'training/kickbox-partner-drill',
+    imageHeight: 1707,
+    alt: {
+      tr: 'Karşılıklı tekme çalışması yapan iki kick boks sporcusu',
+      en: 'Two kickboxers practising kicks together'
+    }
+  },
+  card: {
+    image: 'training/kickbox-group-training',
+    imageHeight: 1707,
+    position: '50% 58%',
+    alt: {
+      tr: 'Grup antrenmanında karşılıklı çalışan kick boks sporcuları',
+      en: 'Kickboxers sparring during a group class'
+    }
+  }
 } as const;
 
 export function siteName(id: SiteId, lang: Lang) {
@@ -96,7 +116,7 @@ export const copy = {
         ],
         "sub": "Denizli’de kick boks antrenmanları. Yumruk ve tekme kombinasyonları, savunma, ayak hareketleri ve kondisyon çalışmaları.",
         "tag": "KİCK BOKS / TEKNİK VE KONDİSYON",
-        "image": "Kick boks sporcusu ve sarı lapalar tutan antrenörü"
+        "image": "Grup antrenmanında tekme tekniği çalışan iki kick boks sporcusu"
       },
       "mma": {
         "title": [
@@ -315,7 +335,7 @@ export const copy = {
         ],
         "sub": "Kickboxing training in Denizli, with punch and kick combinations, defence, footwork and conditioning.",
         "tag": "KICKBOXING / TECHNIQUE AND CONDITIONING",
-        "image": "Kickboxer facing a coach holding yellow focus mitts"
+        "image": "Two kickboxers practising a kick during group training"
       },
       "mma": {
         "title": [

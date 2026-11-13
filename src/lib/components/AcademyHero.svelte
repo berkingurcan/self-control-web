@@ -1,6 +1,6 @@
 <script lang="ts">
   import { disciplineOrder } from '#lib/discipline-order.ts';
-  import { siteName, copy, siteHref, sites, type Lang } from '#lib/site.ts';
+  import { academyKickboxPhotos, siteName, copy, siteHref, sites, type Lang } from '#lib/site.ts';
   import { heroDepth } from '#lib/effects.ts';
   import Photo from './Photo.svelte';
   import Icon from './Icon.svelte';
@@ -8,7 +8,7 @@
   let { lang, preview }: { lang: Lang; preview: boolean } = $props();
   const disciplines = disciplineOrder;
   const positions = {
-    kickbox: { desktop: '50% 24%', mobile: '59% 30%' },
+    kickbox: { desktop: '50% 29%', mobile: '50% 32%' },
     mma: { desktop: '50% 54%', mobile: '46% 54%' },
     muaythai: { desktop: '52% 52%', mobile: '56% 45%' }
   };
@@ -48,8 +48,9 @@
   <figure class="campaign-visual">
     <div class="campaign-frames">
       {#each disciplines as id, index}
+        {@const photo = id === 'kickbox' ? academyKickboxPhotos.hero : sites[id]}
         <div class="campaign-frame" class:is-active={selected === index} class:ground-photo={id === 'mma'} aria-hidden={selected !== index} style:--desktop-position={positions[id].desktop} style:--mobile-position={positions[id].mobile}>
-          <Photo name={sites[id].image} height={sites[id].imageHeight} alt={copy[lang].home[id].image} eager={index === 0} position="var(--photo-position)" sizes="(max-width: 700px) 77vw, 55vw"/>
+          <Photo name={photo.image} height={photo.imageHeight} alt={id === 'kickbox' ? academyKickboxPhotos.hero.alt[lang] : copy[lang].home[id].image} eager={index === 0} position="var(--photo-position)" sizes="(max-width: 700px) 77vw, 55vw"/>
         </div>
       {/each}
     </div>

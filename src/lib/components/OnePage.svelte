@@ -3,7 +3,7 @@
   import { getContext } from 'svelte';
   import { contactKey, type ContactConfig } from '#lib/contact-config.ts';
   import { config as env } from '#lib/config.ts';
-  import { siteName, copy, href, siteHref, sites, type SiteId, type Lang } from '#lib/site.ts';
+  import { academyKickboxPhotos, siteName, copy, href, siteHref, sites, type SiteId, type Lang } from '#lib/site.ts';
   import { experienceCopy } from '#lib/experience-copy.ts';
   import { editorial } from '#lib/editorial.ts';
   import { reveal, tilt } from '#lib/effects.ts';
@@ -43,7 +43,23 @@
 <section id="training" class="section training-section" use:reveal>
   <div class="section-top"><span class="eyebrow">{e.disciplineLabel}</span><span class="eyebrow">SELF CONTROL / {e.trainingMarker}</span></div>
   <div class="section-heading"><h2 class="display">{e.disciplineTitle}</h2><p>{e.disciplineBody}</p></div>
-    <div class="discipline-grid">{#each ids as id}<a class="discipline-card" style={`--card-accent:${sites[id].accent}`} href={siteHref(id, lang, preview)} use:tilt><div class="discipline-photo"><Photo name={sites[id].image} height={sites[id].imageHeight} alt={t.home[id].image} position={sites[id].position} sizes="(max-width: 700px) 100vw, 30vw"/><div class="card-shade"></div><span class="card-index">0{ids.indexOf(id) + 1} / SELF CONTROL</span><div class="discipline-card-title"><h3 lang={id === 'muaythai' ? 'en' : lang}>{#if id === 'kickbox' && lang === 'en'}Kick<br/>boxing{:else}{siteName(id, lang)}{/if}</h3><span class="circle-arrow"><Icon name="diagonal"/></span></div></div><div class="discipline-card-copy"><p>{t.discipline[id].short}</p><span>{e.enter}<Icon name="diagonal" size={16}/></span></div></a>{/each}</div>
+  <div class="discipline-grid">
+    {#each ids as id, index}
+      {@const photo = id === 'kickbox' ? academyKickboxPhotos.card : sites[id]}
+      <a class="discipline-card" style={`--card-accent:${sites[id].accent}`} href={siteHref(id, lang, preview)} use:tilt>
+        <div class="discipline-photo">
+          <Photo name={photo.image} height={photo.imageHeight} alt={id === 'kickbox' ? academyKickboxPhotos.card.alt[lang] : t.home[id].image} position={photo.position} sizes="(max-width: 700px) 100vw, 30vw"/>
+          <div class="card-shade"></div>
+          <span class="card-index">0{index + 1} / SELF CONTROL</span>
+          <div class="discipline-card-title">
+            <h3 lang={id === 'muaythai' ? 'en' : lang}>{#if id === 'kickbox' && lang === 'en'}Kick<br/>boxing{:else}{siteName(id, lang)}{/if}</h3>
+            <span class="circle-arrow"><Icon name="diagonal"/></span>
+          </div>
+        </div>
+        <div class="discipline-card-copy"><p>{t.discipline[id].short}</p><span>{e.enter}<Icon name="diagonal" size={16}/></span></div>
+      </a>
+    {/each}
+  </div>
 
 </section>
 {:else}
