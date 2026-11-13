@@ -6,8 +6,9 @@
   import { academyKickboxPhotos, siteName, copy, href, siteHref, sites, type SiteId, type Lang } from '#lib/site.ts';
   import { experienceCopy } from '#lib/experience-copy.ts';
   import { editorial } from '#lib/editorial.ts';
-  import { reveal, tilt } from '#lib/effects.ts';
+  import { carousel, reveal, tilt } from '#lib/effects.ts';
   import Photo from './Photo.svelte';
+  import CarouselNav from './CarouselNav.svelte';
   import Facilities from './Facilities.svelte';
   import Icon from './Icon.svelte';
   import AcademyHero from './AcademyHero.svelte';
@@ -24,6 +25,7 @@
   const preview = env.PUBLIC_ENABLE_PREVIEWS === 'true';
   const headProfile = $derived(href('coach', lang, preview ? `/preview/${site}` : ''));
   const ids = disciplineOrder;
+  let disciplineRail = $state<HTMLDivElement>(), disciplineSlide = $state(0);
   const email = $derived(contact.PUBLIC_CONTACT_EMAIL);
   const address = $derived(contact.PUBLIC_ADDRESS);
   const instagram = $derived(contact.PUBLIC_INSTAGRAM);
@@ -43,7 +45,7 @@
 <section id="training" class="section training-section" use:reveal>
   <div class="section-top"><span class="eyebrow">{e.disciplineLabel}</span><span class="eyebrow">SELF CONTROL / {e.trainingMarker}</span></div>
   <div class="section-heading"><h2 class="display">{e.disciplineTitle}</h2><p>{e.disciplineBody}</p></div>
-  <div class="discipline-grid">
+  <div class="discipline-grid" bind:this={disciplineRail} use:carousel={(index) => disciplineSlide = index}>
     {#each ids as id, index}
       {@const photo = id === 'kickbox' ? academyKickboxPhotos.card : sites[id]}
       <a class="discipline-card" style={`--card-accent:${sites[id].accent}`} href={siteHref(id, lang, preview)} use:tilt>
@@ -60,7 +62,7 @@
       </a>
     {/each}
   </div>
-
+  <CarouselNav rail={disciplineRail} count={ids.length} active={disciplineSlide} labels={ids.map(id => siteName(id, lang))} {lang}/>
 </section>
 {:else}
   <DisciplineTraining site={site as Exclude<SiteId, 'academy'>} {lang}/>
@@ -143,4 +145,53 @@
   .head-copy h2{font-size:clamp(44px,5.8vw,90px);overflow-wrap:anywhere}
   .coach-tags{list-style:none;margin:0;padding:0}
   .coach-tags li{padding:8px 10px;border:1px solid #c7c7c1;font-size:11px;line-height:1.4}
+  /* Phones: swipeable rail with a peek of the next card instead of three stacked 440px cards. */
+  @media (max-width: 700px) {
+    .discipline-grid {
+      display: flex;
+      gap: 12px;
+      margin-inline: -24px;
+      padding: 0 24px 2px;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: 24px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .discipline-grid::-webkit-scrollbar {
+      display: none;
+    }
+
+    .discipline-card {
+      flex: 0 0 min(84%, 340px);
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
+
+    .discipline-photo {
+      height: auto;
+      aspect-ratio: 4 / 5;
+    }
+
+    .discipline-card-title {
+      left: 20px;
+      right: 20px;
+      bottom: 22px;
+    }
+
+    .discipline-card-title h3 {
+      font-size: clamp(38px, 12vw, 50px);
+    }
+
+    .discipline-card .circle-arrow {
+      width: 40px;
+      height: 40px;
+    }
+
+    .discipline-card-copy {
+      padding: 16px 0;
+    }
+  }
 </style>

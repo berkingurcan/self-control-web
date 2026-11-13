@@ -42,6 +42,37 @@ export function swipe(node: HTMLElement, change: (direction: number) => void) {
   node.addEventListener('pointerdown', down); node.addEventListener('pointerup', up); node.addEventListener('pointercancel', cancel);
   return { destroy() { node.removeEventListener('pointerdown', down); node.removeEventListener('pointerup', up); node.removeEventListener('pointercancel', cancel); } };
 }
+/**
+ * Tracks which slide of a horizontal scroll-snap rail is in view. Native scrolling does the
+ * work; this only reports the index so a pager can follow along. Inactive when the rail
+ * does not overflow (e.g. the desktop grid layout).
+ */
+export function carousel(node: HTMLElement, onChange: (index: number) => void) {
+  let frame = 0, current = -1;
+  const measure = () => {
+    const slides = [...node.children] as HTMLElement[];
+    if (!slides.length) return;
+    const max = node.scrollWidth - node.clientWidth;
+    const origin = node.getBoundingClientRect().left + parseFloat(getComputedStyle(node).scrollPaddingLeft || '0');
+    let index = 0;
+    if (max > 1 && node.scrollLeft >= max - 2) index = slides.length - 1;
+    else slides.forEach((slide, i) => { if (Math.abs(slide.getBoundingClientRect().left - origin) < Math.abs(slides[index].getBoundingClientRect().left - origin)) index = i; });
+    if (index !== current) { current = index; onChange(index); }
+  };
+  const schedule = () => { cancelAnimationFrame(frame); frame = requestAnimationFrame(measure); };
+  const resize = new ResizeObserver(schedule);
+  node.addEventListener('scroll', schedule, { passive: true });
+  resize.observe(node);
+  return { destroy() { cancelAnimationFrame(frame); node.removeEventListener('scroll', schedule); resize.disconnect(); } };
+}
+/** Scrolls a carousel rail so the given slide sits at the rail's snap edge. */
+export function scrollToSlide(node: HTMLElement | undefined, index: number) {
+  const slide = node?.children[index] as HTMLElement | undefined;
+  if (!node || !slide) return;
+  const padding = parseFloat(getComputedStyle(node).scrollPaddingLeft || '0');
+  const left = slide.getBoundingClientRect().left - node.getBoundingClientRect().left + node.scrollLeft - padding;
+  node.scrollTo({ left, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth' });
+}
 /** Keep keyboard focus inside an open modal, including reverse tabbing. */
 export function modalFocus(node: HTMLDialogElement) {
   const keydown = (event: KeyboardEvent) => {

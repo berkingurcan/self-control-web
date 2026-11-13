@@ -1,8 +1,9 @@
 <script lang="ts">
   import type { Lang } from '#lib/site.ts';
   import { editorial } from '#lib/editorial.ts';
-  import { reveal, swipe, modalFocus } from '#lib/effects.ts';
+  import { carousel, reveal, swipe, modalFocus } from '#lib/effects.ts';
   import Icon from './Icon.svelte';
+  import CarouselNav from './CarouselNav.svelte';
 
   let { lang, label }: { lang: Lang; label: string } = $props();
   const e = $derived(editorial[lang]);
@@ -32,7 +33,7 @@
     { name: 'mma-cage', height: 960, position: 'center' },
     { name: 'crossfit', height: 1707, position: 'center 58%' }
   ];
-  let galleryIndex = $state(0);
+  let galleryIndex = $state(0), rail = $state<HTMLDivElement>(), railIndex = $state(0);
   let dialog: HTMLDialogElement;
   const selected = $derived(photos[galleryIndex]);
   function open(index: number) { galleryIndex = index; dialog.showModal(); }
@@ -43,7 +44,7 @@
   <div class="section-top"><span class="eyebrow">{label}</span><span class="eyebrow">{text.floors}</span></div>
   <div class="section-heading"><h2 class="display">{e.spaceTitle}</h2><p>{e.spaceBody}</p></div>
   <div class="floor-overview">{#each text.areas as area}<div><span class="eyebrow">{area.level}</span><h3>{area.title}</h3><p>{area.body}</p></div>{/each}</div>
-  <div class="facility-grid" aria-label={e.gallery}>
+  <div class="facility-grid" aria-label={e.gallery} bind:this={rail} use:carousel={(index) => railIndex = index}>
     {#each photos as photo, i}
       <button class="facility-photo" class:main-photo={i === 0} class:detail-photo={i > 2} onclick={() => open(i)} aria-label={`${e.openPhoto}: ${text.captions[i]}`}>
         <img src={`/images/salon/${photo.name}-1280.webp`} srcset={`/images/salon/${photo.name}-640.webp 640w, /images/salon/${photo.name}-1280.webp 1280w`} sizes="(max-width: 700px) 100vw, 50vw" alt={text.captions[i]} width="1280" height={photo.height} loading="lazy" decoding="async" style={`object-position:${photo.position}`}/>
@@ -51,6 +52,7 @@
       </button>
     {/each}
   </div>
+  <CarouselNav {rail} count={photos.length} active={railIndex} labels={text.captions} {lang}/>
   <p class="photo-note">{text.note}</p>
 </section>
 
@@ -78,10 +80,17 @@
   .gallery-dialog>img{display:block;width:100%;height:auto;max-height:65svh;object-fit:contain;background:#080808;filter:none}
   @media(max-width:1000px) and (min-width:701px){.floor-overview{gap:22px}.facility-grid{grid-template-rows:200px 200px 240px}.gallery-caption{inset:auto 18px 18px}.gallery-caption>span:first-child{font-size:13px}}
   @media(max-width:700px){
-    .floor-overview{grid-template-columns:1fr;gap:20px;margin-bottom:28px}
-    .floor-overview>div{padding-top:16px}.floor-overview h3{font-size:29px;margin:9px 0}.floor-overview p{max-width:unset}
-    .facility-grid{grid-template-columns:1fr;grid-template-rows:none;gap:14px}
-    .main-photo{grid-row:auto}.facility-photo{aspect-ratio:4/3}.detail-photo{aspect-ratio:3/2}
+    /* Floors read as a compact indexed list rather than three tall text blocks. */
+    .floor-overview{grid-template-columns:1fr;gap:0;margin-bottom:28px;border-bottom:1px solid var(--line)}
+    .floor-overview>div{display:grid;grid-template-columns:minmax(0,1fr);row-gap:4px;padding:16px 0}
+    .floor-overview .eyebrow{font-size:9px}
+    .floor-overview h3{font-size:24px;margin:0}
+    .floor-overview p{max-width:unset;font-size:12px;line-height:1.7}
+    /* Photos become a swipeable rail with a visible peek, one consistent 4:3 frame. */
+    .facility-grid{display:flex;grid-template-rows:none;gap:12px;margin-inline:-24px;padding:0 24px 2px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scroll-padding-inline:24px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+    .facility-grid::-webkit-scrollbar{display:none}
+    .facility-photo,.main-photo,.detail-photo{flex:0 0 min(86%,420px);grid-row:auto;aspect-ratio:4/3;scroll-snap-align:start;scroll-snap-stop:always}
+    .facility-photo>img{position:absolute;inset:0}
     .gallery-caption{inset:auto 18px 18px}.gallery-caption>span:first-child{font-size:14px}.gallery-caption .circle-arrow{width:34px;height:34px}
     .section-top{gap:12px}.section-top>.eyebrow:last-child{font-size:8px;text-align:right}
     .gallery-dialog>img{height:auto;max-height:60svh}
