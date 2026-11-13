@@ -98,8 +98,8 @@
   .label-square{width:6px;height:6px;background:currentColor}
   .masthead-note{color:#6b6b65;display:flex;gap:16px;font-size:9px;letter-spacing:.04em}
   .masthead-note>span{color:#b2b2ac}
-  .academy-stage{position:relative;isolation:isolate;min-height:clamp(550px,43vw,710px);height:min(710px,calc(100svh - 220px));background:var(--hero-paper);--drift-x:0px;--drift-y:0px}
-  .campaign-visual{position:absolute;inset:0 0 64px 40%;margin:0;background:#20201e;color:#fff;overflow:hidden}
+  .academy-stage{position:relative;isolation:isolate;min-height:clamp(550px,43vw,710px);height:min(710px,calc(100svh - 220px));background:var(--hero-paper);--visual-start:40%;--drift-x:0px;--drift-y:0px}
+  .campaign-visual{position:absolute;inset:0 0 64px var(--visual-start);margin:0;background:#20201e;color:#fff;overflow:hidden}
   .campaign-frames,.campaign-frame,.campaign-shade{position:absolute;inset:0}
   .campaign-frame{opacity:0;visibility:hidden;transition:opacity .65s ease,visibility .65s;overflow:hidden;--photo-position:var(--desktop-position)}
   .campaign-frame.is-active{opacity:1;visibility:visible}
@@ -107,6 +107,13 @@
   .campaign-frame.ground-photo{--photo-brightness:1.13}
   .campaign-shade{background:linear-gradient(0deg,#080808c9,transparent 39%),linear-gradient(90deg,#08080820,transparent 55%);pointer-events:none}
   .campaign-shade:after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at var(--light-x,65%) var(--light-y,40%),#ffffff18,transparent 65%);mix-blend-mode:soft-light}
+  .campaign-shade::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:linear-gradient(90deg,#000000b8 25%,transparent 56%);
+    mask-image:linear-gradient(180deg,transparent,#000 22%,#000 64%,transparent 86%);
+  }
   .visual-topline{position:absolute;inset:23px 25px auto;display:flex;align-items:center;justify-content:space-between;font-size:8px;letter-spacing:.12em;color:#e2e2dd}
   .control-seal{position:absolute;top:56px;right:24px;width:100px;height:100px;display:grid;place-items:center}
   .seal-orbit{position:absolute;inset:0;width:100%;height:100%;fill:#f3f3eb;font:500 7.8px Poppins,Arial,sans-serif;letter-spacing:1.2px}
@@ -117,7 +124,23 @@
   .caption-copy>a{display:flex;gap:35px;align-items:center;min-height:44px;font:800 38px/1 Barlow,Impact,sans-serif;text-transform:uppercase}
   .caption-copy>a :global(svg){transition:transform .25s}
   .caption-copy>a:hover :global(svg){transform:translate(3px,-3px)}
-  .campaign-title{position:absolute;z-index:2;top:20px;left:-.006em;color:#fff;mix-blend-mode:difference;font:800 clamp(100px,12.2vw,184px)/.92 Barlow,Impact,sans-serif;letter-spacing:-.022em;margin:0;pointer-events:none}
+  .campaign-title{
+    position:absolute;
+    z-index:2;
+    inset:20px 0 auto;
+    font:800 clamp(100px,12.2vw,184px)/.92 Barlow,Impact,sans-serif;
+    letter-spacing:-.022em;
+    margin:0;
+    pointer-events:none;
+    color:#080808;
+  }
+  @supports (background-clip:text){
+    .campaign-title{
+      background:linear-gradient(90deg,#080808 var(--visual-start),#fff var(--visual-start));
+      background-clip:text;
+      color:transparent;
+    }
+  }
   .title-line{display:block;padding-bottom:.055em;margin-bottom:-.02em;white-space:nowrap}
   .title-line>span{display:block}
   .title-line:last-child{margin-left:7.5vw}
@@ -158,15 +181,16 @@
   @media(min-width:1200px){.campaign-actions{flex-direction:row;align-items:center;gap:22px}.campaign-primary{gap:18px}}
   @media(min-width:1500px){.campaign-title{top:45px}.campaign-copy{bottom:96px}.campaign-actions{flex-direction:row;align-items:center;gap:23px}.campaign-primary{gap:18px}.campaign-secondary{gap:17px}.campaign-philosophy{bottom:185px}}
   @media(min-width:701px) and (max-width:1050px){
-    .academy-stage{min-height:570px;height:570px}.campaign-visual{left:36%}.campaign-title{top:30px;font-size:12.8vw}.title-line:last-child{margin-left:4vw}.campaign-copy{width:31%;bottom:84px}.campaign-copy>p{font-size:12px}.campaign-primary{font-size:11px;gap:10px;padding-left:14px}.primary-arrow{width:34px;height:38px}.control-seal{width:82px;height:82px;right:16px}.control-seal>img{width:31px}.campaign-philosophy{left:calc(36% + 23px);bottom:200px}.discipline-selector{left:36%}.discipline-selector>button{padding:0 12px;gap:9px;font-size:10px}.visual-caption{left:23px;right:20px}.baseline-membership{margin-right:0}.baseline-statement>p{max-width:170px}
+    .academy-stage{min-height:570px;height:570px;--visual-start:36%}.campaign-title{top:30px;font-size:12.8vw}.title-line:last-child{margin-left:4vw}.campaign-copy{width:31%;bottom:84px}.campaign-copy>p{font-size:12px}.campaign-primary{font-size:11px;gap:10px;padding-left:14px}.primary-arrow{width:34px;height:38px}.control-seal{width:82px;height:82px;right:16px}.control-seal>img{width:31px}.campaign-philosophy{left:calc(36% + 23px);bottom:200px}.discipline-selector{left:36%}.discipline-selector>button{padding:0 12px;gap:9px;font-size:10px}.visual-caption{left:23px;right:20px}.baseline-membership{margin-right:0}.baseline-statement>p{max-width:170px}
   }
   @media(max-width:700px){
     :global(.landing-hero.academy-hero){padding:0 22px}
     .academy-masthead{min-height:57px;font-size:8px;letter-spacing:.08em}.masthead-note{font-size:0;gap:0}.masthead-note>span{font-size:0}.masthead-note:before{content:'SC / 00';font-size:8px;letter-spacing:.08em}
-    .academy-stage{display:flex;flex-direction:column;height:auto;min-height:0;padding-top:292px}
-    .campaign-visual{inset:0 0 auto 23%;height:292px}
+    .academy-stage{display:flex;flex-direction:column;height:auto;min-height:0;padding-top:292px;--visual-start:23%}
+    .campaign-visual{bottom:auto;height:292px}
     .campaign-frame{--photo-position:var(--mobile-position)}
-    .campaign-title{position:absolute;top:52px;left:-1px;font-size:clamp(64px,18.7vw,128px);line-height:.92;margin:0}
+    .campaign-title{top:52px;font-size:clamp(64px,18.7vw,128px)}
+    .campaign-shade::before{background:linear-gradient(90deg,#000000b8 54%,transparent 94%)}
     .title-line{padding-bottom:.06em;margin-bottom:-.02em}.title-line:last-child{margin-left:0}
     .visual-topline{inset:14px 14px auto;font-size:6px;letter-spacing:.08em}.visual-topline>span:first-child{font-size:6px}
     .control-seal,.campaign-philosophy{display:none}
@@ -179,6 +203,9 @@
     .campaign-baseline{min-height:79px;margin-top:24px;gap:12px}.baseline-statement{gap:10px}.baseline-mark{font-size:27px}.baseline-statement>p{font-size:9px}.baseline-statement>p>span{display:block}.baseline-membership{font-size:10px;margin-right:0;gap:8px}.baseline-scroll{display:none}
   }
   @media(min-width:501px) and (max-width:700px){.campaign-visual{height:360px}.academy-stage{padding-top:360px}.discipline-selector>button{font-size:12px;padding-inline:12px}.selector-index{display:inline;font-size:9px}.visual-caption{bottom:20px}.caption-copy>a{font-size:34px}.campaign-copy{margin-top:26px}}
+  @media(forced-colors:active){
+    .campaign-title{background:none;color:CanvasText;text-shadow:1px 1px Canvas,-1px -1px Canvas}
+  }
   @media(max-width:360px){
     :global(.landing-hero.academy-hero){padding-inline:18px}.academy-masthead{font-size:7px;min-height:52px}.campaign-visual{height:266px}.academy-stage{padding-top:266px}.campaign-title{font-size:18.7vw;top:44px}.discipline-selector{height:54px}.discipline-selector>button{font-size:10px;padding-inline:5px;gap:4px}.campaign-copy{margin-top:21px}.campaign-copy>p{font-size:12px}.campaign-actions{gap:12px}.campaign-primary{font-size:11px;padding-left:12px}.campaign-secondary{font-size:10px;gap:7px}.primary-arrow{width:30px}.caption-copy>a{font-size:23px}.baseline-membership{font-size:9px;gap:5px}
   }

@@ -2,7 +2,7 @@
   import { siteOrder } from '#lib/discipline-order.ts';
   import { onMount, setContext, untrack } from 'svelte';
   import { afterNavigate } from '$app/navigation';
-  import { contactKey, contactConfig, loadContact, type ContactConfig } from '#lib/contact-config.ts';
+  import { academyMapsUrl, contactKey, contactConfig, loadContact, type ContactConfig } from '#lib/contact-config.ts';
   import { config as env } from '#lib/config.ts';
   import { siteName, copy, href, siteHref, sites, type Lang, type PageId, type SiteId } from '#lib/site.ts';
   import { editorial } from '#lib/editorial.ts';
@@ -126,7 +126,15 @@
   <main id="main" tabindex="-1" inert={menuOpen}>{@render children()}</main>
   <footer class="site-footer" inert={menuOpen}>
     <div class="footer-statement"><img src="/brand/mark.svg" width="90" height="66" alt=""/><div><p>{e.footer}</p><span>{e.footerSub}</span></div><a href="#top" class="back-top" aria-label={t.nav.home}><Icon name="diagonal" size={25}/></a></div>
-    <div class="footer-grid"><div><h3>{t.exploreLabel}</h3>{#each nav as id}<a href={anchor(id)}>{id === 'membership' ? ux.plans : id === 'training' && site !== 'academy' ? ux.training : e.nav[id]}</a>{/each}</div><div><h3>{t.identities}</h3>{#each siteOrder as id}<a href={siteHref(id as SiteId, lang, preview)} aria-current={site === id ? 'page' : undefined}>{siteName(id as SiteId, lang)}<Icon name="diagonal" size={14}/></a>{/each}</div><div class="footer-note">{#if page !== 'coach'}<p>{e.photoNote}</p>{/if}<button class="install-link" onclick={() => installDialog.showModal()}><Icon name="phone" size={17}/>{t.install}<Icon name="plus" size={14}/></button></div></div>
+    <div class="footer-grid">
+      <div><h3>{t.exploreLabel}</h3>{#each nav as id}<a href={anchor(id)}>{id === 'membership' ? ux.plans : id === 'training' && site !== 'academy' ? ux.training : e.nav[id]}</a>{/each}</div>
+      <div><h3>{t.identities}</h3>{#each siteOrder as id}<a href={siteHref(id as SiteId, lang, preview)} aria-current={site === id ? 'page' : undefined}>{siteName(id as SiteId, lang)}<Icon name="diagonal" size={14}/></a>{/each}</div>
+      <div class="footer-note">
+        <a href={academyMapsUrl} target="_blank" rel="noopener noreferrer">{lang === 'tr' ? 'Konum ve yol tarifi' : 'Location and directions'}<Icon name="diagonal" size={16}/></a>
+        {#if page !== 'coach'}<p>{e.photoNote}</p>{/if}
+        <button class="install-link" onclick={() => installDialog.showModal()}><Icon name="phone" size={17}/>{t.install}<Icon name="plus" size={14}/></button>
+      </div>
+    </div>
     <div class="footer-bottom"><span>© 2026 Self Control Fight Academy</span><button onclick={() => privacyDialog.showModal()}>{t.nav.privacy}</button><span>DENİZLİ / {identity.number}</span></div>
   </footer>
   <div class="mobile-dock" inert={menuOpen}>

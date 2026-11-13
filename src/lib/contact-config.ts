@@ -2,6 +2,7 @@
 export const contactKeys = ['PUBLIC_CONTACT_EMAIL', 'PUBLIC_WHATSAPP', 'PUBLIC_INSTAGRAM', 'PUBLIC_ADDRESS'] as const;
 export type ContactConfig = Record<typeof contactKeys[number], string>;
 export const contactKey = Symbol('academy-contact');
+export const academyMapsUrl = 'https://maps.app.goo.gl/7gwWY2M8u2Z7pP8x9';
 export function contactConfig(runtime: Record<string, unknown> = {}, fallback: Partial<ContactConfig> = {}): ContactConfig {
   return Object.fromEntries(contactKeys.map(key => [key,
     typeof runtime[key] === 'string' ? runtime[key].trim() : fallback[key] ?? ''

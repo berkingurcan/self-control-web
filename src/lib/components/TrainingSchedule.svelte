@@ -33,6 +33,7 @@
       .sort((a, b) => a.time.localeCompare(b.time))
   })));
   const selectedDay = $derived(scheduleByDay[day]);
+  const sample = $derived(catalog.status === 'sample');
   const next = $derived(gymNow ? nextSession(sessions, gymNow, site) : null);
   const plans = $derived(catalog.groupLessons[experience.selection.discipline]);
   const monthlyPlan = $derived(plans.find(plan => plan.months === 1));
@@ -66,53 +67,82 @@
 </script>
 
 {#snippet sessionRow(session: Session)}
-  <article class="session-row" style={`--session-accent:${sites[session.discipline].accent}`}>
-    <div class="session-time"><time>{session.time}</time><span>{endTime(session.time, session.duration)}</span></div>
-    <div class="session-info">
-      <span class="session-discipline" lang={lang}>{siteName(session.discipline, lang)}</span>
-      <h4>{session.title[lang]}</h4>
-      <div class="session-meta"><span>{d.levels[session.level]}</span><span>{session.duration} {d.minutes}</span></div>
+  <li class="class-row" style:--class-accent={sites[session.discipline].accent} style:--class-ink={site === 'academy' ? sites[session.discipline].dark : sites[session.discipline].accent}>
+    <div class="class-time">
+      <time datetime={session.time}>{session.time}</time>
+      <span>– {endTime(session.time, session.duration)}</span>
     </div>
-    <span class="session-arrow" aria-hidden="true"><Icon name="diagonal" size="1em"/></span>
-  </article>
+    <div class="class-info">
+      <h4>{session.title[lang]}</h4>
+      <div class="class-meta">
+        {#if site === 'academy'}<span class="class-discipline">{siteName(session.discipline, lang)}</span>{/if}
+        <span>{d.levels[session.level]}</span>
+        <span>{session.duration} {d.minutes}</span>
+      </div>
+    </div>
+  </li>
 {/snippet}
 
 <section id="schedule" class="section schedule-section" use:reveal>
   <div class="section-top"><span class="eyebrow">{label}</span><a class="quiet-link" href="#membership">{ux.memberships}<Icon name="diagonal" size={18}/></a></div>
-  <div class="section-heading"><h2 class="display">{e.scheduleTitle}</h2><p>{site === 'academy' ? e.academyScheduleBody : e.scheduleBody}</p></div>
+  <div class="schedule-heading">
+    <h2 class="display">{e.scheduleTitle.replace('\n', ' ')}</h2>
+    <p>{site === 'academy' ? e.academyScheduleBody : e.scheduleBody}</p>
+  </div>
   <ContentStatus {lang}/>
   {#if available}
-  {#if catalog.status === 'sample'}<div class="demo-notice"><span class="demo-badge">{d.badge}</span><p>{d.note}</p></div>{/if}
-  {#if next}
-    <button class="next-session" type="button" aria-controls="weekly-planner" aria-label={`${ux.showDay}: ${d.days[next.session.day]}, ${next.session.time}, ${siteName(next.session.discipline, lang)}`} onclick={showNextSession}>
-      <span class="next-session-top"><span class="next-session-label"><i aria-hidden="true"></i>{nextLabel}</span><span class="next-session-action">{ux.showDay}<Icon name="arrow" size={17}/></span></span>
-      <span class="next-session-main"><time datetime={next.session.time}>{next.session.time}</time><span class="next-session-details"><strong>{siteName(next.session.discipline, lang)}</strong><span>{`${next.dayOffset === 0 ? ux.today : d.days[next.session.day]} · ${next.session.duration} ${d.minutes}`}</span></span></span>
-    </button>
-  {/if}
-  {#if site === 'academy'}
-    <div id="weekly-planner" class="academy-week">
-      {#each scheduleByDay as { name, classes }, index (name)}
-        <section class="academy-day" aria-labelledby={`schedule-day-${index}`}>
-          <h3 id={`schedule-day-${index}`} tabindex="-1">{name}{#if today === index}<small>{ux.today}</small>{/if}</h3>
-          <div class="session-list">
-            {#each classes as session}
-              {@render sessionRow(session)}
+    {#if sample}
+      <div class="sample-notice"><strong>{d.badge}</strong><p>{d.note}</p></div>
+    {/if}
+    {#if next}
+      <button class="next-session" type="button" aria-controls="weekly-planner" onclick={showNextSession}>
+        <span class="next-session-info">
+          <span class="next-session-label">{nextLabel}</span>
+          <span class="next-session-details">
+            <time datetime={next.session.time}>{next.session.time}</time>
+            <span>{next.dayOffset === 0 ? ux.today : d.days[next.session.day]} · {siteName(next.session.discipline, lang)}</span>
+          </span>
+        </span>
+        <span class="next-session-action">{ux.showDay}<Icon name="arrow-down" size={16}/></span>
+      </button>
+    {/if}
+    {#if site === 'academy'}
+      <div id="weekly-planner" class="academy-week">
+        {#each scheduleByDay as { name, classes }, index (name)}
+          <section class="schedule-day" aria-labelledby={`schedule-day-${index}`}>
+            <h3 id={`schedule-day-${index}`} tabindex="-1">{name}{#if today === index}<small>{ux.today}</small>{/if}</h3>
+            {#if classes.length}
+              <ul class="class-list" role="list">
+                {#each classes as session}{@render sessionRow(session)}{/each}
+              </ul>
             {:else}
-              <p class="academy-rest-day">{lang === 'tr' ? 'Planlı ders yok.' : 'No scheduled classes.'}</p>
-            {/each}
-          </div>
+              <p class="schedule-empty">{lang === 'tr' ? 'Planlı ders yok.' : 'No scheduled classes.'}</p>
+            {/if}
+          </section>
+        {/each}
+      </div>
+    {:else}
+      <div id="weekly-planner" class="branch-week" bind:this={weeklyPlanner}>
+        <div class="schedule-days" role="group" aria-label={d.daySelect}>
+          {#each d.shortDays as name, index}
+            <button type="button" class:today={today === index} aria-pressed={day === index} aria-label={`${d.days[index]}${index === today ? ` / ${ux.today}` : ''}`} onclick={() => { dayChosen = true; day = index; }}>
+              <span>{name}</span>
+            </button>
+          {/each}
+        </div>
+        <section class="schedule-day" aria-labelledby="selected-schedule-day" aria-live="polite" aria-atomic="true">
+          <h3 id="selected-schedule-day" tabindex="-1" bind:this={dayHeading}>{selectedDay.name}{#if day === today}<small>{ux.today}</small>{/if}</h3>
+          {#if selectedDay.classes.length}
+            <ul class="class-list" role="list">
+              {#each selectedDay.classes as session}{@render sessionRow(session)}{/each}
+            </ul>
+          {:else}
+            <p class="schedule-empty">{ux.noClass} {ux.noClassBody}</p>
+          {/if}
         </section>
-      {/each}
-    </div>
-  {:else}
-  <div id="weekly-planner" class="weekly-planner" bind:this={weeklyPlanner}>
-    <div class="planner-sidebar"><span class="eyebrow">{d.weekly}</span><h3 class="selected-day-heading" tabindex="-1" bind:this={dayHeading}>{selectedDay.name}<span aria-hidden="true"><Icon name="diagonal" size="1em"/></span></h3><p>{day === today ? ux.today : siteName(site, lang)}</p><span class="class-count">{String(selectedDay.classes.length).padStart(2, '0')} <small>{lang === 'en' && selectedDay.classes.length === 1 ? 'class' : d.sessions}</small></span></div>
-    <div class="planner-main"><div class="day-selector" role="group" aria-label={d.daySelect}>{#each d.shortDays as name, index}<button class:active={day === index} class:today={today === index} aria-pressed={day === index} aria-label={`${d.days[index]}${index === today ? ` / ${ux.today}` : ''}`} onclick={() => { dayChosen = true; day = index; }}><span>{name}</span><i aria-hidden="true"></i></button>{/each}</div>
-      <div class="session-list" aria-live="polite" aria-atomic="true">{#each selectedDay.classes as session}{@render sessionRow(session)}{:else}<div class="rest-day"><Icon name="calendar" size={28}/><h4>{ux.noClass}</h4><p>{ux.noClassBody}</p>{#if next}<button class="underlined-link" onclick={showNextSession}>{ux.showDay}<Icon name="arrow" size={17}/></button>{/if}</div>{/each}</div>
-    </div>
-  </div>
-  {/if}
-  <p class="schedule-footnote">{catalog.status === 'sample' ? ux.timetableNote : lang === 'tr' ? `Saat dilimi: ${content.data.timezone}. Güncel ders bilgilerini katılımdan önce teyit edin.` : `Class times: ${content.data.timezone}. Confirm details before attending.`}</p>
+      </div>
+    {/if}
+    <p class="schedule-footnote">{sample ? ux.timetableNote : lang === 'tr' ? `Saat dilimi: ${content.data.timezone}. Güncel ders bilgilerini katılımdan önce teyit edin.` : `Class times: ${content.data.timezone}. Confirm details before attending.`}</p>
   {/if}
 </section>
 
@@ -140,18 +170,275 @@
 </section>
 
 <style>
-  .academy-week{border:1px solid var(--line);background:var(--bg)}
-  .academy-day+.academy-day{border-top:1px solid var(--line)}
-  .academy-day h3{display:flex;align-items:center;gap:14px;padding:16px clamp(15px,3vw,30px);background:var(--surface);border-bottom:1px solid var(--line);font:800 24px/1.2 Barlow,Impact,sans-serif}
-  .academy-day h3:focus-visible{outline:2px solid var(--signal);outline-offset:-2px}
-  .academy-day h3 small{font:500 12px/1.2 sans-serif;color:var(--muted)}
-  .academy-day .session-list{min-height:0}
-  .academy-rest-day{padding:18px 0;color:var(--muted);font-size:13px}
-.membership-types{display:flex;gap:8px;border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:25px}.membership-types button{display:flex;align-items:center;justify-content:center;gap:12px;min-height:54px;padding:15px 24px;background:transparent;color:var(--fg);border:1px solid var(--line);font-size:14px;transition:background .2s,color .2s}.membership-types button.active{background:var(--signal);color:var(--button-fg);border-color:var(--signal)}.membership-section{background:var(--bg);border-top:1px solid var(--line)}.membership-heading h2{margin-top:24px}.schedule-footnote{font-size:12px;color:var(--muted);margin-top:18px}.day-selector .today i{width:5px;height:5px;opacity:1;background:var(--accent)}.plan-select{display:flex;align-items:center;justify-content:space-between;gap:15px;background:transparent;padding:0;text-align:left;min-height:52px;width:100%;color:inherit}.plan-select>span:first-child{font:800 38px/1 Barlow;text-transform:uppercase}.plan-check{display:grid;place-items:center;width:36px;height:36px;border:1px solid currentColor;border-radius:50%;opacity:.5}.plan-chosen .plan-check{opacity:1}.price-card.plan-chosen{outline:2px solid var(--signal);outline-offset:4px}.price-total-label{font-size:12px;opacity:.8;margin-top:8px}.plan-inclusions{border-block:1px solid var(--line);margin-top:28px}.plan-inclusions summary{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:64px;font-size:14px}.plan-inclusions ul{list-style:none;padding:0;display:grid;gap:15px;margin:8px 0 24px}.plan-inclusions li{display:flex;align-items:center;gap:12px;font-size:13px}.plan-inclusions p{color:var(--muted);font-size:13px;max-width:680px;margin-bottom:25px}
-@media(max-width:700px){.membership-types button{flex:1;padding:14px 10px;gap:8px;font-size:13px}.membership-heading h2{font-size:clamp(44px,12vw,68px)}.plan-select>span:first-child{font-size:34px}.plan-select{margin-bottom:8px}.plan-inclusions summary{font-size:14px}.schedule-footnote{font-size:12px}}
+  .schedule-section {
+    padding-block: clamp(40px, 5vw, 70px);
+  }
 
-.next-session{display:block;width:100%;padding:24px 28px;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-bottom:0;text-align:left;transition:background .2s,border-color .2s}.next-session-top{display:flex;align-items:center;justify-content:space-between;gap:20px;margin-bottom:20px}.next-session-label{display:flex;align-items:center;gap:9px;font-size:11px;line-height:1.6;letter-spacing:.09em;color:var(--muted)}.next-session-label i{width:5px;height:5px;background:var(--signal);flex-shrink:0;border-radius:50%}.next-session-action{display:flex;align-items:center;gap:10px;font-size:13px;line-height:1.6;color:var(--signal);white-space:nowrap}.next-session-action :global(svg){transition:transform .2s}.next-session-main{display:flex;align-items:center;gap:24px}.next-session-main>time{font:800 48px/1 Barlow,Impact,sans-serif;font-variant-numeric:tabular-nums;letter-spacing:-.015em;padding-right:24px;border-right:1px solid var(--line)}.next-session-details{display:grid;gap:5px;min-width:0}.next-session-details>strong{font-size:17px;line-height:1.5;font-weight:500}.next-session-details>span{font-size:13px;line-height:1.6;color:var(--muted)}.next-session:active{background:var(--surface)}.selected-day-heading:focus{outline:none}.weekly-planner:has(.selected-day-heading:focus-visible){outline:2px solid var(--signal);outline-offset:4px}
-@media(hover:hover){.next-session:hover{background:var(--surface);border-color:var(--signal)}.next-session:hover .next-session-action :global(svg){transform:translateX(3px)}}
-@media(max-width:700px){.next-session{padding:20px}.next-session-top{gap:12px;margin-bottom:18px}.next-session-label{font-size:10px;letter-spacing:.06em;gap:7px}.next-session-action{font-size:12px;gap:7px}.next-session-main{gap:18px}.next-session-main>time{font-size:44px;padding-right:18px}.next-session-details>strong{font-size:16px}.next-session-details>span{font-size:13px}}
-@media(max-width:360px){.next-session{padding:18px 16px}.next-session-top{gap:8px}.next-session-label{font-size:9px;letter-spacing:.02em;gap:6px}.next-session-action{font-size:11px;gap:6px}.next-session-main{gap:14px}.next-session-main>time{font-size:42px;padding-right:14px}}
+  .schedule-section .section-top {
+    align-items: center;
+    padding-block: 4px;
+  }
+
+  .schedule-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 10px 32px;
+    margin: 12px 0 22px;
+  }
+
+  .schedule-heading h2 {
+    font-size: clamp(32px, 4.2vw, 64px);
+    white-space: normal;
+  }
+
+  .schedule-heading p {
+    max-width: 360px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .sample-notice {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 3px 14px;
+    margin-bottom: 12px;
+    padding: 8px 12px;
+    border-left: 2px solid var(--signal);
+    background: var(--bg);
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .sample-notice strong {
+    color: var(--fg);
+    font-size: 10px;
+    letter-spacing: .05em;
+  }
+
+  .next-session {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px 20px;
+    width: 100%;
+    min-height: 48px;
+    padding: 9px 14px;
+    margin-bottom: 12px;
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--fg);
+    text-align: left;
+  }
+
+  .next-session-info, .next-session-details, .next-session-action {
+    display: flex;
+    align-items: center;
+  }
+
+  .next-session-info {
+    flex-wrap: wrap;
+    gap: 2px 14px;
+  }
+
+  .next-session-label {
+    color: var(--muted);
+    font-size: 10px;
+    letter-spacing: .06em;
+  }
+
+  .next-session-details {
+    gap: 8px;
+    font-size: 13px;
+  }
+
+  .next-session-details time {
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .next-session-action {
+    flex-shrink: 0;
+    gap: 6px;
+    color: var(--signal);
+    font-size: 12px;
+  }
+
+  .next-session:hover {
+    border-color: var(--signal);
+  }
+
+  .academy-week {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    align-items: start;
+  }
+
+  .schedule-day, .schedule-days {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    min-width: 0;
+  }
+
+  .schedule-day h3 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 36px;
+    padding: 6px 14px;
+    border-bottom: 1px solid var(--line);
+    background: var(--surface);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .schedule-day h3:focus-visible {
+    outline: 2px solid var(--signal);
+    outline-offset: -2px;
+  }
+
+  .schedule-day h3 small {
+    padding: 1px 6px;
+    background: var(--signal);
+    color: var(--button-fg);
+    font-size: 10px;
+  }
+
+  .class-list {
+    margin: 0;
+    padding: 0 14px;
+    list-style: none;
+  }
+
+  .class-row {
+    display: grid;
+    grid-template-columns: 54px minmax(0, 1fr);
+    align-items: baseline;
+    gap: 12px;
+    padding-block: 8px;
+  }
+
+  .class-row + .class-row {
+    border-top: 1px solid var(--line);
+  }
+
+  .class-time {
+    display: grid;
+    font-size: 11px;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .class-time time {
+    color: var(--fg);
+    font-size: 15px;
+    font-weight: 700;
+  }
+
+  .class-info h4 {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+  }
+
+  .class-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2px 9px;
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: 11px;
+  }
+
+  .class-discipline {
+    color: var(--class-ink);
+    background: color-mix(in srgb, var(--class-accent) 23%, var(--bg));
+    padding-inline: 5px;
+  }
+
+  .schedule-days {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    border-bottom: 0;
+  }
+
+  .schedule-days button {
+    position: relative;
+    min-height: 44px;
+    padding-inline: 2px;
+    background: transparent;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .schedule-days button + button {
+    border-left: 1px solid var(--line);
+  }
+
+  .schedule-days button:hover {
+    color: var(--fg);
+  }
+
+  .schedule-days button[aria-pressed="true"] {
+    background: var(--signal);
+    color: var(--button-fg);
+  }
+
+  .schedule-days button:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: -4px;
+  }
+
+  .schedule-days .today::after {
+    content: '';
+    position: absolute;
+    bottom: 5px;
+    left: calc(50% - 2px);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: currentColor;
+  }
+
+  .schedule-empty {
+    padding: 10px 14px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .schedule-footnote {
+    margin-top: 10px;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  @media (max-width: 780px) {
+    .schedule-heading {
+      flex-direction: column;
+      align-items: start;
+      margin-bottom: 16px;
+    }
+
+    .academy-week {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 8px;
+    }
+
+    .next-session-action {
+      max-width: 115px;
+      text-align: right;
+    }
+
+    .next-session-action :global(svg) {
+      flex-shrink: 0;
+    }
+  }
+
+.membership-types{display:flex;gap:8px;border-bottom:1px solid var(--line);padding-bottom:22px;margin-bottom:25px}.membership-types button{display:flex;align-items:center;justify-content:center;gap:12px;min-height:54px;padding:15px 24px;background:transparent;color:var(--fg);border:1px solid var(--line);font-size:14px;transition:background .2s,color .2s}.membership-types button.active{background:var(--signal);color:var(--button-fg);border-color:var(--signal)}.membership-section{background:var(--bg);border-top:1px solid var(--line)}.membership-heading h2{margin-top:24px}.plan-select{display:flex;align-items:center;justify-content:space-between;gap:15px;background:transparent;padding:0;text-align:left;min-height:52px;width:100%;color:inherit}.plan-select>span:first-child{font:800 38px/1 Barlow;text-transform:uppercase}.plan-check{display:grid;place-items:center;width:36px;height:36px;border:1px solid currentColor;border-radius:50%;opacity:.5}.plan-chosen .plan-check{opacity:1}.price-card.plan-chosen{outline:2px solid var(--signal);outline-offset:4px}.price-total-label{font-size:12px;opacity:.8;margin-top:8px}.plan-inclusions{border-block:1px solid var(--line);margin-top:28px}.plan-inclusions summary{display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:64px;font-size:14px}.plan-inclusions ul{list-style:none;padding:0;display:grid;gap:15px;margin:8px 0 24px}.plan-inclusions li{display:flex;align-items:center;gap:12px;font-size:13px}.plan-inclusions p{color:var(--muted);font-size:13px;max-width:680px;margin-bottom:25px}
+@media(max-width:700px){.membership-types button{flex:1;padding:14px 10px;gap:8px;font-size:13px}.membership-heading h2{font-size:clamp(44px,12vw,68px)}.plan-select>span:first-child{font-size:34px}.plan-select{margin-bottom:8px}.plan-inclusions summary{font-size:14px}}
 </style>

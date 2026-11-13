@@ -1,7 +1,7 @@
 <script lang="ts">
   import { disciplineOrder } from '#lib/discipline-order.ts';
   import { getContext } from 'svelte';
-  import { contactKey, type ContactConfig } from '#lib/contact-config.ts';
+  import { academyMapsUrl, contactKey, type ContactConfig } from '#lib/contact-config.ts';
   import { config as env } from '#lib/config.ts';
   import { academyKickboxPhotos, siteName, copy, href, siteHref, sites, type SiteId, type Lang } from '#lib/site.ts';
   import { experienceCopy } from '#lib/experience-copy.ts';
@@ -124,9 +124,15 @@
         <div><Icon name="call"/><div><span>{lang === 'tr' ? 'Telefon' : 'Phone'}</span><a href={`tel:+${whatsapp}`}>{whatsapp === '905348589765' ? '+90 534 858 97 65' : `+${whatsapp}`}</a></div></div>
       {/if}
       {#if email}<div><Icon name="mail"/><div><span>{lang === 'tr' ? 'E-posta' : 'Email'}</span><a href={`mailto:${email}`}>{email}</a></div></div>{/if}
-      {#if address}<div><Icon name="pin"/><div><span>{t.address}</span><a target="_blank" rel="noopener noreferrer" href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`}>{address}<Icon name="diagonal" size={16}/></a></div></div>{/if}
+      <div>
+        <Icon name="pin"/>
+        <div>
+          <span>{t.address}</span>
+          {#if address}<p>{address}</p>{/if}
+          <a href={academyMapsUrl} target="_blank" rel="noopener noreferrer">{lang === 'tr' ? 'Google Maps’te aç' : 'Open in Google Maps'}<Icon name="diagonal" size={16}/></a>
+        </div>
+      </div>
       {#if instagram}<div><Icon name="globe"/><div><span>Instagram</span><a href={`https://www.instagram.com/${instagram.replace(/^@/, '')}/`} target="_blank" rel="noopener noreferrer">@{instagram.replace(/^@/, '')}<Icon name="diagonal" size={16}/></a></div></div>{/if}
-      {#if !whatsapp && !email && !address && !instagram}<p>{t.contactPending}</p>{/if}
     </div>
   </div>
 </section>
