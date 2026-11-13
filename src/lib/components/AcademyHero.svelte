@@ -39,6 +39,11 @@
 
 </script>
 
+{#snippet titleLines()}
+  <span class="title-line">{text.first}</span>
+  <span class="title-line">{text.second}</span>
+{/snippet}
+
 <div class="academy-masthead">
   <div class="masthead-label"><span class="label-square" aria-hidden="true"></span> {text.masthead}</div>
   <span class="masthead-note">{text.mastheadNote} <span aria-hidden="true">/</span> {text.statement}</span>
@@ -65,7 +70,10 @@
     </figcaption>
   </figure>
 
-  <h1 class="campaign-title" aria-label={`${text.first} ${text.second}`}><span class="title-line"><span>{text.first}</span></span><span class="title-line"><span>{text.second}</span></span></h1>
+  <h1 class="campaign-title" aria-label={`${text.first} ${text.second}`}>
+    {@render titleLines()}
+    <span class="campaign-title-on-photo" aria-hidden="true">{@render titleLines()}</span>
+  </h1>
 
   <div class="campaign-copy">
     <div class="copy-rule" aria-hidden="true"><span></span><span>SC / 00</span></div>
@@ -134,16 +142,20 @@
     pointer-events:none;
     color:#080808;
   }
-  @supports (background-clip:text){
-    .campaign-title{
-      background:linear-gradient(90deg,#080808 var(--visual-start),#fff var(--visual-start));
-      background-clip:text;
-      color:transparent;
+  .campaign-title-on-photo{
+    display:none;
+  }
+  @supports (clip-path:inset(0)){
+    .campaign-title-on-photo{
+      display:block;
+      position:absolute;
+      inset:0;
+      color:#fff;
+      clip-path:inset(0 0 0 var(--visual-start));
     }
   }
   .title-line{display:block;padding-bottom:.055em;margin-bottom:-.02em;white-space:nowrap}
-  .title-line>span{display:block}
-  .title-line:last-child{margin-left:7.5vw}
+  .title-line+.title-line{margin-left:7.5vw}
   .campaign-copy{position:absolute;left:0;bottom:75px;width:34%;max-width:380px}
   .copy-rule{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;font-size:8px;letter-spacing:.1em;color:#73736d}
   .copy-rule>span:first-child{width:45px;height:1px;background:#999993}
@@ -181,7 +193,7 @@
   @media(min-width:1200px){.campaign-actions{flex-direction:row;align-items:center;gap:22px}.campaign-primary{gap:18px}}
   @media(min-width:1500px){.campaign-title{top:45px}.campaign-copy{bottom:96px}.campaign-actions{flex-direction:row;align-items:center;gap:23px}.campaign-primary{gap:18px}.campaign-secondary{gap:17px}.campaign-philosophy{bottom:185px}}
   @media(min-width:701px) and (max-width:1050px){
-    .academy-stage{min-height:570px;height:570px;--visual-start:36%}.campaign-title{top:30px;font-size:12.8vw}.title-line:last-child{margin-left:4vw}.campaign-copy{width:31%;bottom:84px}.campaign-copy>p{font-size:12px}.campaign-primary{font-size:11px;gap:10px;padding-left:14px}.primary-arrow{width:34px;height:38px}.control-seal{width:82px;height:82px;right:16px}.control-seal>img{width:31px}.campaign-philosophy{left:calc(36% + 23px);bottom:200px}.discipline-selector{left:36%}.discipline-selector>button{padding:0 12px;gap:9px;font-size:10px}.visual-caption{left:23px;right:20px}.baseline-membership{margin-right:0}.baseline-statement>p{max-width:170px}
+    .academy-stage{min-height:570px;height:570px;--visual-start:36%}.campaign-title{top:30px;font-size:12.8vw}.title-line+.title-line{margin-left:4vw}.campaign-copy{width:31%;bottom:84px}.campaign-copy>p{font-size:12px}.campaign-primary{font-size:11px;gap:10px;padding-left:14px}.primary-arrow{width:34px;height:38px}.control-seal{width:82px;height:82px;right:16px}.control-seal>img{width:31px}.campaign-philosophy{left:calc(36% + 23px);bottom:200px}.discipline-selector{left:36%}.discipline-selector>button{padding:0 12px;gap:9px;font-size:10px}.visual-caption{left:23px;right:20px}.baseline-membership{margin-right:0}.baseline-statement>p{max-width:170px}
   }
   @media(max-width:700px){
     :global(.landing-hero.academy-hero){padding:0 22px}
@@ -191,7 +203,7 @@
     .campaign-frame{--photo-position:var(--mobile-position)}
     .campaign-title{top:52px;font-size:clamp(64px,18.7vw,128px)}
     .campaign-shade::before{background:linear-gradient(90deg,#000000b8 54%,transparent 94%)}
-    .title-line{padding-bottom:.06em;margin-bottom:-.02em}.title-line:last-child{margin-left:0}
+    .title-line{padding-bottom:.06em;margin-bottom:-.02em}.title-line+.title-line{margin-left:0}
     .visual-topline{inset:14px 14px auto;font-size:6px;letter-spacing:.08em}.visual-topline>span:first-child{font-size:6px}
     .control-seal,.campaign-philosophy{display:none}
     .visual-caption{bottom:17px;left:17px;right:15px;gap:8px}.caption-copy{gap:2px}.caption-copy>span{font-size:8px;letter-spacing:.05em}.caption-copy>a{font-size:26px;gap:14px;min-height:44px}.caption-copy>a :global(svg){width:18px;height:18px}
@@ -204,17 +216,16 @@
   }
   @media(min-width:501px) and (max-width:700px){.campaign-visual{height:360px}.academy-stage{padding-top:360px}.discipline-selector>button{font-size:12px;padding-inline:12px}.selector-index{display:inline;font-size:9px}.visual-caption{bottom:20px}.caption-copy>a{font-size:34px}.campaign-copy{margin-top:26px}}
   @media(forced-colors:active){
-    .campaign-title{background:none;color:CanvasText;text-shadow:1px 1px Canvas,-1px -1px Canvas}
+    .campaign-title{color:CanvasText;text-shadow:1px 1px Canvas,-1px -1px Canvas}
+    .campaign-title-on-photo{display:none}
   }
   @media(max-width:360px){
     :global(.landing-hero.academy-hero){padding-inline:18px}.academy-masthead{font-size:7px;min-height:52px}.campaign-visual{height:266px}.academy-stage{padding-top:266px}.campaign-title{font-size:18.7vw;top:44px}.discipline-selector{height:54px}.discipline-selector>button{font-size:10px;padding-inline:5px;gap:4px}.campaign-copy{margin-top:21px}.campaign-copy>p{font-size:12px}.campaign-actions{gap:12px}.campaign-primary{font-size:11px;padding-left:12px}.campaign-secondary{font-size:10px;gap:7px}.primary-arrow{width:30px}.caption-copy>a{font-size:23px}.baseline-membership{font-size:9px;gap:5px}
   }
   @media(max-width:700px) and (max-height:740px){.campaign-visual{height:242px}.academy-stage{padding-top:242px}.campaign-title{top:36px;font-size:17.5vw}.campaign-copy{margin-top:20px}.campaign-actions{margin-top:14px}.campaign-baseline{margin-top:20px}}
   @media(prefers-reduced-motion:no-preference){
-    .title-line>span{animation:type-arrive 1s cubic-bezier(.16,1,.3,1) both}.title-line:last-child>span{animation-delay:.13s}
     .campaign-visual{animation:frame-arrive 1.2s cubic-bezier(.16,1,.3,1) both}.campaign-copy{animation:copy-arrive .9s .18s both}
     .seal-orbit{animation:seal-turn 2s cubic-bezier(.16,1,.3,1) both}
-    @keyframes type-arrive{from{transform:translateY(18%);clip-path:inset(100% 0 -20%)}to{transform:translateY(0);clip-path:inset(-20% 0 -20%)}}
     @keyframes frame-arrive{from{clip-path:inset(0 0 100% 0)}to{clip-path:inset(0)}}
     @keyframes copy-arrive{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
     @keyframes seal-turn{from{transform:rotate(-40deg)}to{transform:rotate(0)}}
